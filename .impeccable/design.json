@@ -1,0 +1,448 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-07T20:10:40Z",
+  "title": "Design System: NVD Watch",
+  "extensions": {
+    "colorMeta": {
+      "ink": {
+        "role": "primary",
+        "displayName": "Deep Teal Ink",
+        "canonical": "oklch(39.9% 0.059 224)",
+        "tonalRamp": [
+          "oklch(15% 0.019 224)",
+          "oklch(26% 0.039 224)",
+          "oklch(38% 0.052 224)",
+          "oklch(49% 0.059 224)",
+          "oklch(61% 0.057 224)",
+          "oklch(72% 0.047 224)",
+          "oklch(84% 0.031 224)",
+          "oklch(95% 0.010 224)"
+        ]
+      },
+      "ink-deep": {
+        "role": "primary",
+        "displayName": "Deep Teal, Pressed",
+        "canonical": "oklch(32.8% 0.048 224)",
+        "tonalRamp": [
+          "oklch(15% 0.015 224)",
+          "oklch(26% 0.031 224)",
+          "oklch(38% 0.042 224)",
+          "oklch(49% 0.047 224)",
+          "oklch(61% 0.046 224)",
+          "oklch(72% 0.038 224)",
+          "oklch(84% 0.025 224)",
+          "oklch(95% 0.008 224)"
+        ]
+      },
+      "ink-tint": {
+        "role": "primary",
+        "displayName": "Teal Wash",
+        "canonical": "oklch(94.4% 0.009 222)",
+        "tonalRamp": [
+          "oklch(15% 0.006 222)",
+          "oklch(26% 0.013 222)",
+          "oklch(38% 0.018 222)",
+          "oklch(49% 0.020 222)",
+          "oklch(61% 0.019 222)",
+          "oklch(72% 0.016 222)",
+          "oklch(84% 0.010 222)",
+          "oklch(95% 0.003 222)"
+        ]
+      },
+      "band": {
+        "role": "primary",
+        "displayName": "Band Fill",
+        "canonical": "oklch(39.9% 0.059 224)",
+        "tonalRamp": [
+          "oklch(15% 0.019 224)",
+          "oklch(26% 0.039 224)",
+          "oklch(38% 0.052 224)",
+          "oklch(49% 0.059 224)",
+          "oklch(61% 0.057 224)",
+          "oklch(72% 0.047 224)",
+          "oklch(84% 0.031 224)",
+          "oklch(95% 0.010 224)"
+        ]
+      },
+      "on-band": {
+        "role": "primary",
+        "displayName": "On Band",
+        "canonical": "oklch(100.0% 0.000 90)",
+        "tonalRamp": [
+          "oklch(15% 0.006 90)",
+          "oklch(26% 0.013 90)",
+          "oklch(38% 0.018 90)",
+          "oklch(49% 0.020 90)",
+          "oklch(61% 0.019 90)",
+          "oklch(72% 0.016 90)",
+          "oklch(84% 0.010 90)",
+          "oklch(95% 0.003 90)"
+        ]
+      },
+      "text": {
+        "role": "neutral",
+        "displayName": "Report Black",
+        "canonical": "oklch(25.4% 0.011 254)",
+        "tonalRamp": [
+          "oklch(15% 0.006 254)",
+          "oklch(26% 0.013 254)",
+          "oklch(38% 0.018 254)",
+          "oklch(49% 0.020 254)",
+          "oklch(61% 0.019 254)",
+          "oklch(72% 0.016 254)",
+          "oklch(84% 0.010 254)",
+          "oklch(95% 0.003 254)"
+        ]
+      },
+      "text-2": {
+        "role": "neutral",
+        "displayName": "Secondary Grey",
+        "canonical": "oklch(42.5% 0.012 253)",
+        "tonalRamp": [
+          "oklch(15% 0.006 253)",
+          "oklch(26% 0.013 253)",
+          "oklch(38% 0.018 253)",
+          "oklch(49% 0.020 253)",
+          "oklch(61% 0.019 253)",
+          "oklch(72% 0.016 253)",
+          "oklch(84% 0.010 253)",
+          "oklch(95% 0.003 253)"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Warm Hairline",
+        "canonical": "oklch(86.6% 0.015 81)",
+        "tonalRamp": [
+          "oklch(15% 0.006 81)",
+          "oklch(26% 0.013 81)",
+          "oklch(38% 0.018 81)",
+          "oklch(49% 0.020 81)",
+          "oklch(61% 0.019 81)",
+          "oklch(72% 0.016 81)",
+          "oklch(84% 0.010 81)",
+          "oklch(95% 0.003 81)"
+        ]
+      },
+      "rule-strong": {
+        "role": "neutral",
+        "displayName": "Strong Rule",
+        "canonical": "oklch(25.4% 0.011 254)",
+        "tonalRamp": [
+          "oklch(15% 0.006 254)",
+          "oklch(26% 0.013 254)",
+          "oklch(38% 0.018 254)",
+          "oklch(49% 0.020 254)",
+          "oklch(61% 0.019 254)",
+          "oklch(72% 0.016 254)",
+          "oklch(84% 0.010 254)",
+          "oklch(95% 0.003 254)"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Report Stock",
+        "canonical": "oklch(100.0% 0.000 90)",
+        "tonalRamp": [
+          "oklch(15% 0.006 90)",
+          "oklch(26% 0.013 90)",
+          "oklch(38% 0.018 90)",
+          "oklch(49% 0.020 90)",
+          "oklch(61% 0.019 90)",
+          "oklch(72% 0.016 90)",
+          "oklch(84% 0.010 90)",
+          "oklch(95% 0.003 90)"
+        ]
+      },
+      "paper-2": {
+        "role": "neutral",
+        "displayName": "Second Stock",
+        "canonical": "oklch(97.1% 0.006 85)",
+        "tonalRamp": [
+          "oklch(15% 0.006 85)",
+          "oklch(26% 0.013 85)",
+          "oklch(38% 0.018 85)",
+          "oklch(49% 0.020 85)",
+          "oklch(61% 0.019 85)",
+          "oklch(72% 0.016 85)",
+          "oklch(84% 0.010 85)",
+          "oklch(95% 0.003 85)"
+        ]
+      },
+      "focus": {
+        "role": "focus",
+        "displayName": "Burnt Orange",
+        "canonical": "oklch(54.5% 0.156 39)",
+        "tonalRamp": [
+          "oklch(15% 0.051 39)",
+          "oklch(26% 0.102 39)",
+          "oklch(38% 0.138 39)",
+          "oklch(49% 0.155 39)",
+          "oklch(61% 0.150 39)",
+          "oklch(72% 0.124 39)",
+          "oklch(84% 0.081 39)",
+          "oklch(95% 0.026 39)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "The lead finding figure only; one per page."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "The band h1."
+      },
+      "title": {
+        "displayName": "Section title",
+        "purpose": "Report-section h2 with a run-in number in secondary grey at weight 400."
+      },
+      "title-sm": {
+        "displayName": "Subheading",
+        "purpose": "h3 inside sections and the citation block."
+      },
+      "lede": {
+        "displayName": "Lede",
+        "purpose": "First paragraph of each report section."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Prose, lists, definitions; 68ch measure."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Buttons, form labels, legends, definition terms, metric titles."
+      },
+      "table": {
+        "displayName": "Table",
+        "purpose": "Data-table cells; 0.85rem under 600px."
+      },
+      "column-head": {
+        "displayName": "Column head",
+        "purpose": "Uppercase data-table head on a 2px rule; recommendations row heads at 0.8rem in teal."
+      },
+      "note": {
+        "displayName": "Note",
+        "purpose": "Notes, footer, section index, assumptions, footnotes, vendor markers."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "scroll",
+        "value": "scroll-behavior: smooth; auto under prefers-reduced-motion",
+        "purpose": "Section-index anchor jumps. The only motion on the page besides the 2.2s copy-confirmation label swap; no CSS transitions are defined."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "tablet",
+        "value": "900px",
+        "purpose": "Band, highlights, .two and definitions grids collapse to one column; simulator controls to two."
+      },
+      {
+        "name": "phone",
+        "value": "600px",
+        "purpose": "Section index static and wrapping; .stack tables become labelled blocks; finding stacks; table type 0.85rem."
+      }
+    ],
+    "focus": {
+      "value": "outline: 3px solid #b8471b; outline-offset: 2px",
+      "inset": "outline-offset: -3px inside the segmented control",
+      "purpose": "Every :focus-visible. The focus hue is never used as text or fill."
+    },
+    "print": {
+      "body": "10.5pt black on white",
+      "band": "background none, black type, border-bottom 3pt solid #000",
+      "hidden": [
+        ".band .actions",
+        ".index",
+        ".skip",
+        ".sim .reset",
+        "#copy-citation",
+        ".btn"
+      ],
+      "tealToBlack": [
+        ".finding .figure",
+        ".findings li b",
+        ".section h2",
+        ".highlights h2",
+        ".index .n",
+        ".timeline time",
+        ".metrics li::before",
+        ".sim .result b",
+        ".chart .bar"
+      ],
+      "sections": "break-inside avoid, 18pt padding, 1pt #999 rule",
+      "links": "black, no underline; sources print their href after the text at 8.5pt"
+    },
+    "colorScheme": "light only (color-scheme: light); no dark scheme by contract",
+    "fonts": {
+      "source": "Google Fonts",
+      "request": "Public+Sans:wght@400;700 and Source+Serif+4:opsz,wght@8..60,400;8..60,600, display=swap"
+    }
+  },
+  "components": [
+    {
+      "name": "Primary button (filled)",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Copy citation on the teal band: white fill, teal text, 2px white border, square corners.",
+      "html": "<div class=\"ds-band\"><button class=\"ds-btn ds-btn-primary\" type=\"button\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"9\" y=\"9\" width=\"11\" height=\"11\" rx=\"1\"/><path d=\"M5 15V5a1 1 0 0 1 1-1h10\"/></svg>Copy citation</button></div>",
+      "css": ".ds-band{background:#1d4e5f;padding:24px;display:inline-block}.ds-btn{font-family:\"Public Sans\",\"Helvetica Neue\",Arial,sans-serif;font-weight:700;font-size:0.9rem;letter-spacing:0.01em;padding:11px 16px;border:2px solid #fff;background:transparent;color:#fff;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;line-height:1;border-radius:0}.ds-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.ds-btn:focus-visible{outline:3px solid #b8471b;outline-offset:2px}.ds-btn-primary{background:#fff;color:#1d4e5f}.ds-btn-primary:hover{background:#f0f5f7}"
+    },
+    {
+      "name": "Outline button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "Secondary action on the band: transparent fill, white text and 2px border; hover adds a 14% white wash.",
+      "html": "<div class=\"ds-band\"><a class=\"ds-btn ds-btn-outline\" href=\"#\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M12 4v12m0 0 5-5m-5 5-5-5M5 20h14\"/></svg>Policy brief</a></div>",
+      "css": ".ds-band{background:#1d4e5f;padding:24px;display:inline-block}.ds-btn{font-family:\"Public Sans\",\"Helvetica Neue\",Arial,sans-serif;font-weight:700;font-size:0.9rem;letter-spacing:0.01em;padding:11px 16px;border:2px solid #fff;background:transparent;color:#fff;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;line-height:1;border-radius:0}.ds-btn svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}.ds-btn:focus-visible{outline:3px solid #b8471b;outline-offset:2px}.ds-btn-outline:hover{background:rgba(255,255,255,0.14)}"
+    },
+    {
+      "name": "Text button",
+      "kind": "button",
+      "refersTo": "button-text",
+      "description": "The simulator reset: no border or fill, teal underlined sans at note size.",
+      "html": "<button class=\"ds-btn-text\" type=\"button\">Reset to defaults</button>",
+      "css": ".ds-btn-text{font-family:\"Public Sans\",\"Helvetica Neue\",Arial,sans-serif;font-size:0.85rem;background:none;border:0;color:#1d4e5f;text-decoration:underline;cursor:pointer;padding:0}.ds-btn-text:hover{color:#153a47;text-decoration-thickness:2px}.ds-btn-text:focus-visible{outline:3px solid #b8471b;outline-offset:2px}"
+    },
+    {
+      "name": "Number input with assumption line",
+      "kind": "input",
+      "refersTo": "input-number",
+      "description": "Simulator field: bold sans label, 2px near-black border, tabular numerals, assumption note with a teal prefix.",
+      "html": "<label class=\"ds-field\"><span>CVEs re-queued per month</span><input class=\"ds-input\" type=\"number\" value=\"360\" step=\"10\" inputmode=\"numeric\"><span class=\"ds-assumption\">Not yet measured; a backlog-based estimate is planned.</span></label>",
+      "css": ".ds-field{font-family:\"Public Sans\",\"Helvetica Neue\",Arial,sans-serif;font-size:0.9rem;display:block;color:#1f2328}.ds-field>span:first-child{display:block;font-weight:700;margin-bottom:6px}.ds-input{font:inherit;font-variant-numeric:tabular-nums;width:100%;max-width:180px;padding:9px 10px;border:2px solid #1f2328;background:#fff;color:#1f2328;border-radius:0;display:block}.ds-input:focus-visible{outline:3px solid #b8471b;outline-offset:2px}.ds-assumption{display:block;margin-top:6px;font-size:0.8rem;color:#4a4f55}.ds-assumption::before{content:\"Assumption\";font-weight:700;color:#1d4e5f;margin-right:6px}"
+    },
+    {
+      "name": "Segmented radio group",
+      "kind": "chip",
+      "refersTo": "segment",
+      "description": "Three minutes-per-CVE options inside one 2px frame; the checked segment fills teal with white text.",
+      "html": "<fieldset class=\"ds-seg-set\"><legend>Analyst-minutes per CVE</legend><div class=\"ds-radios\" role=\"radiogroup\"><label><input type=\"radio\" name=\"ds-min\" value=\"20\"><span>20</span></label><label><input type=\"radio\" name=\"ds-min\" value=\"45\" checked><span>45</span></label><label><input type=\"radio\" name=\"ds-min\" value=\"60\"><span>60</span></label></div></fieldset>",
+      "css": ".ds-seg-set{border:0;margin:0;padding:0;font-family:\"Public Sans\",\"Helvetica Neue\",Arial,sans-serif;font-size:0.9rem;color:#1f2328}.ds-seg-set legend{font-weight:700;font-size:0.95rem;padding:0;margin-bottom:6px}.ds-radios{display:flex;gap:0;border:2px solid #1f2328;width:max-content;background:#fff}.ds-radios label{position:relative;margin:0}.ds-radios input{position:absolute;opacity:0;inset:0}.ds-radios span{display:block;padding:9px 14px;font-weight:700;border-right:2px solid #1f2328;cursor:pointer}.ds-radios label:last-child span{border-right:0}.ds-radios input:checked+span{background:#1d4e5f;color:#fff}.ds-radios input:focus-visible+span{outline:3px solid #b8471b;outline-offset:-3px}"
+    },
+    {
+      "name": "Section index",
+      "kind": "nav",
+      "refersTo": "",
+      "description": "Slim sans list under the band; grey links with a teal number, teal text and 2px underline on hover.",
+      "html": "<nav class=\"ds-index\" aria-label=\"Sections\"><ol><li><a href=\"#\"><span class=\"ds-n\">1</span>The gap</a></li><li><a href=\"#\"><span class=\"ds-n\">2</span>The gate</a></li><li><a href=\"#\"><span class=\"ds-n\">3</span>The fix and its cost</a></li><li><a href=\"#\"><span class=\"ds-n\">4</span>Who should act</a></li><li><a href=\"#\">Definitions</a></li><li><a href=\"#\">Sources</a></li></ol></nav>",
+      "css": ".ds-index{border-bottom:1px solid #d8d2c8;background:#fff}.ds-index ol{list-style:none;margin:0;padding:0;display:flex;gap:0 28px;overflow-x:auto;font-family:\"Public Sans\",\"Helvetica Neue\",Arial,sans-serif;font-size:0.85rem}.ds-index li{padding:12px 0;white-space:nowrap}.ds-index a{color:#4a4f55;text-decoration:none;border-bottom:2px solid transparent;padding-bottom:11px}.ds-index a:hover{color:#1d4e5f;border-color:#1d4e5f}.ds-index a:focus-visible{outline:3px solid #b8471b;outline-offset:2px}.ds-n{color:#1d4e5f;font-weight:700;margin-right:6px}"
+    },
+    {
+      "name": "Finding block",
+      "kind": "custom",
+      "refersTo": "",
+      "description": "The focal moment: a display-scale serif figure in teal beside its definition and small-print source.",
+      "html": "<div class=\"ds-finding\"><p class=\"ds-figure\">22.6%</p><p class=\"ds-what\">of new CVEs carry scanner-matchable product data (CPE)<small>3,858 of 17,070 CVEs published in the 30-day window. CPE exists only on records NIST has enriched.</small></p></div>",
+      "css": ".ds-finding{display:grid;grid-template-columns:auto 1fr;gap:8px 24px;align-items:baseline;font-family:\"Source Serif 4\",Georgia,\"Times New Roman\",serif;color:#1f2328;font-variant-numeric:lining-nums tabular-nums}.ds-figure{font-weight:600;font-size:clamp(3.2rem,7vw,5rem);line-height:0.95;letter-spacing:-0.02em;color:#1d4e5f;margin:0}.ds-what{font-size:1.25rem;line-height:1.3;margin:0;max-width:30ch;text-wrap:balance}.ds-what small{display:block;font-family:\"Public Sans\",\"Helvetica Neue\",Arial,sans-serif;font-size:0.82rem;color:#4a4f55;margin-top:8px;line-height:1.4}"
+    },
+    {
+      "name": "Highlight heading",
+      "kind": "custom",
+      "refersTo": "",
+      "description": "Uppercase teal sans heading on a 2px teal rule; the only uppercase heading style.",
+      "html": "<h2 class=\"ds-hl\">What we found</h2>",
+      "css": ".ds-hl{font-family:\"Public Sans\",\"Helvetica Neue\",Arial,sans-serif;font-size:0.95rem;font-weight:700;letter-spacing:0.02em;text-transform:uppercase;color:#1d4e5f;margin:0 0 14px;padding-bottom:8px;border-bottom:2px solid #1d4e5f}"
+    },
+    {
+      "name": "Data table",
+      "kind": "custom",
+      "refersTo": "",
+      "description": "Sans table: uppercase grey column heads on a 2px near-black rule, hairline rows, right-aligned numerals, bold total on a 2px rule.",
+      "html": "<table class=\"ds-data\"><caption>New CVEs by NVD status</caption><thead><tr><th scope=\"col\">Status</th><th scope=\"col\" class=\"ds-num\">CVEs</th><th scope=\"col\" class=\"ds-num\">With CPE</th></tr></thead><tbody><tr><th scope=\"row\">Not Scheduled<span class=\"ds-api\">Deferred</span></th><td class=\"ds-num\">11,204</td><td class=\"ds-num\">0%</td></tr><tr><th scope=\"row\">Enriched<span class=\"ds-api\">Analyzed</span></th><td class=\"ds-num\">3,858</td><td class=\"ds-num\">100%</td></tr><tr class=\"ds-total\"><th scope=\"row\">All, excluding Rejected</th><td class=\"ds-num\">17,070</td><td class=\"ds-num\">22.6%</td></tr></tbody></table>",
+      "css": ".ds-data{width:100%;border-collapse:collapse;font-family:\"Public Sans\",\"Helvetica Neue\",Arial,sans-serif;font-size:0.92rem;color:#1f2328;font-variant-numeric:lining-nums tabular-nums}.ds-data caption{text-align:left;font-weight:700;padding:0 0 10px;font-size:0.95rem}.ds-data thead th{text-align:left;font-weight:700;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.04em;color:#4a4f55;padding:8px 10px 8px 0;border-bottom:2px solid #1f2328;vertical-align:bottom}.ds-data tbody th{text-align:left;font-weight:400;padding:9px 10px 9px 0;border-bottom:1px solid #d8d2c8;vertical-align:top}.ds-data td{padding:9px 10px 9px 0;border-bottom:1px solid #d8d2c8;vertical-align:top}.ds-data .ds-num{text-align:right;padding-right:0;white-space:nowrap}.ds-api{display:block;font-size:0.75rem;color:#4a4f55}.ds-total th,.ds-total td{font-weight:700;border-top:2px solid #1f2328}"
+    },
+    {
+      "name": "Timeline",
+      "kind": "custom",
+      "refersTo": "",
+      "description": "Teal left spine with 12px circular markers; the KEV event is filled; dates in bold teal sans.",
+      "html": "<ol class=\"ds-timeline\"><li><time>October 17</time>First probes observed; unsuccessful.</li><li><time>October 21</time>Patch released.</li><li class=\"ds-kev\"><time>October 26</time>CISA confirms active exploitation.</li></ol>",
+      "css": ".ds-timeline{list-style:none;margin:0;padding:0;border-left:1px solid #1d4e5f;font-family:\"Source Serif 4\",Georgia,\"Times New Roman\",serif;font-size:1.0625rem;line-height:1.55;color:#1f2328}.ds-timeline li{position:relative;padding:4px 0 16px 22px;max-width:68ch}.ds-timeline li::before{content:\"\";position:absolute;left:-6.5px;top:12px;width:12px;height:12px;background:#fff;border:2px solid #1d4e5f;border-radius:50%}.ds-timeline li.ds-kev::before{background:#1d4e5f;border-color:#1d4e5f}.ds-timeline time{display:block;font-family:\"Public Sans\",\"Helvetica Neue\",Arial,sans-serif;font-weight:700;font-size:0.82rem;color:#1d4e5f}"
+    },
+    {
+      "name": "Citation block",
+      "kind": "card",
+      "refersTo": "cite",
+      "description": "The one flat warm tint: paper-2 block, no border or radius, select-all citation text.",
+      "html": "<div class=\"ds-cite\"><h3>How to cite this page</h3><p>Davis, Will. \"NVD Watch: weekly scorecard of the U.S. vulnerability warning system,\" week ending Nov 7, 2026. Share of new CVEs with CPE: 22.6%.</p></div>",
+      "css": ".ds-cite{background:#f7f5f1;padding:18px 20px;max-width:860px;color:#1f2328;border-radius:0}.ds-cite h3{margin:0 0 8px;font-family:\"Public Sans\",\"Helvetica Neue\",Arial,sans-serif;font-size:1.05rem;font-weight:700}.ds-cite p{font-family:\"Public Sans\",\"Helvetica Neue\",Arial,sans-serif;font-size:0.9rem;margin:0;user-select:all}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Highlights Page",
+    "overview": "NVD Watch is a government-report highlights page rendered for the web: a single identity band carries the title, the week, and two actions; under it a slim section index; then a two-column highlights grid where one finding leads at display scale with its definition and source beside it. The report body follows in four numbered sections, then frozen definitions and a sources list. The page reads top to bottom like a printed document, and the print stylesheet is a first-class rendering, not an afterthought.\n\nThe material is white report stock. One deep teal ink does all the colour work: it fills the band, sets the finding numerals, draws the rule under highlight headings, colours links and the chart bars, and fills checked controls and text selection. Body text is near-black, secondary text is a dark grey, and structure is carried entirely by hairline rules in a warm grey and 2px rules in the text colour. There are no cards, tiles, shadows, gradients, or rounded corners. Density is that of a well-set report: a 68ch measure, generous section padding, and tables that sit flush to the left column edge.\n\nThe page refuses two things by contract and by build: the KPI-tile dashboard and the dark cyber console. No dark scheme exists (`color-scheme: light`); no alarm colours exist; the one warm hue on the page (`focus`) is reserved for focus rings and never appears as text or fill.",
+    "keyCharacteristics": [
+      "One identity ink on white stock; a second hue only for focus indication.",
+      "Serif body (Source Serif 4) with a sans (Public Sans) for everything that labels, tabulates, or acts.",
+      "Structure by rule, never by surface: 1px warm hairlines for rows, 2px near-black rules for table heads, totals, and the simulator's top edge.",
+      "Run-in numbered section headings; the number is set in secondary grey at regular weight ahead of the bold title.",
+      "Rectangular geometry throughout; the only circles are the 12px timeline markers.",
+      "Prints as a report: band flattens to black type over a 3pt black rule, actions and index disappear, chart bars go black."
+    ],
+    "rules": [
+      {
+        "name": "The One Ink Rule",
+        "body": "Teal is the only colour that may carry meaning. If a new element needs emphasis, it gets teal, weight, or a rule; it never gets a second hue.",
+        "section": "colors"
+      },
+      {
+        "name": "The Focus-Only Rule",
+        "body": "`focus` (#b8471b) appears on focus rings and nowhere else. It is not an accent, a warning, or a link colour.",
+        "section": "colors"
+      },
+      {
+        "name": "The Flat Tint Rule",
+        "body": "`ink-tint` and `paper-2` are the only tinted surfaces, each used once (notice, citation block). They carry no border, radius, or shadow; a tinted surface is a flat paragraph background, not a card.",
+        "section": "colors"
+      },
+      {
+        "name": "The Serif Argues, Sans Labels Rule",
+        "body": "Anything a reader is meant to read as prose or as the finding is serif; anything that names, tabulates, or operates is sans. Do not set a heading inside the report body in serif, and do not set body copy in sans.",
+        "section": "typography"
+      },
+      {
+        "name": "The One Display Rule",
+        "body": "The display size appears once, on the lead finding. Other figures live in tables or as bold run-ins at body size.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Numerals Rule",
+        "body": "Numbers are lining and tabular everywhere, including inputs; right-align numeric columns and never wrap them.",
+        "section": "typography"
+      },
+      {
+        "name": "The Stacked Table Rule",
+        "body": "A data table that would clip on a phone carries `.stack`. Under 600px its head is visually hidden, each row becomes a labelled block whose row head sits on a 2px rule, and each numeric cell becomes a flex row with its column name on the left from `data-label` and the value right-aligned. Every numeric cell in a `.stack` table must carry `data-label`.",
+        "section": "layout"
+      },
+      {
+        "name": "The No-Shadow Rule",
+        "body": "Nothing on the page casts a shadow or lifts. If a new element must separate from the page, it gets a rule or a flat tint.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do use teal (`ink`) for every emphasis that needs colour: numerals, headings, links, bars, run-ins, counters.",
+      "Do structure with rules: 1px `rule` between rows and sections, 2px `rule-strong` under table heads, above totals, and around inputs.",
+      "Do keep the serif for prose and the finding, and Public Sans for labels, tables, controls, notes, and in-body headings.",
+      "Do keep the display size to the single lead finding and set it in Source Serif 4 600 with tight leading.",
+      "Do give every `.stack` numeric cell a `data-label` so it survives the phone layout.",
+      "Do keep the 68ch measure on prose and right-align tabular numbers.",
+      "Do supply `<title>` and `<desc>` on any SVG chart and a `.note` caption naming the source.",
+      "Do make every surface print: flatten fills to black type on white and hide actions."
+    ],
+    "donts": [
+      "Don't introduce a second hue, alarm colours, or a dark scheme; the page is `color-scheme: light` only.",
+      "Don't use `focus` (#b8471b) as text, fill, or accent.",
+      "Don't add border-radius, box-shadow, gradients, or card surfaces; tints are flat paragraph backgrounds used once each.",
+      "Don't render findings as KPI tiles; a finding is a figure with its definition and source beside it, or a ruled row.",
+      "Don't set in-body headings in serif or body copy in sans.",
+      "Don't add a second uppercase heading style; uppercase is reserved for the highlights headings and table column heads."
+    ]
+  }
+}

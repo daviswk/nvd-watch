@@ -1,0 +1,330 @@
+<title>AI Agents vs. Novices Drill</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+/* Layout: one reading column styled like an annotated lab notebook; tables and diagrams scroll inside their own boxes */
+:root{
+  --bg:#F3F5F6; --surface:#FFFFFF; --ink:#14202B; --muted:#4D5B67; --rule:#D5DCE1;
+  --accent:#0B6E99; --accent-soft:#E2F0F6;
+  --human:#7A5AA6; --human-soft:#EEE8F6;
+  --agent:#B3261E; --agent-soft:#FBE4E2;
+  --warn:#8F5A00; --warn-soft:#FBF0D9;
+  --f-display:'IBM Plex Sans Condensed','Arial Narrow',system-ui,sans-serif;
+  --f-body:'Source Sans 3',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F161C; --surface:#16212A; --ink:#E4EAEE; --muted:#A3B1BC; --rule:#2B3A46;
+  --accent:#5BB8E0; --accent-soft:#16303D;
+  --human:#B79BE0; --human-soft:#2A2238;
+  --agent:#F28B82; --agent-soft:#3A1D1B;
+  --warn:#E8B04B; --warn-soft:#352914; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F161C; --surface:#16212A; --ink:#E4EAEE; --muted:#A3B1BC; --rule:#2B3A46;
+  --accent:#5BB8E0; --accent-soft:#16303D;
+  --human:#B79BE0; --human-soft:#2A2238;
+  --agent:#F28B82; --agent-soft:#3A1D1B;
+  --warn:#E8B04B; --warn-soft:#352914; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55}
+.wrap{max-width:960px;margin:0 auto;padding-block:40px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:44px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(2rem,5vw,2.8rem);font-weight:700}
+h2{font-size:1.6rem;font-weight:600}
+h3{font-size:1.1rem;font-weight:600}
+p{margin:0}
+.eyebrow{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.lede{color:var(--muted);max-width:65ch}
+section{display:flex;flex-direction:column;gap:16px}
+.sechead{display:flex;flex-direction:column;gap:6px;border-top:2px solid var(--ink);padding-top:14px}
+.ste{font-family:var(--f-mono);font-size:.72rem;color:var(--accent);border:1px solid var(--accent);border-radius:3px;padding:2px 6px;align-self:flex-start}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.panel{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:20px;display:flex;flex-direction:column;gap:10px;min-width:0}
+ol.ste-list,ul.ste-list{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px}
+.scroll{overflow-x:auto;background:var(--surface);border:1px solid var(--rule);border-radius:6px}
+svg text{font-family:var(--f-body)}
+.d-box{fill:var(--surface);stroke:var(--rule);stroke-width:1.5}
+.d-agent{fill:var(--agent-soft);stroke:var(--agent);stroke-width:1.5}
+.d-human{fill:var(--human-soft);stroke:var(--human);stroke-width:1.5}
+.d-title{fill:var(--ink);font-family:var(--f-display);font-weight:600;font-size:15px}
+.d-body{fill:var(--muted);font-size:13px}
+.d-tag{fill:var(--accent);font-family:var(--f-mono);font-size:11px}
+.d-arrow{stroke:var(--accent);stroke-width:2;fill:none}
+.d-dash{stroke:var(--agent);stroke-width:2;fill:none;stroke-dasharray:6 5}
+.d-head{fill:var(--accent)}
+.d-head-r{fill:var(--agent)}
+.d-axis{stroke:var(--ink);stroke-width:1}
+.d-grid{stroke:var(--rule);stroke-width:1}
+.d-bar-h{fill:var(--human)}
+.d-bar-a{fill:var(--agent)}
+.d-lbl{fill:var(--ink);font-size:13px}
+.d-num{fill:var(--muted);font-family:var(--f-mono);font-size:12px}
+table{border-collapse:collapse;width:100%;min-width:640px;font-size:.95rem;font-variant-numeric:tabular-nums}
+th,td{text-align:left;vertical-align:top;padding:11px 14px;border-bottom:1px solid var(--rule)}
+th{font-family:var(--f-mono);font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500;background:var(--bg)}
+td.mono{font-family:var(--f-mono);font-size:.88rem}
+.gloss{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;margin:0}
+.term{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.term dt{font-family:var(--f-display);font-weight:600;font-size:1.05rem}
+.term dt span{font-family:var(--f-mono);font-size:.72rem;color:var(--muted);font-weight:400;margin-left:6px}
+.term dd{margin:0;font-size:.95rem}
+.term .analogy{color:var(--muted);font-size:.9rem}
+.term .analogy b{color:var(--accent);font-weight:600}
+.kind{font-family:var(--f-mono);font-size:.72rem;color:var(--accent);text-transform:uppercase;letter-spacing:.06em}
+.beginner p{max-width:65ch}
+.caveat{background:var(--warn-soft);border:1px solid var(--warn);border-radius:6px;padding:16px 18px;display:flex;flex-direction:column;gap:8px}
+.caveat h3{color:var(--warn)}
+.turn{background:var(--accent-soft);border:1px solid var(--accent);border-radius:6px;padding:22px;display:flex;flex-direction:column;gap:14px}
+.turn ol{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:4px}
+label{font-weight:600}
+textarea{width:100%;min-height:180px;box-sizing:border-box;font:inherit;font-size:1rem;padding:12px;border:1px solid var(--rule);border-radius:6px;background:var(--surface);color:var(--ink);resize:vertical}
+textarea:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+button{font:inherit;font-weight:600;font-size:.95rem;min-height:44px;padding:0 18px;border-radius:6px;border:1px solid var(--ink);background:var(--ink);color:var(--bg);cursor:pointer}
+.status{font-size:.9rem;color:var(--muted)}
+footer{font-size:.85rem;color:var(--muted);border-top:1px solid var(--rule);padding-top:14px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="wrap">
+
+<header style="display:flex;flex-direction:column;gap:12px">
+  <div class="eyebrow">Reading drill · RAND RR-A3892-2 · RAND Europe · June 25, 2026</div>
+  <h1>AI agents put offensive cyber within reach of novices</h1>
+  <p class="lede">Sperisen, Aguirre, van Soest, and Lopez compare 156 people using 2025 AI chatbots with Claude Code agents in 2026, on the same three hacking challenges. Read the drill, then explain the report back at the bottom.</p>
+</header>
+
+<section aria-labelledby="ste">
+  <div class="sechead"><span class="eyebrow">Part 1</span><h2 id="ste">What the report says</h2></div>
+  <span class="ste">Written in ASD-STE100 Simplified Technical English</span>
+  <div class="two">
+    <div class="panel">
+      <h3>What the researchers did</h3>
+      <ol class="ste-list">
+        <li>First, RAND tested 156 people on three hacking challenges. The challenges are M1 (easy), M2 (medium), and M3 (hard).</li>
+        <li>Half of the people used AI chatbots from August 2025. Half used no AI.</li>
+        <li>Each person had 8 hours for each challenge.</li>
+        <li>Then, in April 2026, RAND gave the same three challenges to Claude Code. Claude Code is an AI agent. It can run tools without help.</li>
+        <li>RAND used two models: Sonnet 4.6 and Opus 4.6.</li>
+        <li>The researchers did not give hacking help. They only restarted the agent when it stopped.</li>
+      </ol>
+    </div>
+    <div class="panel">
+      <h3>What they found</h3>
+      <ol class="ste-list">
+        <li>The people with chatbots did not do much better than the people without AI.</li>
+        <li>No person solved M2. Only one person solved M3.</li>
+        <li>Claude Code solved all three challenges. Each one took less than 1 hour.</li>
+        <li>All the runs together cost approximately 16 US dollars.</li>
+        <li>The operator does not need hacking knowledge. The operator must only install the tool.</li>
+        <li>One model used the work of the other model to get access faster.</li>
+        <li>Thus, current risk tests are becoming out of date. Defenders must measure risk all the time.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="diag">
+  <div class="sechead"><span class="eyebrow">Part 2</span><h2 id="diag">The report in two diagrams</h2></div>
+
+  <h3>A. Time to finish each challenge</h3>
+  <p class="lede">People had an 8-hour budget per challenge and mostly failed. The agent bars show the slower of the two models on each machine.</p>
+  <div class="scroll">
+    <svg viewBox="0 0 760 300" width="760" height="300" role="img" aria-label="Bar chart: humans had 480 minutes per challenge; the slower agent took 4.5 minutes on M1, 53 minutes on M2, and 34 minutes on M3">
+      <line class="d-grid" x1="180" y1="30" x2="180" y2="250"></line>
+      <line class="d-grid" x1="320" y1="30" x2="320" y2="250"></line>
+      <line class="d-grid" x1="460" y1="30" x2="460" y2="250"></line>
+      <line class="d-grid" x1="600" y1="30" x2="600" y2="250"></line>
+      <line class="d-grid" x1="740" y1="30" x2="740" y2="250"></line>
+      <line class="d-axis" x1="180" y1="250" x2="740" y2="250"></line>
+      <text class="d-num" x="180" y="270" text-anchor="middle">0</text>
+      <text class="d-num" x="320" y="270" text-anchor="middle">2 h</text>
+      <text class="d-num" x="460" y="270" text-anchor="middle">4 h</text>
+      <text class="d-num" x="600" y="270" text-anchor="middle">6 h</text>
+      <text class="d-num" x="736" y="270" text-anchor="end">8 h</text>
+      <text class="d-num" x="460" y="292" text-anchor="middle">minutes, linear scale</text>
+
+      <text class="d-lbl" x="170" y="56" text-anchor="end">Human budget</text>
+      <rect class="d-bar-h" x="180" y="42" width="560" height="22" rx="2"></rect>
+      <text class="d-num" x="730" y="80" text-anchor="end">480 min · M2 solved by 0, M3 by 1</text>
+
+      <text class="d-lbl" x="170" y="121" text-anchor="end">Agent, M1</text>
+      <rect class="d-bar-a" x="180" y="108" width="5" height="22" rx="2"></rect>
+      <text class="d-num" x="192" y="124">4.5 min · $0.33</text>
+
+      <text class="d-lbl" x="170" y="171" text-anchor="end">Agent, M2</text>
+      <rect class="d-bar-a" x="180" y="158" width="62" height="22" rx="2"></rect>
+      <text class="d-num" x="250" y="174">53 min · $6.93</text>
+
+      <text class="d-lbl" x="170" y="221" text-anchor="end">Agent, M3</text>
+      <rect class="d-bar-a" x="180" y="208" width="40" height="22" rx="2"></rect>
+      <text class="d-num" x="228" y="224">34 min · $2.19</text>
+    </svg>
+  </div>
+
+  <h3>B. How the agent broke in, and the piggy-back</h3>
+  <p class="lede">The same four phases appear in every challenge. On M2 and M3, one model reused what the other model had already planted.</p>
+  <div class="scroll">
+    <svg viewBox="0 0 900 300" width="900" height="300" role="img" aria-label="Attack phases: reconnaissance, initial access, privilege escalation, root flag. A second model enters at privilege escalation by reusing the first model's planted root binary">
+      <defs>
+        <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-head" d="M0,0 L10,5 L0,10 z"></path></marker>
+        <marker id="ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="d-head-r" d="M0,0 L10,5 L0,10 z"></path></marker>
+      </defs>
+      <rect class="d-box" x="20" y="30" width="190" height="104" rx="6"></rect>
+      <text class="d-tag" x="34" y="52">PHASE 1</text>
+      <text class="d-title" x="34" y="74">Reconnaissance</text>
+      <text class="d-body" x="34" y="96">Scan ports and services</text>
+      <text class="d-body" x="34" y="114">(nmap)</text>
+
+      <rect class="d-box" x="240" y="30" width="190" height="104" rx="6"></rect>
+      <text class="d-tag" x="254" y="52">PHASE 2</text>
+      <text class="d-title" x="254" y="74">Initial access</text>
+      <text class="d-body" x="254" y="96">SQL injection, stolen</text>
+      <text class="d-body" x="254" y="114">credentials, or SSRF</text>
+
+      <rect class="d-box" x="460" y="30" width="190" height="104" rx="6"></rect>
+      <text class="d-tag" x="474" y="52">PHASE 3</text>
+      <text class="d-title" x="474" y="74">Privilege escalation</text>
+      <text class="d-body" x="474" y="96">Sonnet tried 5 methods;</text>
+      <text class="d-body" x="474" y="114">the 6th worked (M2)</text>
+
+      <rect class="d-agent" x="680" y="30" width="200" height="104" rx="6"></rect>
+      <text class="d-tag" x="694" y="52">GOAL</text>
+      <text class="d-title" x="694" y="74">Root flag</text>
+      <text class="d-body" x="694" y="96">Full control of the</text>
+      <text class="d-body" x="694" y="114">machine</text>
+
+      <path class="d-arrow" d="M212,82 L236,82" marker-end="url(#ah)"></path>
+      <path class="d-arrow" d="M432,82 L456,82" marker-end="url(#ah)"></path>
+      <path class="d-arrow" d="M652,82 L676,82" marker-end="url(#ah)"></path>
+
+      <rect class="d-agent" x="400" y="196" width="280" height="84" rx="6"></rect>
+      <text class="d-tag" x="414" y="218">PIGGY-BACK (M2)</text>
+      <text class="d-title" x="414" y="240">Second model reuses the first</text>
+      <text class="d-body" x="414" y="262">Opus found Sonnet's planted SUID root binary</text>
+      <path class="d-dash" d="M540,194 L556,138" marker-end="url(#ahr)"></path>
+      <path class="d-dash" d="M682,238 C760,238 780,180 780,138" marker-end="url(#ahr)"></path>
+      <text class="d-body" x="20" y="232">Policy point: a half-cleaned</text>
+      <text class="d-body" x="20" y="250">breach is a shortcut for the next</text>
+      <text class="d-body" x="20" y="268">attacker, and blurs attribution.</text>
+    </svg>
+  </div>
+</section>
+
+<section aria-labelledby="results">
+  <div class="sechead"><span class="eyebrow">Part 3</span><h2 id="results">The numbers</h2></div>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>Group</th><th>M1 (easy)</th><th>M2 (medium)</th><th>M3 (hard)</th></tr></thead>
+      <tbody>
+        <tr><td>Novices, no AI (2025)</td><td class="mono">8% success</td><td class="mono" rowspan="4">Nobody solved it</td><td class="mono" rowspan="4">1 AI-assisted person solved it</td></tr>
+        <tr><td>Novices, with chatbot (2025)</td><td class="mono">21% (not significant)</td></tr>
+        <tr><td>Technical users, no AI (2025)</td><td class="mono">35% success</td></tr>
+        <tr><td>Technical users, with chatbot (2025)</td><td class="mono">40% (not significant)</td></tr>
+        <tr><td>Claude Code, Sonnet 4.6 (2026)</td><td class="mono">4m 24s · $0.36</td><td class="mono">53m 14s · $6.93</td><td class="mono">34m 23s · $2.19</td></tr>
+        <tr><td>Claude Code, Opus 4.6 (2026)</td><td class="mono">4m 32s · $0.33</td><td class="mono">42m 4s · $4.24</td><td class="mono">20m 54s · $2.17</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="lede">The two models ran at the same time on the same machine for M2 and M3, so their times can't be compared to each other. Opus's results are likely flattered by Sonnet's earlier work.</p>
+</section>
+
+<section aria-labelledby="terms">
+  <div class="sechead"><span class="eyebrow">Part 4</span><h2 id="terms">Terms, acronyms, and frameworks</h2></div>
+  <dl class="gloss">
+    <div class="term"><dt>Uplift</dt><dd>How much better a person does with AI than without it.</dd><p class="analogy"><b>Like</b> comparing your running time with and without good shoes.</p></div>
+    <div class="term"><dt>RCT <span>Randomised controlled trial</span></dt><dd>An experiment that splits people at random into a group that gets a tool and a group that doesn't.</dd><p class="analogy"><b>Like</b> a drug trial with a real pill and a sugar pill.</p></div>
+    <div class="term"><dt>Statistically insignificant</dt><dd>The difference is too small to rule out chance.</dd><p class="analogy"><b>Like</b> winning 3 coin flips in a row. It doesn't prove the coin is rigged.</p></div>
+    <div class="term"><dt>Agentic AI / AI agent</dt><dd>AI that plans and takes many steps on its own, using tools, instead of just answering questions.</dd><p class="analogy"><b>Like</b> hiring a contractor instead of calling a hotline for advice.</p></div>
+    <div class="term"><dt>Chatbot</dt><dd>AI that answers in conversation. A person still has to do the work.</dd><p class="analogy"><b>Like</b> a cookbook that talks back, but you still cook.</p></div>
+    <div class="term"><dt>Claude Code</dt><dd>Anthropic's agent that can run commands and write code on a computer.</dd><p class="analogy"><b>Like</b> a robot mechanic that can pick up the tools itself.</p></div>
+    <div class="term"><dt>Subagents</dt><dd>Helper agents a main agent spawns for side tasks.</dd><p class="analogy"><b>Like</b> a general contractor sending out subcontractors.</p></div>
+    <div class="term"><dt>Scaffolding</dt><dd>The software around a model that manages its tools, memory, and sessions. It caused most of the "hung" runs.</dd><p class="analogy"><b>Like</b> a car's transmission. A great engine still stalls if it fails.</p></div>
+    <div class="term"><dt>API / Token</dt><dd>An API is how software calls the model. Tokens are the chunks of text the model reads and writes, and you pay per token.</dd><p class="analogy"><b>Like</b> a phone line, billed by the minute.</p></div>
+    <div class="term"><dt>CTF <span>Capture the flag</span></dt><dd>A hacking exercise where you break into a test machine to find a hidden secret.</dd><p class="analogy"><b>Like</b> an escape room for computers.</p></div>
+    <div class="term"><dt>HTB / Pwnbox <span>Hack The Box</span></dt><dd>A platform that hosts practice machines. Pwnbox is its ready-made attacker computer.</dd><p class="analogy"><b>Like</b> a climbing gym with rental gear.</p></div>
+    <div class="term"><dt>Root / Root flag</dt><dd>Root is the all-powerful account on a Linux machine. The root flag proves you got it.</dd><p class="analogy"><b>Like</b> the master key to a building.</p></div>
+    <div class="term"><dt>Reconnaissance <span>nmap</span></dt><dd>Mapping what a target runs before attacking. Nmap is the standard scanning tool.</dd><p class="analogy"><b>Like</b> walking around a house and checking every door and window.</p></div>
+    <div class="term"><dt>PCAP / Plaintext credentials</dt><dd>A PCAP is a recording of network traffic. Plaintext credentials are passwords stored or sent without encryption.</dd><p class="analogy"><b>Like</b> a recorded phone call where someone reads out their PIN.</p></div>
+    <div class="term"><dt>SQL injection</dt><dd>Typing database commands into a form so the database obeys you.</dd><p class="analogy"><b>Like</b> writing "and give me the cash drawer" on a bank deposit slip.</p></div>
+    <div class="term"><dt>SSRF <span>Server-side request forgery</span></dt><dd>Tricking a server into fetching internal data for you.</dd><p class="analogy"><b>Like</b> asking a receptionist to grab a file from a back office you can't enter.</p></div>
+    <div class="term"><dt>RCE <span>Remote code execution</span></dt><dd>Running your own commands on someone else's machine over the network.</dd><p class="analogy"><b>Like</b> driving someone's car from across town.</p></div>
+    <div class="term"><dt>Privilege escalation</dt><dd>Going from a limited account to a powerful one.</dd><p class="analogy"><b>Like</b> a visitor badge turned into a master key.</p></div>
+    <div class="term"><dt>SUID / Linux capability</dt><dd>Settings that let a program run with more power than the user who starts it. Misconfigured, they hand out root.</dd><p class="analogy"><b>Like</b> a door that opens for anyone holding a manager's coffee mug.</p></div>
+    <div class="term"><dt>SSH <span>Secure Shell</span></dt><dd>An encrypted way to log in to a remote computer.</dd><p class="analogy"><b>Like</b> a locked tunnel into the building.</p></div>
+    <div class="term"><dt>Piggy-back attack</dt><dd>Attacking through a door another attacker already opened.</dd><p class="analogy"><b>Like</b> a second burglar walking through a window the first one broke.</p></div>
+    <div class="term"><dt>Attribution</dt><dd>Working out who carried out an attack.</dd><p class="analogy"><b>Like</b> a detective matching fingerprints, which is hard when two burglars used the same window.</p></div>
+    <div class="term"><dt>Saturation (of a test)</dt><dd>When AI aces a test so easily that the test stops telling you anything.</dd><p class="analogy"><b>Like</b> giving a college student a 3rd-grade spelling quiz.</p></div>
+    <div class="term"><dt>Active defenders / cyber range</dt><dd>A test environment where someone fights back, detecting and blocking the attacker.</dd><p class="analogy"><b>Like</b> a scrimmage against a real team instead of kicking at an empty goal.</p></div>
+    <div class="term"><dt>UK AISI <span>AI Security Institute</span></dt><dd>The UK government body that tests frontier AI models for safety risks.</dd><p class="analogy"><b>Like</b> a crash-test lab for AI.</p></div>
+    <div class="term"><span class="kind">Framework</span><dt>Barrier to entry</dt><dd>The skill, time, and money needed before someone can do something. The report's core claim is that this barrier collapsed.</dd><p class="analogy"><b>Like</b> lock-picking going from years of practice to a $16 gadget.</p></div>
+    <div class="term"><span class="kind">Framework</span><dt>Continuous risk measurement</dt><dd>Measuring risk on an ongoing basis instead of with one-time assessments that quickly go stale.</dd><p class="analogy"><b>Like</b> a fitness tracker versus a once-a-year physical.</p></div>
+  </dl>
+</section>
+
+<section aria-labelledby="core" class="beginner">
+  <div class="sechead"><span class="eyebrow">Part 5</span><h2 id="core">The core argument, for a beginner</h2></div>
+  <p>In 2025, RAND asked a simple question: if you give ordinary people an AI chatbot, can they hack a computer? Mostly, no. People with chatbots did only slightly better than people without them, and almost nobody cracked the medium or hard challenges, even with eight hours each.</p>
+  <p>In 2026, RAND tried again with a different kind of AI: an agent that does the work itself instead of giving advice. Claude Code broke into all three machines, each in under an hour, for about $16 total. The humans running it only restarted it when it froze. They needed no hacking skill at all.</p>
+  <p>That is the jump: AI went from a tutor that didn't help much to a worker that does the whole job. So anyone who can install software can now attack an unpatched computer. The report also noticed something new: one AI picked up where another left off, which makes half-cleaned breaches dangerous and makes it harder to tell who attacked.</p>
+  <p>The conclusion is about how we measure risk. A study from 2025 was out of date by 2026. Practice hacking tests are becoming too easy to be useful. Defenders need to measure risk continuously, and tests need defenders who fight back.</p>
+</section>
+
+<section aria-labelledby="crit">
+  <div class="sechead"><span class="eyebrow">Part 6</span><h2 id="crit">Read it critically, and connect it</h2></div>
+  <div class="caveat">
+    <h3>Limits the authors state</h3>
+    <ul class="ste-list">
+      <li>Only three practice machines, with no defenders fighting back.</li>
+      <li>The two models ran at the same time and shared progress, so neither was tested alone.</li>
+      <li>It measures attack uplift only. It does not measure how much AI helps defenders.</li>
+      <li>The comparison isn't equal: people had a 2025 chatbot, the agent was a 2026 tool. The study shows the state of the art moved, not a clean head-to-head.</li>
+      <li>One M3 run used a likely unintended shortcut caused by a test-environment misconfiguration.</li>
+    </ul>
+  </div>
+  <div class="panel">
+    <h3>Why it matters for your NVD project</h3>
+    <ul class="ste-list">
+      <li><b>It raises the cost of slow warnings.</b> If novices can exploit unpatched systems in under an hour, a 9-day gap before a KEV listing (PHP2Shell) means more attackers, not just faster experts.</li>
+      <li><b>It supports the scorecard directly.</b> RAND says one-time risk assessments are becoming obsolete and calls for continuous measurement. A weekly NVD scorecard is that idea applied to the public warning system.</li>
+      <li><b>It argues for prediction over confirmation.</b> When exploitation is cheap, waiting for confirmed attacks (KEV) is costlier. That strengthens the EPSS trigger.</li>
+      <li><b>Disclose it in your AI log.</b> The study tested Anthropic models, and you used an Anthropic model to read it.</li>
+    </ul>
+  </div>
+</section>
+
+<section aria-labelledby="turn">
+  <div class="sechead"><span class="eyebrow">Part 7</span><h2 id="turn">Your turn: explain it back</h2></div>
+  <div class="turn">
+    <p>Explain this report in your own words, as if to a classmate. Cover these four points:</p>
+    <ol>
+      <li>How the 2025 human study and the 2026 agent test differed, and what each found.</li>
+      <li>Why "chatbot" versus "agent" is the key distinction.</li>
+      <li>What a piggy-back attack is, and why it matters for defenders and attribution.</li>
+      <li>One limitation of the study, and one way it strengthens your NVD scorecard argument.</li>
+    </ol>
+    <label for="explain">Your explanation</label>
+    <textarea id="explain" placeholder="Start with: RAND tested…"></textarea>
+    <div class="row">
+      <button type="button" id="copy">Copy my explanation</button>
+      <span class="status" id="copy-status" role="status">Paste it into the chat, and Claude will point out gaps and errors.</span>
+    </div>
+  </div>
+</section>
+
+<footer>Source: Sperisen, B., Aguirre, J., van Soest, H., and Lopez, Z. (2026). <i>AI agents put offensive cyber within reach of novices: Comparing the performance of AI agents to humans in offensive cyber operations</i> (RR-A3892-2). RAND Europe. Human-study figures are from the companion report, RR-A3892-1 (May 28, 2026), as summarized in RR-A3892-2.</footer>
+
+</div>
+
+<script>
+(function(){
+  var ta=document.getElementById('explain'), btn=document.getElementById('copy'), st=document.getElementById('copy-status');
+  try{var saved=localStorage.getItem('rr3892-drill-explain'); if(saved) ta.value=saved;}catch(e){}
+  ta.addEventListener('input',function(){try{localStorage.setItem('rr3892-drill-explain',ta.value);}catch(e){}});
+  btn.addEventListener('click',function(){
+    var text=ta.value.trim();
+    if(!text){st.textContent='Write your explanation first.';return;}
+    function fallback(){ta.focus();ta.select();st.textContent='Text selected. Press Ctrl+C or Cmd+C, then paste it into the chat.';}
+    try{navigator.clipboard.writeText(text).then(function(){st.textContent='Copied. Paste it into the chat.';},fallback);}catch(e){fallback();}
+  });
+})();
+</script>

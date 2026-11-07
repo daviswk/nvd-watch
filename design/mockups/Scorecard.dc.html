@@ -1,0 +1,311 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>NVD Watch Scorecard</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans+Condensed:wght@500;600;700&amp;family=IBM+Plex+Sans:wght@400;500;600&amp;display=swap">
+<style>
+body{margin:0;background:#F4F6F9}
+a{color:#1E3A8A}a:hover{color:#111827}
+input[type=range]{accent-color:#1E3A8A}
+button:focus-visible,input:focus-visible{outline:3px solid #1E3A8A;outline-offset:2px}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #F4F6F9; color: #111827; font-family: 'IBM Plex Sans', system-ui, sans-serif;">
+
+<div style="background: #111827; color: #F4F6F9;">
+<div style="max-width: 1200px; margin: 0 auto; padding: 14px 20px; box-sizing: border-box; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px;">
+<div style="display: flex; align-items: center; gap: 10px;">
+<svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F4F6F9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.4 8.3-8 9-4.6-.7-8-4.5-8-9V6z"></path><path d="M8 12h2l1.5-3 2 6 1.5-3h1"></path></svg>
+<div style="font-family: 'IBM Plex Sans Condensed', sans-serif; font-weight: 700; font-size: 20px; letter-spacing: 0.01em;">NVD Watch</div>
+<div style="font-size: 13px; color: #B7C0CE;">Public scorecard for the U.S. vulnerability warning system</div>
+</div>
+<nav aria-label="Sections" style="display: flex; flex-wrap: wrap; gap: 18px; font-size: 14px;">
+<a href="#metrics" style="color: #F4F6F9;">Scorecard</a>
+<a href="#lag" style="color: #F4F6F9;">KEV lag</a>
+<a href="#sim" style="color: #F4F6F9;">Policy simulator</a>
+<a href="#methods" style="color: #F4F6F9;">Methods</a>
+</nav>
+</div>
+</div>
+
+<div style="max-width: 1200px; margin: 0 auto; padding: 32px 20px 56px; box-sizing: border-box; display: flex; flex-direction: column; gap: 32px;">
+
+<header style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 20px;">
+<div style="display: flex; flex-direction: column; gap: 8px; max-width: 760px;">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: #4B5563;">Quarterly report · Q3 2026 · data through Sep 30, 2026</div>
+<h1 style="margin: 0; font-family: 'IBM Plex Sans Condensed', sans-serif; font-size: 40px; line-height: 1.1; font-weight: 700;">NVD enriched about 1 in 12 new CVEs last quarter</h1>
+<p style="margin: 0; font-size: 16px; line-height: 1.55; color: #374151;">Since NIST's April 2026 triage policy, most new vulnerabilities reach defenders without a NIST severity score or product mapping. This scorecard tracks whether the public warning system is keeping up, and what policy changes would cost.</p>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px;">
+<button type="button" style="min-height: 44px; padding: 0 16px; border-radius: 6px; border: 1px solid #111827; background: #111827; color: #F4F6F9; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer;">Download data (CSV)</button>
+<button type="button" onClick="{{toggleCite}}" style="min-height: 44px; padding: 0 16px; border-radius: 6px; border: 1px solid #111827; background: #FFFFFF; color: #111827; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer;">Cite this scorecard</button>
+</div>
+</header>
+
+<sc-if value="{{showCite}}" hint-placeholder-val="{{ false }}">
+<div style="background: #FFFFFF; border: 1px solid #D0D5DD; border-radius: 6px; padding: 14px 16px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; line-height: 1.6; color: #374151;">Davis, W. (2026). NVD Watch: Vulnerability Warning System Scorecard, Q3 2026. [URL]. Accessed [DATE].</div>
+</sc-if>
+
+<div style="display: flex; gap: 12px; align-items: flex-start; background: #FEF0C7; border: 1px solid #F5C451; border-radius: 6px; padding: 12px 16px; font-size: 14px; line-height: 1.5; color: #4A3200;">
+<svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8A5A00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;"><path d="M12 3l9 16H3z"></path><path d="M12 10v4"></path><path d="M12 17v.01"></path></svg>
+<div><strong>Mockup.</strong> Headline figures come from a third-party snapshot (Cyber Strategy Institute, Oct 23, 2026) whose totals do not fully reconcile. The live version will compute every figure directly from the NVD API, CISA KEV, and FIRST EPSS.</div>
+</div>
+
+<section id="metrics" aria-labelledby="metrics-h" style="display: flex; flex-direction: column; gap: 14px;">
+<h2 id="metrics-h" style="margin: 0; font-family: 'IBM Plex Sans Condensed', sans-serif; font-size: 24px; font-weight: 600;">Scorecard</h2>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px;">
+
+<div style="background: #FFFFFF; border: 1px solid #D0D5DD; border-radius: 8px; padding: 18px; display: flex; flex-direction: column; gap: 12px;">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+<div style="font-size: 14px; font-weight: 600;">Enrichment coverage</div>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 3px 8px; border-radius: 3px; background: #FEE4E2; color: #B42318;">Critical</span>
+</div>
+<div style="font-family: 'IBM Plex Sans Condensed', sans-serif; font-size: 44px; font-weight: 700; line-height: 1;">8.4%</div>
+<div style="font-size: 13px; color: #4B5563;">of Q3 2026 CVEs enriched, down from 87.1% in 2025</div>
+<div role="img" aria-label="Enrichment coverage: 2025 87.1 percent, Q1 2026 60.7, Q2 29.5, Q3 8.4" style="display: flex; align-items: flex-end; gap: 10px; height: 96px; border-bottom: 1px solid #D0D5DD; padding-top: 18px;">
+<sc-for list="{{bars}}" as="b" hint-placeholder-count="4">
+<div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; gap: 4px;">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #374151;">{{b.v}}</div>
+<div style="{{b.style}}"></div>
+</div>
+</sc-for>
+</div>
+<div style="display: flex; gap: 10px;">
+<sc-for list="{{bars}}" as="b" hint-placeholder-count="4">
+<div style="flex: 1; text-align: center; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #4B5563;">{{b.l}}</div>
+</sc-for>
+</div>
+</div>
+
+<div style="background: #FFFFFF; border: 1px solid #D0D5DD; border-radius: 8px; padding: 18px; display: flex; flex-direction: column; gap: 12px;">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+<div style="font-size: 14px; font-weight: 600;">Unenriched 2026 CVEs</div>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 3px 8px; border-radius: 3px; background: #FEE4E2; color: #B42318;">Critical</span>
+</div>
+<div style="font-family: 'IBM Plex Sans Condensed', sans-serif; font-size: 44px; font-weight: 700; line-height: 1;">~54,390</div>
+<div style="font-size: 13px; color: #4B5563;">2026 records with no NIST score or product (CPE) mapping. Scanners that match on CPE will not flag them.</div>
+<div style="display: flex; flex-direction: column; gap: 6px; margin-top: auto;">
+<div style="display: flex; height: 12px; border-radius: 6px; overflow: hidden; background: #E4E7EC;">
+<div style="width: 25.3%; background: #1E3A8A;"></div>
+</div>
+<div style="display: flex; justify-content: space-between; font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #4B5563;"><span>25.3% enriched YTD</span><span>74.7% not</span></div>
+</div>
+</div>
+
+<div style="background: #FFFFFF; border: 1px solid #D0D5DD; border-radius: 8px; padding: 18px; display: flex; flex-direction: column; gap: 12px;">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+<div style="font-size: 14px; font-weight: 600;">Likely-exploited, not enriched</div>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 3px 8px; border-radius: 3px; background: #FEF0C7; color: #8A5A00;">Watch</span>
+</div>
+<div style="font-family: 'IBM Plex Sans Condensed', sans-serif; font-size: 44px; font-weight: 700; line-height: 1;">~2,070</div>
+<div style="font-size: 13px; color: #4B5563;">unenriched 2026 CVEs with EPSS ≥ 0.10. About 490 of them score ≥ 0.50. The current policy has no trigger for these.</div>
+<div style="font-size: 12px; color: #4B5563; margin-top: auto; border-top: 1px solid #E4E7EC; padding-top: 8px;">EPSS values drift. The live version re-pulls scores at each refresh.</div>
+</div>
+
+<div style="background: #FFFFFF; border: 1px solid #D0D5DD; border-radius: 8px; padding: 18px; display: flex; flex-direction: column; gap: 12px;">
+<div style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+<div style="font-size: 14px; font-weight: 600;">KEV additions</div>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 3px 8px; border-radius: 3px; background: #EAECF0; color: #344054;">Context</span>
+</div>
+<div style="font-family: 'IBM Plex Sans Condensed', sans-serif; font-size: 44px; font-weight: 700; line-height: 1;">249</div>
+<div style="font-size: 13px; color: #4B5563;">confirmed-exploited CVEs added in 2026 through Sep 30, already more than all of 2025 (245).</div>
+<div style="font-size: 12px; color: #4B5563; margin-top: auto; border-top: 1px solid #E4E7EC; padding-top: 8px;">Q3 2026: 186 of ~37,940 CVEs (about 0.5%) reached KEV.</div>
+</div>
+
+</div>
+</section>
+
+<section id="lag" aria-labelledby="lag-h" style="background: #FFFFFF; border: 1px solid #D0D5DD; border-radius: 8px; padding: 22px; display: flex; flex-direction: column; gap: 16px;">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 12px;">
+<div style="display: flex; flex-direction: column; gap: 4px;">
+<h2 id="lag-h" style="margin: 0; font-family: 'IBM Plex Sans Condensed', sans-serif; font-size: 24px; font-weight: 600;">How late is the priority signal?</h2>
+<p style="margin: 0; font-size: 14px; color: #4B5563; max-width: 720px;">Days from first observed exploitation to CISA KEV listing. KEV is one of NIST's three enrichment triggers, so this gap is time defenders work without it.</p>
+</div>
+<span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 3px 8px; border-radius: 3px; background: #EAECF0; color: #344054;">2 case markers · full distribution pending</span>
+</div>
+<div style="overflow-x: auto;">
+<div style="min-width: 680px; position: relative; height: 150px;">
+<div style="position: absolute; left: 0; right: 0; top: 70px; border-top: 2px solid #111827;"></div>
+<sc-for list="{{axis}}" as="ax" hint-placeholder-count="6">
+<div style="{{ax.tick}}"></div>
+<div style="{{ax.lbl}}">{{ax.t}}</div>
+</sc-for>
+<sc-for list="{{lagCases}}" as="c" hint-placeholder-count="2">
+<div style="{{c.dot}}"></div>
+<div style="{{c.lbl}}"><div style="font-weight: 600; color: #111827;">{{c.name}}</div><div>{{c.detail}}</div></div>
+</sc-for>
+</div>
+</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.5; color: #374151; max-width: 820px;">The lag varies. When a vendor confirms exploitation at disclosure (Ivanti), KEV can list a CVE weeks after attacks began but the same day as the advisory. When exploitation is reported only by third parties (PHP2Shell), listing waited nine days. First-exploitation dates come from vendor reports, so the live version shows them only for curated cases and uses CVE publication date for the full distribution.</p>
+</section>
+
+<section id="sim" aria-labelledby="sim-h" style="background: #FFFFFF; border: 1px solid #D0D5DD; border-radius: 8px; padding: 22px; display: flex; flex-direction: column; gap: 18px;">
+<div style="display: flex; flex-direction: column; gap: 4px;">
+<h2 id="sim-h" style="margin: 0; font-family: 'IBM Plex Sans Condensed', sans-serif; font-size: 24px; font-weight: 600;">Policy simulator: add a predictive trigger</h2>
+<p style="margin: 0; font-size: 14px; color: #4B5563; max-width: 760px;">Estimate the extra work if NIST also enriched CVEs that EPSS predicts are likely to be exploited. Figures cover the existing 2026 unenriched backlog only.</p>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px;" role="group" aria-label="Enrichment trigger">
+<sc-for list="{{options}}" as="o" hint-placeholder-count="3">
+<button type="button" onClick="{{o.pick}}" aria-pressed="{{o.pressed}}" style="{{o.style}}">{{o.label}}</button>
+</sc-for>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: stretch;">
+<div style="flex: 1 1 340px; min-width: 0; display: flex; flex-direction: column; gap: 10px;">
+<label for="mins" style="font-size: 14px; font-weight: 600;">Analyst minutes per CVE: {{mins}}</label>
+<input id="mins" type="range" min="5" max="60" step="5" value="{{mins}}" onChange="{{onMins}}" style="width: 100%; height: 32px; margin: 0;">
+<div style="font-size: 12px; color: #4B5563;">Assumption, not a measured figure. Replace with NIST's own per-record cost, or with the cost of AI-assisted enrichment (V-etalon) once NIST publishes it.</div>
+</div>
+<div style="flex: 2 1 480px; min-width: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: #D0D5DD; border: 1px solid #D0D5DD; border-radius: 6px; overflow: hidden;">
+<div style="background: #F4F6F9; padding: 14px; display: flex; flex-direction: column; gap: 4px;">
+<div style="font-size: 12px; color: #4B5563;">Added to queue</div>
+<div style="font-family: 'IBM Plex Sans Condensed', sans-serif; font-size: 32px; font-weight: 700;">{{sim.records}}</div>
+<div style="font-size: 12px; color: #4B5563;">CVEs</div>
+</div>
+<div style="background: #F4F6F9; padding: 14px; display: flex; flex-direction: column; gap: 4px;">
+<div style="font-size: 12px; color: #4B5563;">Analyst hours</div>
+<div style="font-family: 'IBM Plex Sans Condensed', sans-serif; font-size: 32px; font-weight: 700;">{{sim.hours}}</div>
+<div style="font-size: 12px; color: #4B5563;">one-time</div>
+</div>
+<div style="background: #F4F6F9; padding: 14px; display: flex; flex-direction: column; gap: 4px;">
+<div style="font-size: 12px; color: #4B5563;">Analyst-weeks</div>
+<div style="font-family: 'IBM Plex Sans Condensed', sans-serif; font-size: 32px; font-weight: 700;">{{sim.weeks}}</div>
+<div style="font-size: 12px; color: #4B5563;">at 40 h/week</div>
+</div>
+</div>
+</div>
+<p style="margin: 0; font-size: 14px; line-height: 1.5; color: #374151; max-width: 820px;">{{sim.note}}</p>
+</section>
+
+<section aria-labelledby="pending-h" style="display: flex; flex-direction: column; gap: 12px;">
+<h2 id="pending-h" style="margin: 0; font-family: 'IBM Plex Sans Condensed', sans-serif; font-size: 24px; font-weight: 600;">Metrics coming in the live version</h2>
+<div style="overflow-x: auto; background: #FFFFFF; border: 1px solid #D0D5DD; border-radius: 8px;">
+<table style="border-collapse: collapse; width: 100%; min-width: 680px; font-size: 14px;">
+<thead>
+<tr>
+<th style="text-align: left; padding: 12px 14px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: #4B5563; font-weight: 500; background: #F4F6F9; border-bottom: 1px solid #D0D5DD;">Metric</th>
+<th style="text-align: left; padding: 12px 14px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: #4B5563; font-weight: 500; background: #F4F6F9; border-bottom: 1px solid #D0D5DD;">Question it answers</th>
+<th style="text-align: left; padding: 12px 14px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: #4B5563; font-weight: 500; background: #F4F6F9; border-bottom: 1px solid #D0D5DD;">Source</th>
+<th style="text-align: left; padding: 12px 14px; font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: #4B5563; font-weight: 500; background: #F4F6F9; border-bottom: 1px solid #D0D5DD;">Status</th>
+</tr>
+</thead>
+<tbody>
+<sc-for list="{{pending}}" as="p" hint-placeholder-count="3">
+<tr>
+<td style="padding: 12px 14px; border-bottom: 1px solid #E4E7EC; font-weight: 600; vertical-align: top;">{{p.m}}</td>
+<td style="padding: 12px 14px; border-bottom: 1px solid #E4E7EC; color: #374151; vertical-align: top;">{{p.q}}</td>
+<td style="padding: 12px 14px; border-bottom: 1px solid #E4E7EC; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #4B5563; vertical-align: top;">{{p.s}}</td>
+<td style="padding: 12px 14px; border-bottom: 1px solid #E4E7EC; vertical-align: top;"><span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; font-weight: 600; padding: 3px 8px; border-radius: 3px; background: #EAECF0; color: #344054; white-space: nowrap;">Pending API pull</span></td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+</section>
+
+<footer id="methods" style="display: flex; flex-direction: column; gap: 8px; border-top: 1px solid #D0D5DD; padding-top: 16px; font-size: 13px; line-height: 1.6; color: #4B5563;">
+<div style="font-weight: 600; color: #111827;">Methods and sources</div>
+<div>Coverage, backlog, EPSS and KEV counts: Cyber Strategy Institute, "The Count Broke First" (Oct 23, 2026), data as of Sep 30, 2026; its quarterly and year-to-date totals differ by up to about 2,400 records. PHP2Shell: Amazon threat intelligence via The Register (first attempt Oct 17), CISA KEV (added Oct 26). Ivanti CVE-2026-104935: Volexity (compromise in the first week of October), CISA KEV (added Oct 13). Planned refresh: weekly, from the NVD API 2.0, the CISA KEV JSON feed, and the FIRST EPSS API.</div>
+</footer>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1700}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { trig: 'e10', mins: 20, cite: false };
+  }
+  renderVals() {
+    var self = this;
+    var st = this.state || {};
+    var trig = st.trig || 'e10';
+    var mins = st.mins == null ? 20 : st.mins;
+
+    var barData = [['2025', 87.1], ['Q1 26', 60.7], ['Q2 26', 29.5], ['Q3 26', 8.4]];
+    var bars = barData.map(function (b, i) {
+      return { l: b[0], v: b[1] + '%', style: 'width: 100%; max-width: 44px; height: ' + (b[1] * 0.6) + 'px; border-radius: 3px 3px 0 0; background: ' + (i === 3 ? '#B42318' : '#1E3A8A') + ';' };
+    });
+
+    var maxDays = 30;
+    var axis = [0, 5, 10, 15, 20, 25, 30].map(function (d) {
+      var pct = d / maxDays * 100;
+      var tr = d === 0 ? 'none' : (d === maxDays ? 'translateX(-100%)' : 'translateX(-50%)');
+      return {
+        t: d === maxDays ? '30 days' : String(d),
+        tick: 'position: absolute; top: 64px; left: ' + pct + '%; width: 1px; height: 12px; background: #111827;',
+        lbl: 'position: absolute; top: 82px; left: ' + pct + '%; transform: ' + tr + '; font-family: \'IBM Plex Mono\', monospace; font-size: 12px; color: #4B5563; white-space: nowrap;'
+      };
+    });
+    var cases = [
+      { name: 'PHP2Shell', detail: 'exploited Oct 17 → KEV Oct 26', d: 9, color: '#B42318', above: true },
+      { name: 'Ivanti CVE-2026-104935', detail: 'compromise ~Oct 1–7 → KEV Oct 13 (range)', d: 6, lo: 6, hi: 12, color: '#8A5A00', above: false }
+    ];
+    var lagCases = cases.map(function (c) {
+      var pct = c.d / maxDays * 100;
+      var dot;
+      if (c.lo != null) {
+        var l = c.lo / maxDays * 100, w = (c.hi - c.lo) / maxDays * 100;
+        dot = 'position: absolute; top: 63px; left: ' + l + '%; width: ' + w + '%; height: 14px; border-radius: 7px; box-sizing: border-box; border: 2px dashed ' + c.color + '; background: rgba(138,90,0,0.12);';
+        pct = l;
+      } else {
+        dot = 'position: absolute; top: 62px; left: ' + pct + '%; width: 16px; height: 16px; margin-left: -8px; border-radius: 50%; background: ' + c.color + ';';
+      }
+      var lbl = 'position: absolute; ' + (c.above ? 'top: 4px;' : 'top: 106px;') + ' left: ' + pct + '%; ' + (c.lo != null ? '' : 'transform: translateX(-50%);') + ' font-size: 12px; line-height: 1.35; color: #4B5563; white-space: nowrap;';
+      return { name: c.name, detail: c.detail, dot: dot, lbl: lbl };
+    });
+
+    var optDefs = [
+      { id: 'cur', label: 'Current policy only', n: 0 },
+      { id: 'e50', label: '+ EPSS ≥ 0.50', n: 490 },
+      { id: 'e10', label: '+ EPSS ≥ 0.10', n: 2070 }
+    ];
+    var options = optDefs.map(function (o) {
+      var on = o.id === trig;
+      return {
+        label: o.label,
+        pressed: on ? 'true' : 'false',
+        pick: function () { self.setState({ trig: o.id }); },
+        style: 'min-height: 44px; padding: 0 16px; border-radius: 6px; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; border: 1px solid #1E3A8A; background: ' + (on ? '#1E3A8A' : '#FFFFFF') + '; color: ' + (on ? '#FFFFFF' : '#1E3A8A') + ';'
+      };
+    });
+    var n = optDefs.filter(function (o) { return o.id === trig; })[0].n;
+    var hours = Math.round(n * mins / 60);
+    var weeks = Math.round(hours / 40 * 10) / 10;
+    var fmt = function (x) { return x.toLocaleString('en-US'); };
+    var notes = {
+      cur: 'Baseline. The current triggers (KEV, federal software, EO 14028 critical software) add no records from this group, so about 2,070 likely-exploited CVEs stay unenriched.',
+      e50: 'A narrow trigger. Covers the roughly 490 highest-probability CVEs in the backlog. Smallest cost, but misses most of the likely-exploited group.',
+      e10: 'A broad trigger. Covers about 2,070 CVEs, under 4% of the 2026 unenriched backlog. Ongoing quarterly cost depends on new CVE volume, which the live version will estimate.'
+    };
+
+    var pending = [
+      { m: 'Time to enrichment, KEV vs. non-KEV', q: 'Is the long tail abandoned, or only delayed?', s: 'NVD API change history' },
+      { m: 'CVE publication → KEV listing (all KEV entries)', q: 'How late is the priority signal across the whole catalog?', s: 'CISA KEV dateAdded + NVD' },
+      { m: 'CNA vs. NIST score disagreement', q: 'Can vendor-assigned scores stand alone?', s: 'NVD API (pre-April records)' },
+      { m: 'AI-assisted enrichment error rate', q: 'Is V-etalon accurate enough to trust?', s: 'NIST, when published' }
+    ];
+
+    return {
+      bars: bars,
+      axis: axis,
+      lagCases: lagCases,
+      options: options,
+      mins: mins,
+      sim: { records: fmt(n), hours: fmt(hours), weeks: String(weeks), note: notes[trig] },
+      pending: pending,
+      showCite: !!st.cite,
+      toggleCite: function () { self.setState({ cite: !st.cite }); },
+      onMins: function (e) { self.setState({ mins: Number(e.target.value) }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

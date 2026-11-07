@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Sketch: CBO Cost Estimate</title>
+<style>
+  html,body{margin:0;width:1440px;height:900px;overflow:hidden;background:#e8ecf2;color:#1c1c1c;font-family:Georgia,"Times New Roman",serif}
+  .page{width:1000px;margin:0 auto;background:#fff;height:900px;padding:48px 72px;box-sizing:border-box}
+  .hdr{display:flex;justify-content:space-between;align-items:flex-start;border-bottom:2px solid #2f4f7f;padding-bottom:14px}
+  .hdr .org{font:700 14px/1.3 Arial,Helvetica,sans-serif;text-transform:uppercase;letter-spacing:.08em;color:#2f4f7f}
+  .hdr h1{margin:6px 0 0;font:700 30px/1.15 Georgia,serif;max-width:640px}
+  .hdr .date{font:400 14px/1.4 Arial,sans-serif;color:#444;margin-top:8px}
+  .acts{display:flex;gap:8px}
+  .acts span{border:1.5px solid #2f4f7f;color:#2f4f7f;padding:9px 14px;font:700 12px/1 Arial,sans-serif;text-transform:uppercase;letter-spacing:.05em}
+  .acts span.p{background:#2f4f7f;color:#fff}
+  .sum{border:1.5px solid #1c1c1c;padding:16px 20px;margin:22px 0;display:grid;grid-template-columns:220px 1fr;gap:20px;align-items:center}
+  .sum .big{font:700 64px/1 Georgia,serif;color:#2f4f7f}
+  .sum .big small{display:block;font:400 14px/1.3 Arial,sans-serif;color:#444;margin-top:6px}
+  .sum p{margin:0;font-size:16px;line-height:1.5}
+  h2{font:700 13px/1.2 Arial,sans-serif;text-transform:uppercase;letter-spacing:.08em;color:#2f4f7f;margin:22px 0 8px}
+  table{border-collapse:collapse;width:100%;font:400 15px/1.4 Georgia,serif}
+  th{font:700 12px/1.3 Arial,sans-serif;text-transform:uppercase;letter-spacing:.04em;text-align:right;padding:6px 8px;border-bottom:2px solid #1c1c1c}
+  th:first-child,td:first-child{text-align:left}
+  td{padding:7px 8px;text-align:right;border-bottom:1px solid #d6dbe3}
+  p.body{font-size:15px;line-height:1.55;margin:0 0 10px}
+</style></head><body>
+<div class="page">
+  <div class="hdr">
+    <div><div class="org">NVD Watch · Cost estimate</div><h1>Re-check rule for Not Scheduled CVEs when attack signals rise</h1><div class="date">As posted November 7, 2026 · Weekly scorecard of the NIST NVD and CISA KEV</div></div>
+    <div class="acts"><span class="p">Copy citation</span><span>Download brief</span></div>
+  </div>
+  <div class="sum">
+    <div class="big">22.6%<small>of CVEs published in the last 30 days carry CPE</small></div>
+    <p>A published re-check rule would re-queue roughly 250–470 CVEs a month, about 5–9 percent of NIST's enrichment capacity, at a crude cost of $270,000 to $510,000 a year. The Commerce OIG identified about $400,000 a year of re-scoring effort NIST could redirect. The rule needs no new appropriation.</p>
+  </div>
+  <h2>Estimated effects</h2>
+  <table>
+    <tr><th>Measure</th><th>Low</th><th>Mid</th><th>High</th><th>Offset</th></tr>
+    <tr><td>CVEs re-queued per month</td><td>250</td><td>360</td><td>470</td><td>—</td></tr>
+    <tr><td>Share of NIST capacity (~5,000/month)</td><td>5%</td><td>7%</td><td>9%</td><td>—</td></tr>
+    <tr><td>Analyst minutes per CVE (assumption)</td><td>20</td><td>45</td><td>60</td><td>—</td></tr>
+    <tr><td>Yearly cost</td><td>$270K</td><td>$390K</td><td>$510K</td><td>$400K</td></tr>
+  </table>
+  <h2>Basis of estimate</h2>
+  <p class="body">Coverage is computed from the NVD API 2.0 for CVEs published Oct 8 to Nov 7, 2026 (17,729 records, 659 Rejected excluded), joined to CISA KEV and FIRST EPSS. CPE exists only on Enriched and Modified records.</p>
+  <p class="body">The monthly re-queue volume is not yet reproducible from new-CVE flow and is carried as an assumption pending a backlog-based estimate.</p>
+</div>
+</body></html>

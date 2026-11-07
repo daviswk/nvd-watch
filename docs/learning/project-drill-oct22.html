@@ -1,0 +1,302 @@
+<title>NVD Project Drill</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=Source+Sans+3:wght@400;600;700&display=swap">
+<style>
+/* Layout: a single reading column styled like a control-implementation worksheet; wide tables and the diagram scroll in their own boxes */
+:root{
+  --bg:#F3F5F6; --surface:#FFFFFF; --ink:#14202B; --muted:#4D5B67; --rule:#D5DCE1;
+  --accent:#0B6E99; --accent-soft:#E2F0F6;
+  --ok:#2F7D4F; --ok-soft:#E3F2E8; --warn:#8F5A00; --warn-soft:#FBF0D9; --risk:#B3261E; --risk-soft:#FBE4E2;
+  --f-display:'IBM Plex Sans Condensed','Arial Narrow',system-ui,sans-serif;
+  --f-body:'Source Sans 3',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F161C; --surface:#16212A; --ink:#E4EAEE; --muted:#A3B1BC; --rule:#2B3A46;
+  --accent:#5BB8E0; --accent-soft:#16303D;
+  --ok:#6BCB8F; --ok-soft:#173226; --warn:#E8B04B; --warn-soft:#352914; --risk:#F28B82; --risk-soft:#3A1D1B; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F161C; --surface:#16212A; --ink:#E4EAEE; --muted:#A3B1BC; --rule:#2B3A46;
+  --accent:#5BB8E0; --accent-soft:#16303D;
+  --ok:#6BCB8F; --ok-soft:#173226; --warn:#E8B04B; --warn-soft:#352914; --risk:#F28B82; --risk-soft:#3A1D1B; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.55}
+.wrap{max-width:960px;margin:0 auto;padding-block:40px 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:44px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(2rem,5vw,2.9rem);font-weight:700}
+h2{font-size:1.6rem;font-weight:600}
+h3{font-size:1.1rem;font-weight:600}
+p{margin:0}
+.eyebrow{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.lede{color:var(--muted);max-width:65ch}
+section{display:flex;flex-direction:column;gap:16px}
+.sechead{display:flex;flex-direction:column;gap:6px;border-top:2px solid var(--ink);padding-top:14px}
+.ste{display:inline-flex;align-items:center;gap:6px;font-family:var(--f-mono);font-size:.72rem;color:var(--accent);border:1px solid var(--accent);border-radius:3px;padding:2px 6px;align-self:flex-start}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px}
+.panel{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:20px;display:flex;flex-direction:column;gap:10px;min-width:0}
+ol.ste-list,ul.ste-list{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px}
+.scroll{overflow-x:auto;background:var(--surface);border:1px solid var(--rule);border-radius:6px}
+svg text{font-family:var(--f-body)}
+.n-box{fill:var(--surface);stroke:var(--rule);stroke-width:1.5}
+.n-box.hot{fill:var(--risk-soft);stroke:var(--risk)}
+.n-box.fix{fill:var(--ok-soft);stroke:var(--ok)}
+.n-title{fill:var(--ink);font-family:var(--f-display);font-weight:600;font-size:16px}
+.n-body{fill:var(--muted);font-size:13.5px}
+.n-arrow{stroke:var(--accent);stroke-width:2;fill:none}
+.n-head{fill:var(--accent)}
+.n-tag{fill:var(--accent);font-family:var(--f-mono);font-size:11px}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:.95rem}
+th,td{text-align:left;vertical-align:top;padding:12px 14px;border-bottom:1px solid var(--rule)}
+th{font-family:var(--f-mono);font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500;background:var(--bg)}
+td.id{font-family:var(--f-mono);font-size:.82rem;color:var(--muted);white-space:nowrap}
+.pill{display:inline-block;font-family:var(--f-mono);font-size:.74rem;font-weight:600;padding:3px 8px;border-radius:3px;white-space:nowrap}
+.pill.ok{background:var(--ok-soft);color:var(--ok)}
+.pill.warn{background:var(--warn-soft);color:var(--warn)}
+.pill.risk{background:var(--risk-soft);color:var(--risk)}
+.gloss{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.term{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.term dt{font-family:var(--f-display);font-weight:600;font-size:1.05rem}
+.term dt span{font-family:var(--f-mono);font-size:.72rem;color:var(--muted);font-weight:400;margin-left:6px}
+.term dd{margin:0;font-size:.95rem}
+.term .analogy{color:var(--muted);font-size:.9rem}
+.term .analogy b{color:var(--accent);font-weight:600}
+.kind{font-family:var(--f-mono);font-size:.72rem;color:var(--accent);text-transform:uppercase;letter-spacing:.06em}
+.beginner p{max-width:65ch}
+.log li{max-width:70ch}
+.decide{counter-reset:d;display:flex;flex-direction:column;gap:10px;margin:0;padding:0;list-style:none}
+.decide li{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:14px 16px;display:grid;grid-template-columns:auto 1fr;gap:4px 14px}
+.decide li::before{counter-increment:d;content:"D" counter(d);font-family:var(--f-mono);font-weight:600;color:var(--warn);grid-row:span 2}
+.decide .q{font-weight:600}
+.decide .rec{color:var(--muted);font-size:.95rem}
+.turn{background:var(--accent-soft);border:1px solid var(--accent);border-radius:6px;padding:22px;display:flex;flex-direction:column;gap:14px}
+.turn ol{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:4px}
+label{font-weight:600}
+textarea{width:100%;min-height:180px;box-sizing:border-box;font:inherit;font-size:1rem;padding:12px;border:1px solid var(--rule);border-radius:6px;background:var(--surface);color:var(--ink);resize:vertical}
+textarea:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.row{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+button{font:inherit;font-weight:600;font-size:.95rem;min-height:44px;padding:0 18px;border-radius:6px;border:1px solid var(--ink);background:var(--ink);color:var(--bg);cursor:pointer}
+.status{font-size:.9rem;color:var(--muted)}
+footer{font-size:.85rem;color:var(--muted);border-top:1px solid var(--rule);padding-top:14px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="wrap">
+
+<header style="display:flex;flex-direction:column;gap:12px">
+  <div class="eyebrow">Intro to Tech Policy · AI-Augmented Policy Project (35%)</div>
+  <h1>NVD Project Drill</h1>
+  <p class="lede">What we plan to build, why it matters, and how each piece maps to the syllabus. Read it, then explain the project back in your own words at the bottom.</p>
+</header>
+
+<section aria-labelledby="what">
+  <div class="sechead"><span class="eyebrow">Part 1</span><h2 id="what">What and why</h2></div>
+  <span class="ste">Written in ASD-STE100 Simplified Technical English</span>
+  <div class="two">
+    <div class="panel">
+      <h3>What we build</h3>
+      <ol class="ste-list">
+        <li>We build one interactive website and two documents.</li>
+        <li>The website shows how one vulnerability moves through the public warning system.</li>
+        <li>The main view is a map. The map shows how exploitation spreads over time.</li>
+        <li>A timeline shows when each group acted: attackers, the vendor, NVD, CISA, and industry.</li>
+        <li>A scanner panel shows what a defender's tool knew at each point in time.</li>
+        <li>A funnel chart shows how many CVEs are found, enriched, and exploited.</li>
+        <li>The policy brief has a maximum of three pages.</li>
+        <li>The AI log records the models, prompts, failures, and checks.</li>
+      </ol>
+    </div>
+    <div class="panel">
+      <h3>Why we build it</h3>
+      <ol class="ste-list">
+        <li>AI tools find more software flaws than before.</li>
+        <li>More flaws mean more CVEs. NVD cannot enrich all of them.</li>
+        <li>In April 2026, NIST decided to enrich only priority CVEs.</li>
+        <li>NIST uses the KEV list as one priority signal.</li>
+        <li>KEV lists a flaw after attackers use it. Thus, the signal comes late.</li>
+        <li>PHP2Shell shows this delay. Attackers used it about 4 days before NVD gave a score.</li>
+        <li>Some threats have no CVE. NVD cannot show these threats.</li>
+        <li>Our policy question: how can the public system warn defenders earlier?</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<section aria-labelledby="chain">
+  <div class="sechead"><span class="eyebrow">Part 2</span><h2 id="chain">The argument in one diagram</h2></div>
+  <p class="lede">Each step causes the next. Red marks the problem we show. Green marks what we recommend.</p>
+  <div class="scroll">
+    <svg viewBox="0 0 900 360" width="900" height="360" role="img" aria-label="Six-step causal chain from AI-driven discovery to the project's recommendations">
+      <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="n-head" d="M0,0 L10,5 L0,10 z"></path></marker></defs>
+      <g>
+        <rect class="n-box" x="20" y="20" width="260" height="118" rx="6"></rect>
+        <text class="n-tag" x="36" y="44">STEP 1</text>
+        <text class="n-title" x="36" y="68">AI finds more bugs</text>
+        <text class="n-body" x="36" y="92">Monthly CVE disclosures roughly</text>
+        <text class="n-body" x="36" y="111">doubled, Jan to Aug 2026 (GTIG)</text>
+      </g>
+      <g>
+        <rect class="n-box" x="320" y="20" width="260" height="118" rx="6"></rect>
+        <text class="n-tag" x="336" y="44">STEP 2</text>
+        <text class="n-title" x="336" y="68">NVD can't keep up</text>
+        <text class="n-body" x="336" y="92">~29,000 backlogged CVEs moved</text>
+        <text class="n-body" x="336" y="111">to "Not Scheduled"</text>
+      </g>
+      <g>
+        <rect class="n-box" x="620" y="20" width="260" height="118" rx="6"></rect>
+        <text class="n-tag" x="636" y="44">STEP 3 · APR 15, 2026</text>
+        <text class="n-title" x="636" y="68">NIST triages enrichment</text>
+        <text class="n-body" x="636" y="92">Full enrichment only for KEV,</text>
+        <text class="n-body" x="636" y="111">federal, and EO 14028 software</text>
+      </g>
+      <g>
+        <rect class="n-box" x="620" y="220" width="260" height="118" rx="6"></rect>
+        <text class="n-tag" x="636" y="244">STEP 4</text>
+        <text class="n-title" x="636" y="268">KEV is a lagging signal</text>
+        <text class="n-body" x="636" y="292">It lists a CVE only after</text>
+        <text class="n-body" x="636" y="311">exploitation is confirmed</text>
+      </g>
+      <g>
+        <rect class="n-box hot" x="320" y="220" width="260" height="118" rx="6"></rect>
+        <text class="n-tag" x="336" y="244">STEP 5 · THE GAP</text>
+        <text class="n-title" x="336" y="268">Warnings arrive late</text>
+        <text class="n-body" x="336" y="292">PHP2Shell: exploited ~4 days</text>
+        <text class="n-body" x="336" y="311">before an NVD score; no KEV entry</text>
+      </g>
+      <g>
+        <rect class="n-box fix" x="20" y="220" width="260" height="118" rx="6"></rect>
+        <text class="n-tag" x="36" y="244">STEP 6 · OUR FIX</text>
+        <text class="n-title" x="36" y="268">Warn earlier, prove it</text>
+        <text class="n-body" x="36" y="292">EPSS trigger, published metrics,</text>
+        <text class="n-body" x="36" y="311">audits of vendor (CNA) scores</text>
+      </g>
+      <path class="n-arrow" d="M282,79 L316,79" marker-end="url(#ah)"></path>
+      <path class="n-arrow" d="M582,79 L616,79" marker-end="url(#ah)"></path>
+      <path class="n-arrow" d="M750,140 L750,216" marker-end="url(#ah)"></path>
+      <path class="n-arrow" d="M618,279 L584,279" marker-end="url(#ah)"></path>
+      <path class="n-arrow" d="M318,279 L284,279" marker-end="url(#ah)"></path>
+    </svg>
+  </div>
+</section>
+
+<section aria-labelledby="matrix">
+  <div class="sechead"><span class="eyebrow">Part 3</span><h2 id="matrix">Syllabus requirement matrix</h2></div>
+  <p class="lede">Each syllabus requirement, how the plan meets it, and its status today. Read it like a control implementation table.</p>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>ID</th><th>Requirement</th><th>How the plan meets it</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td class="id">REQ-1</td><td>One emerging technology policy issue</td><td>NIST's April 2026 NVD enrichment triage, in the context of AI-driven CVE growth.</td><td><span class="pill ok">Met</span></td></tr>
+        <tr><td class="id">REQ-2</td><td>Artifact produced with AI tools</td><td>Interactive site: wildfire hero view, lifecycle tracker, funnel chart. Two mockups exist.</td><td><span class="pill warn">Planned</span></td></tr>
+        <tr><td class="id">REQ-3</td><td>Beyond what you could produce unaided in a quarter</td><td>Real-data pipeline (NVD API, CISA KEV, FIRST EPSS) behind interactive views. The hero map uses illustrative data today, and the pipeline is not started.</td><td><span class="pill risk">At risk</span></td></tr>
+        <tr><td class="id">REQ-4</td><td>Fits a listed format, or a creative one</td><td>Combines two listed formats: an interactive explainer and a data analysis on real data.</td><td><span class="pill ok">Met if REQ-3 holds</span></td></tr>
+        <tr><td class="id">REQ-5</td><td>Brief: essential background</td><td>What NVD does, the April policy, the AI-driven CVE surge, the Commerce OIG findings.</td><td><span class="pill warn">Planned</span></td></tr>
+        <tr><td class="id">REQ-6</td><td>Brief: challenges and opportunities</td><td>Lagging prioritization, vendor self-scoring, threats with no CVE (Siemens S7), private substitutes such as cve.now.</td><td><span class="pill warn">Planned</span></td></tr>
+        <tr><td class="id">REQ-7</td><td>Brief: recommendations for identified stakeholders</td><td>Candidates: NIST, CISA, the CVE Program and CNAs, FedRAMP and authorizing officials, Congress. Three pages fit three or four of these, not all five.</td><td><span class="pill risk">Must narrow</span></td></tr>
+        <tr><td class="id">REQ-8</td><td>Brief: three pages maximum</td><td>One page background, one page challenges, one page recommendations.</td><td><span class="pill warn">Planned</span></td></tr>
+        <tr><td class="id">REQ-9</td><td>AI log: models, key prompts, iterations</td><td>This conversation is entry one: topic switch, RAND review, mockups, claim checks.</td><td><span class="pill warn">Start now</span></td></tr>
+        <tr><td class="id">REQ-10</td><td>AI log: where AI failed or fabricated</td><td>Several real entries already exist. See the list below.</td><td><span class="pill ok">Evidence exists</span></td></tr>
+        <tr><td class="id">REQ-11</td><td>AI log: how you verified claims and output</td><td>Check every number against its primary source. Label illustrative data on the site.</td><td><span class="pill warn">Planned</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section aria-labelledby="log">
+  <div class="sechead"><span class="eyebrow">Part 4</span><h2 id="log">Log entries you already have</h2></div>
+  <p class="lede">These come from this session. Each one is a failure, a gap, or a source problem that you must record and resolve.</p>
+  <ul class="ste-list log">
+    <li><b>Source conflict.</b> The FIRST forecast says about 66K CVEs in its text and about 68K in its page metadata. Pick one and cite it.</li>
+    <li><b>Overstated summary.</b> Google's report summary says exploitation doubled. Its data shows about a 71% increase. Use the data.</li>
+    <li><b>Primary source not read.</b> The NSA advisory PDF did not open. The Siemens S7 claims come from Tenable's summary. Read the PDF.</li>
+    <li><b>Unverified claim.</b> The 2019 EPSS model used NVD data. Nobody has checked if the current model still does.</li>
+    <li><b>Partial review.</b> Claude read only the cve.now homepage, not its detail pages.</li>
+    <li><b>Illustrative data.</b> The hero map's heat values are invented for the mockup. They are not measurements.</li>
+    <li><b>Negative result.</b> The search found no RAND report written for NIST on the NVD. Do not claim one exists.</li>
+    <li><b>Number drift.</b> The two mockups disagree: the tracker says about 4 days, the hero view says 4.7 days. Fix one definition and use it everywhere.</li>
+  </ul>
+</section>
+
+<section aria-labelledby="terms">
+  <div class="sechead"><span class="eyebrow">Part 5</span><h2 id="terms">Terms, acronyms, and frameworks</h2></div>
+  <p class="lede">Plain definitions, each with an everyday comparison.</p>
+  <dl class="gloss">
+    <div class="term"><dt>CVE <span>Common Vulnerabilities and Exposures</span></dt><dd>A unique ID for one publicly known security flaw.</dd><p class="analogy"><b>Like</b> a case number at a police station. It names the case but says little about it.</p></div>
+    <div class="term"><dt>CNA <span>CVE Numbering Authority</span></dt><dd>An organization allowed to assign CVE IDs. Often it is the vendor of the flawed product.</dd><p class="analogy"><b>Like</b> a car maker that issues its own recall notices.</p></div>
+    <div class="term"><dt>NIST <span>National Institute of Standards and Technology</span></dt><dd>The U.S. Commerce Department agency that runs the NVD.</dd><p class="analogy"><b>Like</b> the agency that keeps the official definition of a kilogram, here for security data.</p></div>
+    <div class="term"><dt>NVD <span>National Vulnerability Database</span></dt><dd>NIST's free public database that adds detail to each CVE.</dd><p class="analogy"><b>Like</b> a library catalog. Each book gets a card with its subject, author, and shelf.</p></div>
+    <div class="term"><dt>Enrichment</dt><dd>Adding a severity score, the affected products, and the weakness type to a CVE.</dd><p class="analogy"><b>Like</b> the nutrition label on food. Without it, you know the name but not what is inside.</p></div>
+    <div class="term"><dt>CPE <span>Common Platform Enumeration</span></dt><dd>A standard name for a product and version, so tools can match a flaw to your systems.</dd><p class="analogy"><b>Like</b> a car's VIN. Recalls match on it.</p></div>
+    <div class="term"><dt>CWE <span>Common Weakness Enumeration</span></dt><dd>A category for the kind of coding mistake behind a flaw.</dd><p class="analogy"><b>Like</b> an accident report's cause code: "ran a red light."</p></div>
+    <div class="term"><dt>CVSS <span>Common Vulnerability Scoring System</span></dt><dd>A 0 to 10 score for how bad a flaw is if someone exploits it.</dd><p class="analogy"><b>Like</b> a hurricane category. It measures strength, not whether the storm hits your town.</p></div>
+    <div class="term"><dt>KEV <span>CISA Known Exploited Vulnerabilities</span></dt><dd>CISA's list of CVEs with confirmed real-world exploitation. One of NIST's priority triggers.</dd><p class="analogy"><b>Like</b> a police list of confirmed break-in methods. Useful, but it comes after the break-ins.</p></div>
+    <div class="term"><dt>EPSS <span>Exploit Prediction Scoring System</span></dt><dd>A score for the probability that attackers will exploit a CVE within a set time window. Co-created by a RAND researcher.</dd><p class="analogy"><b>Like</b> a weather forecast's chance of rain.</p></div>
+    <div class="term"><dt>EO 14028</dt><dd>The 2021 executive order on improving national cybersecurity. It defines "critical software," one of NIST's priority categories.</dd><p class="analogy"><b>Like</b> a building code that names which buildings need sprinklers first.</p></div>
+    <div class="term"><dt>Zero-day / n-day</dt><dd>A zero-day is exploited before a fix exists. An n-day is a known flaw that attackers still exploit after a fix exists.</dd><p class="analogy"><b>Like</b> a lock nobody knows is broken, versus a recalled lock that owners never replaced.</p></div>
+    <div class="term"><dt>RCE <span>Remote code execution</span></dt><dd>A flaw that lets an attacker run their own commands on your machine over the network.</dd><p class="analogy"><b>Like</b> a stranger driving your car from across town.</p></div>
+    <div class="term"><dt>WAF <span>Web application firewall</span></dt><dd>A filter in front of a website that blocks known attack patterns. A stopgap before a patch.</dd><p class="analogy"><b>Like</b> a guard checking bags at the door while the broken lock waits for repair.</p></div>
+    <div class="term"><dt>Honeypot</dt><dd>A decoy system set up to watch what attackers try.</dd><p class="analogy"><b>Like</b> a bait car the police leave out to catch thieves.</p></div>
+    <div class="term"><dt>PLC / OT <span>Programmable logic controller / operational technology</span></dt><dd>Computers that run physical processes such as pumps, valves, and power equipment.</dd><p class="analogy"><b>Like</b> the thermostat and valves of a whole factory. They are slow to patch.</p></div>
+    <div class="term"><span class="kind">Framework</span><dt>Leading vs. lagging signals</dt><dd>A leading signal predicts a problem. A lagging signal confirms it after it happens.</dd><p class="analogy"><b>Like</b> a smoke detector versus the fire department's incident report.</p></div>
+    <div class="term"><span class="kind">Framework</span><dt>Public good</dt><dd>Something everyone benefits from but no single buyer wants to fund alone.</dd><p class="analogy"><b>Like</b> a lighthouse. Every ship uses it; no ship pays for it.</p></div>
+    <div class="term"><span class="kind">Framework</span><dt>Information asymmetry</dt><dd>One side knows something important that the other side does not.</dd><p class="analogy"><b>Like</b> a used-car seller who knows about the bad transmission.</p></div>
+    <div class="term"><span class="kind">Framework</span><dt>Self-scoring (conflict of interest)</dt><dd>When a vendor CNA scores its own flaw, and NIST no longer checks that score.</dd><p class="analogy"><b>Like</b> a student grading their own exam.</p></div>
+    <div class="term"><span class="kind">Framework</span><dt>RAND actor framework (RR-1700)</dt><dd>Sorts cyber actors into users, developers, exploiters, and securers, each with different goals.</dd><p class="analogy"><b>Like</b> a town with residents, builders, burglars, and police.</p></div>
+  </dl>
+</section>
+
+<section aria-labelledby="core" class="beginner">
+  <div class="sechead"><span class="eyebrow">Part 6</span><h2 id="core">The core argument, for a beginner</h2></div>
+  <p>Think of the NVD as a smoke-alarm service for software. When someone finds a security flaw, it gets a case number (a CVE). NIST then adds the details that make the alarm useful: how severe the flaw is and which products have it. Security tools across the country read those details to decide what to fix first.</p>
+  <p>AI now helps people find flaws much faster, so the number of case files has exploded. NIST cannot process them all. In April 2026, it decided to fully process only some of them, mostly ones already confirmed as attacked (the KEV list) or in important government software.</p>
+  <p>The problem is timing. "Confirmed as attacked" means the fire has already started. With PHP2Shell, honeypots saw attacks about four days before NVD posted a severity score, and the KEV list still had not listed it. Some threats, like the Siemens PLC attacks, never get a case number at all, so the alarm never sounds.</p>
+  <p>The project shows this delay visually, then argues for a fix: also prioritize flaws that a forecast tool (EPSS) says are likely to be attacked, publish how fast NVD works, and spot-check the scores vendors give their own flaws. The question underneath is a classic policy one: who should pay for a warning system that everyone relies on?</p>
+</section>
+
+<section aria-labelledby="decide">
+  <div class="sechead"><span class="eyebrow">Part 7</span><h2 id="decide">Decisions to finalize before building</h2></div>
+  <ol class="decide">
+    <li><span class="q">How many case studies?</span><span class="rec">Suggested: PHP2Shell in full, Siemens S7 as the "no CVE" contrast. Leave GitLab as a short mention.</span></li>
+    <li><span class="q">How much real data?</span><span class="rec">Suggested: real NVD, KEV, and EPSS data for the funnel and tracker. Keep the map illustrative and labeled, unless you add country-level exposure data.</span></li>
+    <li><span class="q">Which three or four stakeholders?</span><span class="rec">Suggested: NIST, CISA, CNAs through the CVE Program, and Congress for funding. FedRAMP can be one sentence.</span></li>
+    <li><span class="q">Does current EPSS depend on NVD enrichment?</span><span class="rec">Verify before you use it. If yes, it is your most original finding.</span></li>
+    <li><span class="q">Who wrote the quoted tweets, and when?</span><span class="rec">Needed before you cite them in the brief or show them on the site.</span></li>
+  </ol>
+</section>
+
+<section aria-labelledby="turn">
+  <div class="sechead"><span class="eyebrow">Part 8</span><h2 id="turn">Your turn: explain it back</h2></div>
+  <div class="turn">
+    <p>In your own words, explain the project as if to a classmate who missed the last three weeks. Cover these four points:</p>
+    <ol>
+      <li>What changed at NIST in April 2026, and why.</li>
+      <li>Why KEV is a weak priority signal, using PHP2Shell as the example.</li>
+      <li>What the website lets a viewer see that a written report cannot.</li>
+      <li>One recommendation, the stakeholder it targets, and why that stakeholder would act.</li>
+    </ol>
+    <label for="explain">Your explanation</label>
+    <textarea id="explain" placeholder="Start with: The NVD is…"></textarea>
+    <div class="row">
+      <button type="button" id="copy">Copy my explanation</button>
+      <span class="status" id="copy-status" role="status">Paste it into the chat. Claude will point out gaps and errors.</span>
+    </div>
+  </div>
+</section>
+
+<footer>Sources used in this session: NIST NVD announcement (Apr 15, 2026); Cloud Security Alliance research notes; Commerce OIG evaluation of the NVD (May 2026); Google Threat Intelligence Group, AI-era trends (Sep 2026); FIRST 2026 forecast update; joint advisory AA26-231A via Tenable; RAND RR-1751, RR-1700, RR-A1888-2; Polley dissertation (Pardee RAND, 2022); EPSS paper (Jacobs, Romanosky et al., 2019).</footer>
+
+</div>
+
+<script>
+(function(){
+  var ta=document.getElementById('explain'), btn=document.getElementById('copy'), st=document.getElementById('copy-status');
+  try{var saved=localStorage.getItem('nvd-drill-explain'); if(saved) ta.value=saved;}catch(e){}
+  ta.addEventListener('input',function(){try{localStorage.setItem('nvd-drill-explain',ta.value);}catch(e){}});
+  btn.addEventListener('click',function(){
+    var text=ta.value.trim();
+    if(!text){st.textContent='Write your explanation first.';return;}
+    function fallback(){ta.focus();ta.select();st.textContent='Text selected. Press Ctrl+C or Cmd+C, then paste it into the chat.';}
+    try{
+      navigator.clipboard.writeText(text).then(function(){st.textContent='Copied. Paste it into the chat.';},fallback);
+    }catch(e){fallback();}
+  });
+})();
+</script>

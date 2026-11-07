@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Sketch: EnergyGuide Label</title>
+<style>
+  html,body{margin:0;width:1440px;height:900px;overflow:hidden;background:#f7c600;color:#111;font-family:"Arial Narrow","Helvetica Neue Condensed",Arial,Helvetica,sans-serif}
+  .label{position:relative;width:1440px;height:900px;padding:0 120px;box-sizing:border-box}
+  .strip{display:flex;justify-content:space-between;align-items:flex-end;height:64px;font:600 15px/1.2 Arial,Helvetica,sans-serif;letter-spacing:.02em;text-transform:uppercase}
+  .strip nav span{margin-left:28px;font-weight:400}
+  .rule-h{border:0;border-top:14px solid #111;margin:0}
+  .rule-t{border:0;border-top:3px solid #111;margin:0}
+  .big{display:grid;grid-template-columns:560px 1fr 360px;gap:40px;align-items:start;padding:36px 0 28px}
+  .num{font:700 300px/0.82 "Arial Narrow","Helvetica Neue Condensed",Arial,sans-serif;letter-spacing:-.04em;margin-left:-10px}
+  .num small{font-size:120px;vertical-align:top;letter-spacing:0}
+  .lede{font:700 44px/1.02 "Arial Narrow",Arial,sans-serif;text-transform:uppercase;padding-top:18px}
+  .lede em{display:block;font:400 20px/1.35 Arial,Helvetica,sans-serif;text-transform:none;margin-top:16px;max-width:420px}
+  .prov{font:400 14px/1.4 Arial,Helvetica,sans-serif;margin-top:14px;max-width:420px}
+  .cost{border:3px solid #111;padding:16px 18px;font-family:Arial,Helvetica,sans-serif}
+  .cost h3{margin:0 0 6px;font:700 14px/1.2 Arial,sans-serif;text-transform:uppercase;letter-spacing:.04em}
+  .cost .c{font:700 56px/1 "Arial Narrow",Arial,sans-serif;letter-spacing:-.02em}
+  .cost p{margin:8px 0 0;font-size:13px;line-height:1.35}
+  .bar{position:relative;height:18px;background:#111;margin:14px 0 6px}
+  .bar i{position:absolute;top:-8px;width:0;height:0;border-left:11px solid transparent;border-right:11px solid transparent;border-top:16px solid #111}
+  .bar b{position:absolute;top:-10px;width:4px;height:38px;background:#f7c600;outline:3px solid #111}
+  .ticks{display:flex;justify-content:space-between;font:700 13px/1 Arial,sans-serif;text-transform:uppercase}
+  .range{padding:26px 0 30px}
+  .range h2{margin:0 0 10px;font:700 22px/1 Arial,sans-serif;text-transform:uppercase;letter-spacing:.03em}
+  .range .bar{height:26px;margin-top:40px}
+  .range .ticks{font-size:16px;margin-top:10px}
+  .range .ticks span:nth-child(2){font-weight:400}
+  .actions{position:absolute;right:120px;bottom:56px;display:flex;gap:14px;font-family:Arial,Helvetica,sans-serif}
+  .btn{padding:16px 26px;font:700 18px/1 Arial,sans-serif;text-transform:uppercase;letter-spacing:.04em;border:3px solid #111}
+  .btn.primary{background:#111;color:#f7c600}
+  .small{position:absolute;left:120px;bottom:56px;font:400 12px/1.45 Arial,sans-serif;max-width:720px}
+  .next{position:absolute;left:120px;right:120px;bottom:0;height:34px;border-top:14px solid #111;font:700 15px/34px Arial,sans-serif;text-transform:uppercase;letter-spacing:.04em}
+</style></head><body>
+<div class="label">
+  <div class="strip">
+    <div>NVD Watch · U.S. vulnerability warning system · Week ending Nov 7, 2026</div>
+    <nav><span>1 The gap</span><span>2 The gate</span><span>3 The fix</span><span>4 Who acts</span></nav>
+  </div>
+  <hr class="rule-h">
+  <div class="big">
+    <div class="num">22<small>.6%</small></div>
+    <div class="lede">of new CVEs carry scanner-matchable product data (CPE)
+      <em>Without a CPE record, vulnerability scanners cannot tell an organization that it is affected. 17,070 CVEs published in the last 30 days; 3,863 enriched.</em>
+      <div class="prov">Pulled 2026-11-07 19:21 UTC · 17,729 records · NVD API 2.0, CISA KEV, FIRST EPSS</div>
+    </div>
+    <div class="cost">
+      <h3>Estimated yearly cost of the fix</h3>
+      <div class="c">$270K–$510K</div>
+      <div class="bar"><i style="left:48%"></i><b style="left:62%"></b></div>
+      <div class="ticks"><span>$0</span><span>OIG offset $400K</span><span>$600K</span></div>
+      <p>Re-check rule: re-queue Not Scheduled CVEs when attack signals rise. 20/45/60 analyst-minutes per CVE is an assumption.</p>
+    </div>
+  </div>
+  <hr class="rule-t">
+  <div class="range">
+    <h2>CPE coverage range, by how NIST prioritizes</h2>
+    <div class="bar"><i style="left:22.6%"></i><i style="left:22.6%;top:auto;bottom:-8px;border-top:0;border-bottom:16px solid #111"></i></div>
+    <div class="ticks"><span>Not Scheduled · 0%</span><span>All new CVEs · 22.6%</span><span>KEV-listed · 94%</span></div>
+  </div>
+  <div class="small">Definitions. CPE: NIST's Common Platform Enumeration product identifier, recorded in the NVD <code>configurations</code> field. Not Scheduled: NVD status for CVEs not scheduled for enrichment (API value "Deferred"). KEV: CISA Known Exploited Vulnerabilities catalog. Rejected CVEs excluded.</div>
+  <div class="actions"><div class="btn primary">Copy citation</div><div class="btn">Download the brief (PDF)</div></div>
+  <div class="next">2 · The gate: CPE arrives after a KEV listing, and KEV arrives later every year</div>
+</div>
+</body></html>

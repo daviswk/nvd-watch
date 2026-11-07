@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Sketch: GAO Highlights Page</title>
+<style>
+  html,body{margin:0;width:1440px;height:900px;overflow:hidden;background:#ffffff;color:#2b2b2b;font-family:Georgia,"Times New Roman",serif}
+  .band{background:#1a3a6b;color:#fff;height:150px;padding:28px 120px;box-sizing:border-box;display:flex;justify-content:space-between;align-items:flex-start;font-family:Arial,Helvetica,sans-serif}
+  .band h1{margin:0;font:700 34px/1.1 Georgia,serif;max-width:860px}
+  .band .meta{font:400 14px/1.4 Arial,sans-serif;margin-top:10px;opacity:.9}
+  .band .acts{display:flex;gap:10px;margin-top:6px}
+  .band .acts span{border:2px solid #fff;padding:10px 16px;font:700 13px/1 Arial,sans-serif;text-transform:uppercase;letter-spacing:.04em}
+  .band .acts span.p{background:#fff;color:#1a3a6b}
+  .kick{height:36px;background:#d9e2ef;font:700 13px/36px Arial,sans-serif;text-transform:uppercase;letter-spacing:.08em;padding:0 120px;color:#1a3a6b}
+  .grid{display:grid;grid-template-columns:400px 1fr;gap:60px;padding:40px 120px;box-sizing:border-box;height:714px}
+  h2{font:700 15px/1.2 Arial,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:#1a3a6b;margin:0 0 14px;padding-bottom:8px;border-bottom:1px solid #c7d0dd}
+  .why p{font:400 16px/1.5 Georgia,serif;margin:0 0 14px}
+  .found .lead{font:700 64px/1 Georgia,serif;color:#1a3a6b;margin:0 0 6px}
+  .found .lead small{font:400 20px/1.3 Georgia,serif;color:#2b2b2b;display:block;margin-top:10px}
+  .found ul{margin:22px 0 0;padding:0;list-style:none}
+  .found li{font:400 16px/1.5 Georgia,serif;padding:10px 0;border-top:1px solid #e3e8ef}
+  .found li b{color:#1a3a6b}
+  .rec{margin-top:36px}
+  .rec table{border-collapse:collapse;width:100%;font:400 15px/1.45 Georgia,serif}
+  .rec td{padding:8px 0;border-top:1px solid #e3e8ef;vertical-align:top}
+  .rec td:first-child{font:700 13px/1.4 Arial,sans-serif;text-transform:uppercase;letter-spacing:.04em;width:110px;color:#1a3a6b}
+  .foot{font:400 12px/1.4 Arial,sans-serif;color:#666;margin-top:30px}
+</style></head><body>
+<div class="band">
+  <div>
+    <h1>Most new vulnerabilities reach defenders without scanner-matchable product data</h1>
+    <div class="meta">NVD Watch · Weekly scorecard of the NVD and CISA KEV · Week ending November 7, 2026</div>
+  </div>
+  <div class="acts"><span class="p">Copy citation</span><span>Download the brief</span></div>
+</div>
+<div class="kick">Highlights · What we found, and who should act</div>
+<div class="grid">
+  <div class="why">
+    <h2>Why this matters</h2>
+    <p>Since April 15, 2026, NIST fully enriches only CVEs in CISA's KEV catalog, federal software, or EO 14028 critical software. Everything else waits.</p>
+    <p>Without a CPE record, vulnerability scanners cannot tell an organization that it is affected. State and local governments, hospitals, and small businesses rely on this free data.</p>
+    <p>NIST asked the public (RFI 7(e)) what metrics should track the NVD's success. This page is a working answer.</p>
+    <div class="foot">Data: NVD API 2.0, CISA KEV, FIRST EPSS. Pulled Nov 7, 2026, 19:21 UTC. 17,729 records.</div>
+  </div>
+  <div class="found">
+    <h2>What we found</h2>
+    <div class="lead">22.6%<small>of CVEs published in the last 30 days carry CPE. KEV-listed CVEs: 94%. Not Scheduled CVEs: 0%.</small></div>
+    <ul>
+      <li><b>KEV is the gate.</b> For most software, CPE arrives only after a KEV listing, and the median CVE-to-KEV lag has risen from 6 to 14 days since 2023.</li>
+      <li><b>The fix costs less than what NIST already spends re-scoring.</b> A published re-check rule: roughly $270K–$510K a year against an OIG-identified $400K of redirectable effort.</li>
+    </ul>
+    <div class="rec">
+      <h2>What we recommend</h2>
+      <table>
+        <tr><td>NIST</td><td>Publish a re-check rule for Not Scheduled CVEs; publish five quarterly metrics with frozen definitions.</td></tr>
+        <tr><td>CISA</td><td>Require structured product data in CNA records; publish KEV listing lag.</td></tr>
+        <tr><td>Congress</td><td>Attach the metrics to the pending GAO review and NDAA CVE language, not new spending.</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+</body></html>

@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Vulnerability Wildfire</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap">
+<style>
+body{margin:0;background:#0B0E14}
+a{color:#6EA8FE}a:hover{color:#E6E9EF}
+input[type=range]{accent-color:#FF6A2B}
+@keyframes ping{0%{transform:scale(0.6);opacity:0.9}100%{transform:scale(2.4);opacity:0}}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.35}}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #0B0E14; color: #E6E9EF; font-family: 'IBM Plex Sans', system-ui, sans-serif;">
+<div style="max-width: 1360px; margin: 0 auto; padding: 24px 20px 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 18px;">
+
+<header style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; border-bottom: 1px solid #232A38; padding-bottom: 16px;">
+<div style="display: flex; align-items: center; gap: 14px;">
+<div style="width: 10px; height: 10px; border-radius: 50%; background: #FF6A2B; box-shadow: 0 0 12px #FF6A2B; animation: blink 1.6s infinite;"></div>
+<div style="display: flex; flex-direction: column; gap: 2px;">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: #9AA3B2;">Vulnerability Wildfire · CVE-2026-109618 / 109619</div>
+<h1 style="margin: 0; font-size: 26px; font-weight: 700; letter-spacing: -0.01em;">PHP2Shell: the fire spreads before the response arrives</h1>
+</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px;">
+<sc-for list="{{chips}}" as="ch" hint-placeholder-count="4">
+<div style="{{ch.style}}"><span style="color: #9AA3B2; font-weight: 400;">{{ch.k}}</span> {{ch.v}}</div>
+</sc-for>
+</div>
+</header>
+
+<div style="display: flex; flex-wrap: wrap; gap: 18px; align-items: stretch;">
+
+<section aria-label="Exposure map" style="flex: 999 1 640px; min-width: 0; background: radial-gradient(ellipse at 50% 40%, #151B27 0%, #0B0E14 75%); border: 1px solid #232A38; border-radius: 10px; padding: 18px; display: flex; flex-direction: column; gap: 12px;">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; align-items: baseline;">
+<div style="display: flex; gap: 28px; flex-wrap: wrap;">
+<div style="display: flex; flex-direction: column;">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #9AA3B2; text-transform: uppercase; letter-spacing: 0.08em;">Time since first exploitation</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 30px; font-weight: 600; color: #FFB547;">T+{{days}}d</div>
+</div>
+<div style="display: flex; flex-direction: column;">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: #9AA3B2; text-transform: uppercase; letter-spacing: 0.08em;">Responders on scene</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 30px; font-weight: 600; color: #3DD9C4;">{{onScene}}/7</div>
+</div>
+</div>
+<div style="font-size: 12px; color: #9AA3B2; max-width: 340px; text-align: right;">Illustrative regional intensity, not measured host counts. Real version: country-level exposure data plus dated exploitation reports.</div>
+</div>
+
+<div style="overflow-x: auto;">
+<div style="position: relative; width: 860px; height: 380px; margin: 0 auto;">
+<sc-for list="{{tiles}}" as="t" hint-placeholder-count="60">
+<div style="{{t.wrap}}"><div style="{{t.hex}}"></div></div>
+</sc-for>
+<sc-for list="{{pings}}" as="p" hint-placeholder-count="3">
+<div style="{{p.pos}}">
+<div style="position: absolute; inset: 0; border-radius: 50%; border: 2px solid #FFD27A; animation: ping 1.8s ease-out infinite;"></div>
+<div style="position: absolute; left: 9px; top: 9px; width: 6px; height: 6px; border-radius: 50%; background: #FFF3D6;"></div>
+</div>
+</sc-for>
+<sc-for list="{{regions}}" as="r" hint-placeholder-count="6">
+<div style="{{r.pos}}">{{r.name}}</div>
+</sc-for>
+</div>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-size: 12px; color: #9AA3B2;">
+<span>Intensity</span>
+<div style="width: 180px; height: 8px; border-radius: 4px; background: linear-gradient(90deg, #1B2230, #6B3A1A, #E0601F, #FFD27A);"></div>
+<span>low → high</span>
+<span style="display: inline-flex; align-items: center; gap: 6px; margin-left: 12px;"><span style="width: 10px; height: 10px; border-radius: 50%; border: 2px solid #FFD27A; box-sizing: border-box; display: inline-block;"></span>reported exploitation</span>
+</div>
+</section>
+
+<aside aria-label="Responders" style="flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 18px;">
+<div style="background: #121722; border: 1px solid #232A38; border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 12px;">
+<h2 style="margin: 0; font-size: 14px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: #9AA3B2;">Response units</h2>
+<sc-for list="{{responders}}" as="rs" hint-placeholder-count="7">
+<div style="display: flex; gap: 12px; align-items: flex-start;">
+<div style="{{rs.dot}}"></div>
+<div style="display: flex; flex-direction: column; gap: 1px; min-width: 0;">
+<div style="{{rs.nameStyle}}">{{rs.name}}</div>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #9AA3B2;">{{rs.status}}</div>
+</div>
+</div>
+</sc-for>
+</div>
+
+<div style="background: #121722; border: 1px solid #232A38; border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 10px;">
+<h2 style="margin: 0; font-size: 14px; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; color: #9AA3B2;">NVD-dependent scanner sees</h2>
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 22px; font-weight: 600; color: {{scanColor}};">{{scan}}</div>
+<div style="font-size: 13px; line-height: 1.45; color: #C5CBD6;">{{scanNote}}</div>
+</div>
+</aside>
+</div>
+
+<section aria-label="Timeline scrubber" style="background: #121722; border: 1px solid #232A38; border-radius: 10px; padding: 16px 18px; display: flex; flex-direction: column; gap: 10px;">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 14px;">
+<button type="button" onClick="{{togglePlay}}" aria-label="{{playLabel}}" style="width: 44px; height: 44px; border-radius: 50%; border: none; background: #FF6A2B; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+<sc-if value="{{playing}}" hint-placeholder-val="{{ false }}"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="#0B0E14"><rect x="5" y="4" width="5" height="16"></rect><rect x="14" y="4" width="5" height="16"></rect></svg></sc-if>
+<sc-if value="{{paused}}" hint-placeholder-val="{{ true }}"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="#0B0E14"><path d="M7 4l13 8-13 8z"></path></svg></sc-if>
+</button>
+<div style="display: flex; flex-direction: column; gap: 2px; flex: 1 1 300px; min-width: 0;">
+<div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: #FFB547;">{{cur.when}} UTC</div>
+<div style="font-size: 17px; font-weight: 600;">{{cur.title}}</div>
+</div>
+</div>
+<div style="overflow-x: auto;">
+<div style="min-width: 760px; display: flex; flex-direction: column; gap: 4px;">
+<label for="hero-scrub" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0);">Timeline position</label>
+<input id="hero-scrub" type="range" min="0" max="7" step="1" value="{{step}}" onChange="{{onStep}}" style="width: 100%; height: 32px; margin: 0;">
+<div style="position: relative; height: 34px;">
+<sc-for list="{{ticks}}" as="tk" hint-placeholder-count="8">
+<div style="{{tk.style}}">{{tk.label}}</div>
+</sc-for>
+</div>
+</div>
+</div>
+</section>
+
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { step: 0, playing: false };
+    this.timer = null;
+  }
+  componentWillUnmount() {
+    if (this.timer) { clearInterval(this.timer); this.timer = null; }
+  }
+  renderVals() {
+    var self = this;
+    var st = this.state || {};
+    var step = st.step == null ? 0 : st.step;
+    var playing = !!st.playing;
+
+    var steps = [
+      { when: 'Oct 17', title: 'Amazon honeypots catch the first exploitation attempt' },
+      { when: 'Oct 20', title: 'Release announced; details leak online' },
+      { when: 'Oct 21 · 13:34', title: 'Advisories public 26 min early; Cloudflare ships WAF rules' },
+      { when: 'Oct 21 · 14:00', title: 'Patched PHP versions ship' },
+      { when: 'Oct 21 · 14:17', title: 'NVD receives the records (no score yet)' },
+      { when: 'Oct 21 · 17:00', title: 'NVD scores it 9.8' },
+      { when: 'Oct 21 · late', title: 'watchTowr: exploited in the wild. CISA: not observed' },
+      { when: 'Oct 22', title: 'Still no KEV listing' }
+    ];
+    var cur = steps[step];
+    var daysArr = ['0.5', '3.5', '4.6', '4.6', '4.6', '4.7', '4.9', '5.5'];
+
+    // Illustrative cartogram layout: N=N. America, S=S. America, E=Europe, F=Africa, A=Asia, O=Oceania
+    var rows = [
+      '...NNN....EE.AAA..',
+      '..NNNN...EEE.AAAA.',
+      '..NNNN...EEEAAAAA.',
+      '...NNN....FFAAAAA.',
+      '....N.....FFF.AA..',
+      '.....SS...FFF..A..',
+      '.....SSS...F....OO',
+      '......SS........OO',
+      '......S...........'
+    ];
+    var curve = {
+      N: [0.15, 0.2, 0.35, 0.4, 0.45, 0.55, 0.8, 0.75],
+      E: [0.35, 0.4, 0.5, 0.55, 0.6, 0.65, 0.88, 0.82],
+      A: [0.1, 0.15, 0.3, 0.35, 0.4, 0.5, 0.75, 0.8],
+      S: [0, 0.05, 0.1, 0.15, 0.2, 0.3, 0.5, 0.6],
+      F: [0, 0.05, 0.1, 0.1, 0.15, 0.2, 0.4, 0.5],
+      O: [0, 0, 0.1, 0.15, 0.2, 0.25, 0.45, 0.5]
+    };
+    var stops = [[0, [27, 34, 48]], [0.35, [107, 58, 26]], [0.65, [224, 96, 31]], [1, [255, 210, 122]]];
+    function color(v) {
+      for (var i = 1; i < stops.length; i++) {
+        if (v <= stops[i][0]) {
+          var a = stops[i - 1], b = stops[i];
+          var t = (v - a[0]) / (b[0] - a[0]);
+          var c = a[1].map(function (x, j) { return Math.round(x + (b[1][j] - x) * t); });
+          return 'rgb(' + c.join(',') + ')';
+        }
+      }
+      return 'rgb(255,210,122)';
+    }
+    var W = 46, H = 53, VY = 40, OX = 12, OY = 8;
+    var tiles = [];
+    var n = 0;
+    rows.forEach(function (row, r) {
+      for (var c = 0; c < row.length; c++) {
+        var reg = row[c];
+        if (reg === '.') continue;
+        n++;
+        var jitter = (((n * 37) % 11) - 5) / 30;
+        var v = Math.max(0, Math.min(1, curve[reg][step] + jitter * (curve[reg][step] > 0 ? 1 : 0)));
+        var x = OX + c * W + (r % 2 ? W / 2 : 0);
+        var y = OY + r * VY;
+        var glow = v > 0.55 ? 'filter: drop-shadow(0 0 ' + Math.round(4 + v * 10) + 'px rgba(255,106,43,' + (v * 0.7).toFixed(2) + '));' : '';
+        tiles.push({
+          wrap: 'position: absolute; left: ' + x + 'px; top: ' + y + 'px; width: ' + (W - 3) + 'px; height: ' + (H - 3) + 'px; transition: filter 0.6s ease; ' + glow,
+          hex: 'width: 100%; height: 100%; clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%); background: ' + color(v) + '; transition: background 0.6s ease;'
+        });
+      }
+    });
+
+    var pingDefs = [
+      { s: 0, c: 10, r: 1 }, { s: 2, c: 4, r: 2 }, { s: 2, c: 14, r: 2 },
+      { s: 6, c: 11, r: 0 }, { s: 6, c: 3, r: 1 }, { s: 6, c: 15, r: 3 }, { s: 7, c: 6, r: 6 }
+    ];
+    var pings = pingDefs.filter(function (p) { return step >= p.s; }).map(function (p) {
+      var x = OX + p.c * W + (p.r % 2 ? W / 2 : 0) + W / 2 - 13;
+      var y = OY + p.r * VY + H / 2 - 13;
+      return { pos: 'position: absolute; left: ' + x + 'px; top: ' + y + 'px; width: 24px; height: 24px;' };
+    });
+
+    var regLbl = function (name, c, r) {
+      return { name: name, pos: 'position: absolute; left: ' + (OX + c * W) + 'px; top: ' + (OY + r * VY + 14) + 'px; font-family: \'IBM Plex Mono\', monospace; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: #E6E9EF; text-shadow: 0 1px 3px #000, 0 0 6px #000; pointer-events: none; white-space: nowrap;' };
+    };
+    var regions = [
+      regLbl('N. AMERICA', 2, 4), regLbl('S. AMERICA', 6, 8), regLbl('EUROPE', 9, 3) , regLbl('AFRICA', 11, 7), regLbl('ASIA', 15, 4), regLbl('OCEANIA', 15, 8)
+    ];
+    regions[2].pos = regions[2].pos.replace('top: ' + (OY + 3 * VY + 14) + 'px', 'top: ' + (OY - 2) + 'px');
+
+    var respDefs = [
+      { s: 0, name: 'Amazon threat intel', at: 'Oct 17 · detects attempt' },
+      { s: 2, name: 'Cloudflare WAF', at: 'Oct 21 · pre-patch rules' },
+      { s: 3, name: 'PHP project patch', at: 'Oct 21 14:00 · fix ships' },
+      { s: 4, name: 'NVD intake', at: 'Oct 21 14:17 · received' },
+      { s: 5, name: 'NVD analysis', at: 'Oct 21 17:00 · scored 9.8' },
+      { s: 6, name: 'watchTowr', at: 'Oct 21 · confirms in-wild' },
+      { s: 99, name: 'CISA KEV', at: 'no listing' }
+    ];
+    var onScene = 0;
+    var responders = respDefs.map(function (r) {
+      var here = step >= r.s;
+      if (here) onScene++;
+      var kev = r.s === 99;
+      return {
+        name: r.name,
+        status: here ? r.at : (kev ? 'Not dispatched · no KEV listing' : 'en route'),
+        dot: 'width: 12px; height: 12px; margin-top: 4px; border-radius: 50%; flex-shrink: 0; box-sizing: border-box; ' + (here ? 'background: #3DD9C4; box-shadow: 0 0 10px #3DD9C4;' : (kev ? 'border: 2px dashed #FF6A2B;' : 'border: 2px solid #4A5366;')),
+        nameStyle: 'font-size: 14px; font-weight: 600; color: ' + (here ? '#E6E9EF' : '#9AA3B2') + ';'
+      };
+    });
+
+    var scans = [
+      ['NO RECORD', '#9AA3B2', 'CVE IDs aren\'t public. Exploitation is already happening.'],
+      ['NO RECORD', '#9AA3B2', 'Details are leaking. Still nothing to match.'],
+      ['NO RECORD', '#9AA3B2', 'Advisories are on GitHub; NVD hasn\'t received them.'],
+      ['NO RECORD', '#9AA3B2', 'A patch exists, but the scanner can\'t tell you to apply it.'],
+      ['RECEIVED · NO SCORE', '#FFB547', 'NVD has the record but no NIST severity yet.'],
+      ['9.8 CRITICAL', '#FF6A2B', 'First NVD severity score, about 4.7 days after first observed exploitation.'],
+      ['9.8 CRITICAL · KEV: NO', '#FF6A2B', 'Industry confirms exploitation; KEV-driven prioritization still says no.'],
+      ['9.8 CRITICAL · KEV: NO', '#FF6A2B', 'No KEV entry, the trigger NVD\'s April 2026 policy relies on.']
+    ];
+    var sc = scans[step];
+
+    var chipStyle = function (c) { return 'font-family: \'IBM Plex Mono\', monospace; font-size: 12px; font-weight: 600; padding: 6px 10px; border-radius: 4px; border: 1px solid ' + c + '; color: ' + c + '; white-space: nowrap;'; };
+    var chips = [
+      { k: 'EXPLOITATION', v: 'ACTIVE', style: chipStyle('#FF6A2B') },
+      { k: 'PATCH', v: step >= 3 ? 'AVAILABLE' : 'NONE', style: chipStyle(step >= 3 ? '#3DD9C4' : '#9AA3B2') },
+      { k: 'NVD', v: step >= 5 ? '9.8' : (step >= 4 ? 'RECEIVED' : 'NONE'), style: chipStyle(step >= 5 ? '#6EA8FE' : '#9AA3B2') },
+      { k: 'KEV', v: 'NOT LISTED', style: chipStyle('#9AA3B2') }
+    ];
+
+    var tickLabels = ['Oct 17', 'Oct 20', '13:34', '14:00', '14:17', '17:00', 'Late 21', 'Oct 22'];
+    var ticks = tickLabels.map(function (l, i) {
+      var pct = (i / 7) * 100;
+      var tr = i === 0 ? 'none' : (i === 7 ? 'translateX(-100%)' : 'translateX(-50%)');
+      return { label: l, style: 'position: absolute; top: 0; left: ' + pct + '%; transform: ' + tr + '; font-family: \'IBM Plex Mono\', monospace; font-size: 12px; white-space: nowrap; color: ' + (i === step ? '#FFB547' : (i < step ? '#E6E9EF' : '#9AA3B2')) + '; font-weight: ' + (i === step ? 600 : 400) + ';' };
+    });
+
+    return {
+      step: step,
+      cur: cur,
+      days: daysArr[step],
+      onScene: onScene,
+      tiles: tiles,
+      pings: pings,
+      regions: regions,
+      responders: responders,
+      scan: sc[0],
+      scanColor: sc[1],
+      scanNote: sc[2],
+      chips: chips,
+      ticks: ticks,
+      playing: playing,
+      paused: !playing,
+      playLabel: playing ? 'Pause' : 'Play',
+      onStep: function (e) { self.setState({ step: Number(e.target.value) }); },
+      togglePlay: function () {
+        if (self.timer) {
+          clearInterval(self.timer); self.timer = null;
+          self.setState({ playing: false });
+          return;
+        }
+        var start = (self.state && self.state.step >= 7) ? 0 : ((self.state && self.state.step) || 0);
+        self.setState({ playing: true, step: start });
+        self.timer = setInterval(function () {
+          var s = (self.state && self.state.step) || 0;
+          if (s >= 7) { clearInterval(self.timer); self.timer = null; self.setState({ playing: false }); return; }
+          self.setState({ step: s + 1 });
+        }, 1500);
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

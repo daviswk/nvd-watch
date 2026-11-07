@@ -1,0 +1,80 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "all-caps-body",
+        "value": "*",
+        "files": [
+          ".impeccable/decision/sketch-assigned.html"
+        ],
+        "createdAt": "2026-11-07T19:31:01.694Z",
+        "reason": "Claude: decision-page sketch fixture, not shipping code; build will keep caps to short labels"
+      },
+      {
+        "rule": "overused-font",
+        "value": "arial",
+        "files": [
+          ".impeccable/decision/sketch-assigned.html"
+        ],
+        "createdAt": "2026-11-07T19:31:01.740Z",
+        "reason": "Claude: decision-page sketch fixture; faces are chosen in the build"
+      },
+      {
+        "rule": "overused-font",
+        "value": "arial",
+        "files": [
+          ".impeccable/decision/sketch-pick.html"
+        ],
+        "createdAt": "2026-11-07T19:31:01.787Z",
+        "reason": "Claude: decision-page sketch fixture; faces are chosen in the build"
+      },
+      {
+        "rule": "skipped-heading",
+        "value": "*",
+        "files": [
+          ".impeccable/decision/sketch-canon.html"
+        ],
+        "createdAt": "2026-11-07T19:31:01.833Z",
+        "reason": "Claude: decision-page sketch fixture of the category default, not shipping code"
+      },
+      {
+        "rule": "overused-font",
+        "value": "helvetica",
+        "files": [
+          ".impeccable/decision/sketch2-assigned.html"
+        ],
+        "createdAt": "2026-11-07T19:36:28.961Z",
+        "reason": "Claude: decision-page sketch fixture; the Nutrition Facts label is set in Helvetica by FDA rule, and the build chooses its own face"
+      },
+      {
+        "rule": "overused-font",
+        "value": "arial",
+        "files": [
+          ".impeccable/decision/sketch2-pick.html"
+        ],
+        "createdAt": "2026-11-07T19:36:29.010Z",
+        "reason": "Claude: decision-page sketch fixture; faces are chosen in the build"
+      },
+      {
+        "rule": "oversized-h1",
+        "value": "*",
+        "files": [
+          "site/index.html"
+        ],
+        "createdAt": "2026-11-07T19:50:12.910Z",
+        "reason": "Claude: detector reads clamp() as 168px; computed h1 font-size verified in browser at 38px (max 2.2rem)"
+      },
+      {
+        "rule": "oversized-h1",
+        "value": "*",
+        "files": [
+          "site/template.html"
+        ],
+        "createdAt": "2026-11-07T19:54:39.510Z",
+        "reason": "Claude: same finding as site/index.html; detector reads clamp() as 168px, computed h1 verified in browser at 38px (max 2.2rem)"
+      }
+    ]
+  }
+}

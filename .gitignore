@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+data/raw/
+.env
+.DS_Store
+.playwright-mcp/
+.impeccable/review/
+.claude/skills/
+data/processed/cves_sample.csv
+data/processed/fetch_log.txt
+.claude/settings.local.json
