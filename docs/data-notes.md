@@ -154,3 +154,20 @@ Same-cohort view (the 28,618 CVEs old enough for a day-30 score): 1 crossed 10% 
 **Limits:** one 30-day window, 18 CVEs. CVEs published before the window but listed in it are not counted (a longer pull of all KEV additions would fix that). VulnCheck's broader exploited list (free account and token needed) was not checked.
 
 **At-risk example, not confirmed exploited:** CVE-2026-59774 (Gitea Org-mode INCLUDE file read, chainable to command execution per the CNA), published Oct 14, Not Scheduled, no CPE, CNA `affected` names Gitea < 1.27.1, EPSS 0.283 on Nov 7, not in KEV. Exploitation sources other than KEV were not checked. Runner-up: CVE-2026-77690 (ManageEngine Key Manager Plus command injection, Awaiting Enrichment, EPSS 0.156).
+
+## CPE coverage by vendor — Nov 7, 2026 (verified)
+
+**Why:** a side finding from the 3D prototype round (see the AI log) said Linux, Mozilla and Red Hat CVEs in the window had no CPE against 92% for Microsoft. A second red-team suggested it as a headline. Recomputed from `data/raw/nvd_sample.json`: vendor = first vendor named in the CNA `affected` block; CPE = the record has `configurations`; Rejected excluded.
+
+| Vendor | CVEs | With CPE | NVD status (API value) |
+|---|---|---|---|
+| Microsoft | 1,475 | 1,363 (92.4%) | Analyzed 1,361 · Awaiting Analysis 82 · Undergoing Analysis 30 · Modified 2 |
+| Linux | 901 | 0 | **Received 900** · Awaiting Analysis 1 |
+| Mozilla | 268 | 0 | Deferred (Not Scheduled) 257 · Awaiting Analysis 11 |
+| Red Hat | 203 | 0 | Awaiting Analysis 202 · Undergoing Analysis 1 |
+
+**What it shows:** three different conditions, not one. Linux kernel CVEs (all from the kernel CNA) are spread across 13 publication days from Oct 9 to Nov 7, yet 900 are still "Received", so NIST has not triaged them. Mozilla's were triaged and set aside (published in batches, mostly Oct 13 and Oct 27). Red Hat's (`secalert@redhat.com`) are queued.
+
+**What it does not show:** why. Firefox and Red Hat Enterprise Linux are widely used by the federal government, so "the federal-software tier covers proprietary software and skips open source" does not fit. NIST does not publish tier assignments, so the cause can't be observed from outside. Report it as status by vendor, and use it as support for the "publish tier assignments" recommendation. Not on the page yet.
+
+**Also corrected (from the same review):** 12,178 (71.3%) is the CVEs where the CNA names a product *and* there is no CPE. All CVEs without CPE: 13,207 of 17,070 (77.4%). The 57.3% for the Apr 15 – Jun 15 cohort (section above) is our recount as of Nov 7, not Volerion's figure (≈50%).
