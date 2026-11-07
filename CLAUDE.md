@@ -77,7 +77,7 @@ RogoLabs (Jerry Gamblin, https://rogolabs.net) publishes free, open-source CVE t
 - `site/story.html`, `site/story.js` — "The data in 3D" scroll story, one dot per CVE; reads `site/data/*.json` at runtime. The scorecard itself stays 2D (see DESIGN.md, The 2D Rule)
 - Branches `prototype/3d-variants` (chose the story page) and `prototype/scorecard-figures` (3D scorecard figures, rejected) — throwaway prototypes; not for main
 - `scripts/build_site.py` — renders `site/index.html` from `site/template.html` + `data/processed/summary.json`; edit the template, never index.html
-- `docs/data-notes.md` — what each pull showed, caveats, status-name mapping
+- `docs/data-notes.md` — what each pull showed, caveats, status-name mapping. Read its **Current conclusions** list first; older sections that were revised are marked Superseded
 - `docs/project-plan.md` — full plan, recommendations, roadmap
 - `docs/brief-outline.md` — 3-page brief skeleton
 - `docs/ai-collaboration-log.md` — log, seeded with entries so far

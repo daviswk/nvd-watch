@@ -1,10 +1,10 @@
 # Operating manual for the next session
 
-Written Nov 7, 2026 at the end of the first Claude Code session (Claude Fable 5.1). Read this, then `CLAUDE.md`, then `docs/data-notes.md`. Everything below is verified against the repo and the live site as of that date.
+Written Nov 7, 2026 at the end of the first Claude Code session (Claude Fable 5.1). Read this, then `CLAUDE.md`, then the **Current conclusions** list at the top of `docs/data-notes.md`. That file is appended in order, so a section further down can revise an earlier one; the list at the top is the current state, and older passages that were revised are marked **Superseded**. Everything below is verified against the repo and the live site as of that date.
 
 ## 1. Where the project stands
 
-**Live:** https://daviswk.github.io/nvd-watch/ (GitHub Pages, deployed on every push to `main` by `.github/workflows/pages.yml`). Repo: https://github.com/daviswk/nvd-watch, public, four commits, working tree clean.
+**Live:** https://daviswk.github.io/nvd-watch/ (GitHub Pages, deployed on every push to `main` by `.github/workflows/pages.yml`). Repo: https://github.com/daviswk/nvd-watch, public. Check `git log` for the latest commit; the tree is kept clean between sessions.
 
 **The three graded deliverables**
 
@@ -20,7 +20,7 @@ Written Nov 7, 2026 at the end of the first Claude Code session (Claude Fable 5.
 # Windows: use the venv's python directly; no activation needed
 ./.venv/Scripts/python.exe scripts/fetch_sample.py --days 30     # full pull (~3 min with API key)
 ./.venv/Scripts/python.exe scripts/fetch_sample.py --from-raw    # reprocess data/raw/nvd_sample.json without hitting the NVD API
-./.venv/Scripts/python.exe scripts/kev_enrichment.py            # NVD change history for KEV CVEs (~18 calls); required by the build
+./.venv/Scripts/python.exe scripts/kev_enrichment.py            # NVD change history for every CVE added to KEV in the window (~70 calls); required by the build
 ./.venv/Scripts/python.exe scripts/build_site.py                 # renders site/index.html from site/template.html + summary.json
 ./.venv/Scripts/python.exe -m http.server 8765 --directory site  # local preview (or preview_start name "site" via .claude/launch.json)
 ```
@@ -49,7 +49,7 @@ Beyond the settled decisions in `CLAUDE.md`:
 | `scripts/build_site.py` | Render step. Computes the simulator defaults (so the page is right with JS off), the stacked-table `data-label`s, the citation permalink from `SITE_URL`. |
 | `site/template.html`, `styles.css`, `app.js` | The page. `app.js` is progressive enhancement only (simulator, copy citation). |
 | `data/processed/summary.json` | The one source of every number on the page. Committed. The CSV and raw file are git-ignored. |
-| `docs/data-notes.md` | What each pull showed, caveats, the Floodline derivation, the status mapping. Append a section per pull. |
+| `docs/data-notes.md` | What each pull showed, caveats, the Floodline derivation, the status mapping. Append a section per pull. **When a new section changes an earlier conclusion, mark the earlier passage Superseded in place, with a pointer, and update the Current conclusions list at the top in the same edit.** |
 | `docs/ai-collaboration-log.md` | Log. Add a row under "Entries from Claude Code" for each session. |
 | `PRODUCT.md`, `DESIGN.md`, `.impeccable/` | Impeccable product truth, design system, surface brief with direction contract, decision-round fixtures. |
 | `.github/workflows/pages.yml` | Deploys `site/` on push to `main`. |
@@ -57,7 +57,7 @@ Beyond the settled decisions in `CLAUDE.md`:
 
 ## 5. What to do next, in order
 
-1. **Write the brief** from `docs/brief-outline.md`. Three pages. Every number must match `site/index.html` (pull the values from `data/processed/summary.json`, not from memory). Cost box uses the Floodline-based figures. Export PDF; link it from the band button in `site/template.html`; rebuild; push.
+1. **Write the brief** from `docs/brief-outline.md`. Three pages. Every number must match `site/index.html` (pull the values from `data/processed/summary.json` and `kev_enrichment.json`, not from memory or from older sections of `data-notes.md`). Cost box uses the Floodline-based figures. Export PDF; link it from the band button in `site/template.html`; rebuild; push.
 2. **Weekly rebuild action** (a proposal card was left in the previous session; if it expired, the spec is: `.github/workflows/rebuild.yml`, Mondays 13:00 UTC + manual, Python 3.12, run fetch, then kev_enrichment, then build with `NVD_API_KEY` from a repo secret and `SITE_URL` as env, commit `summary.json`, `kev_enrichment.json`, `site/index.html` and `site/data/*.json` only if changed, `permissions: contents: write`, `concurrency` group). Will must add the `NVD_API_KEY` secret in Settings → Secrets and variables → Actions first.
 3. ~~Multi-year KEV lag~~: done. `scripts/kev_lag.py` → `kev_lag.json`; the section 2 chart shows our 4 → 7 → 10 → 9, with Barracuda cited for comparison.
 4. **Optional, if time:** a backlog-based re-check estimate (pull Deferred/Awaiting CVEs over a longer window, count threshold crossings per month) to firm up the estimate; the EPSS v4-on-unenriched-CVEs question remains unmeasured and should stay flagged.

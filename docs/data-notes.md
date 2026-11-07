@@ -2,6 +2,17 @@
 
 Running notes on each pull: what the numbers say, how they were checked, and what they cannot say. Every figure here is reproducible from `data/processed/` plus the script named.
 
+Sections are appended in order, so later sections can revise earlier ones. When that happens the earlier passage is marked **Superseded** in place, with a pointer, and this list is updated. **Read this list first; it is the current state.**
+
+## Current conclusions (as of Nov 7, 2026)
+
+- **Coverage:** 22.6% of non-rejected CVEs published Oct 8 – Nov 7 have CPE (3,863 of 17,070); 77.4% do not. Coverage matures: the Apr 15 – Jun 15 cohort is at 57.3% five months on, with 37.9% still Not Scheduled. See *Pull 1* and *Verification pulls*.
+- **"When defenders need it"** = **before** the KEV listing, compared by timestamp. Score **readiness** (CPE before listing) separately from **NIST's goal** (CPE within one business day of the later of listing and NVD publication). See *KEV cohort extended…* (last section), which replaces the day-based definition in *KEV CVEs: was CPE there…*.
+- **KEV result:** of the 35 CVEs added to KEV in the window (any publication year), 34 met the goal (1 pending), every first CPE record from NIST. Readiness: of 23 public before listing and not enriched pre-triage, 10 had CPE beforehand; several got it within minutes of the KEV event. KEV is the trigger.
+- **Re-check volume:** Floodline day-30 rate × our volume = 16–46 a month (simulator default 16), $8K–$66K a year (default $8K–$23K). **Rough, biased both ways, not a lower bound:** 8 of the 10 CVEs at EPSS ≥ 0.10 already had CPE (pushes it down); later crossings, the older stock and SSVC triggers are uncounted (push it up). The OIG's ~$400K a year is a scale comparison, not spare money. See the last section, which revises *Re-check volume from CVE Floodline*.
+- **Vendor split:** Microsoft 92.4% with CPE; Linux, Mozilla and Red Hat 0%, in three different statuses. The cause is not observable from outside. See *CPE coverage by vendor*.
+- **Retired figures:** 250–470 re-queues a month, $270K–$510K a year, $7K–$58K a year, 21.7% non-KEV coverage, "lower bound".
+
 ## Pull 1 — Nov 7, 2026 (30 days)
 
 **Command:** `python scripts/fetch_sample.py --days 30` with an NVD API key.
@@ -42,7 +53,7 @@ For the 3,170 Analyzed CVEs, `lastModified − published`: median 7.2 days, 90th
 
 787 of 17,729 CVEs had no EPSS score or a score of exactly 0 (FIRST scores new CVEs with a lag). Among CVEs without CPE and not in KEV: 288 had EPSS ≥ 0.01, 7 had ≥ 0.05, and 2 had ≥ 0.10 (CVE-2026-59774, Deferred, 0.283; CVE-2026-77690, Awaiting Analysis, 0.156). None had ≥ 0.50.
 
-**Consequence for the re-check rule estimate.** The 250–470 CVEs/month figure cannot be reproduced from newly published CVEs. New CVEs rarely carry high EPSS; the trigger fires later, on the stock of older unenriched CVEs as scores rise. A monthly rate needs a backlog-based method: pull Deferred and Awaiting CVEs over a longer period and count threshold crossings per month.
+**Consequence for the re-check rule estimate.** The 250–470 CVEs/month figure cannot be reproduced from newly published CVEs. New CVEs rarely carry high EPSS; the trigger fires later, on the stock of older unenriched CVEs as scores rise. A monthly rate needs a backlog-based method: pull Deferred and Awaiting CVEs over a longer period and count threshold crossings per month. **Superseded:** the rate now comes from CVE Floodline's day-30 crossing data (see *Re-check volume from CVE Floodline* and its revision in the last section). A backlog-based count is still an optional refinement.
 
 ### CNA product data (`affected` field)
 
@@ -126,22 +137,22 @@ Same-cohort view (the 28,618 CVEs old enough for a day-30 score): 1 crossed 10% 
 
 **Old estimate (retired):** 250–470 CVEs/month, 5–9% of NIST's ~5,000/month ceiling, ~$270K–$510K/yr. Traced to reading Floodline's "2.7 per 1,000 at day 30" as 2.7%: 2.7% × ~15,000 CVEs/month ≈ 400. Not reproducible from any data.
 
-**New estimate:** share crossing 10% by day 30 (0.094% now; 0.27% in the earlier window) × our 17,070 non-rejected CVEs per 30 days = 16 to 46 re-queues a month, 0.3% to 0.9% of capacity. At 20/45/60 analyst-minutes and $120/h: $8K to $66K a year (16 × 12 × 20 min ≈ $7.7K; 46 × 12 × 60 min ≈ $66K), against the OIG's ~$400K. An earlier $7K–$58K range is retired: it does not follow from 16–46 a month and matches about 15,000 CVEs a month rather than 17,070. The page's simulator defaults to the current-data figure and labels it; the pipeline recomputes it weekly.
+**New estimate:** share crossing 10% by day 30 (0.094% now; 0.27% in the earlier window) × our 17,070 non-rejected CVEs per 30 days = 16 to 46 re-queues a month, 0.3% to 0.9% of capacity. At 20/45/60 analyst-minutes and $120/h: $8K to $66K a year (16 × 12 × 20 min ≈ $7.7K; 46 × 12 × 60 min ≈ $66K). Compare with the OIG's ~$400K a year for scale only: NIST already stopped that re-scoring in April 2026, so it is not spare money. An earlier $7K–$58K range is retired: it does not follow from 16–46 a month and matches about 15,000 CVEs a month rather than 17,070. The page's simulator defaults to the current-data figure and labels it; the pipeline recomputes it weekly.
 
-**What it does not count (so it is a lower bound):** crossings between day 30 and day 90 (Floodline's day-90 cells are mostly null for now), crossings from the older Not Scheduled stock outside Floodline's 90-day window, and the SSVC / third-party-evidence triggers. A lower threshold changes the picture: in our own pull, 288 CVEs without CPE scored ≥ 0.01 on current scores, versus 7 at ≥ 0.05 and 2 at ≥ 0.10.
+**What it does not count:** (**Superseded:** this paragraph first called the estimate a lower bound. It is not: Floodline's rate also counts crossings by CVEs that already have CPE, and 8 of the 10 CVEs at EPSS ≥ 0.10 in our window did. The bias runs both ways; see the last section.) Crossings between day 30 and day 90 (Floodline's day-90 cells are mostly null for now), crossings from the older Not Scheduled stock outside Floodline's 90-day window, and the SSVC / third-party-evidence triggers. A lower threshold changes the picture: in our own pull, 288 CVEs without CPE scored ≥ 0.01 on current scores, versus 7 at ≥ 0.05 and 2 at ≥ 0.10.
 
 **Reuse and license:** Floodline's code is Apache-2.0; its data derives from the FIRST EPSS archive (empiricalsec/epss_scores), CISA KEV (public domain), and cvelistV5 (CVE Program terms). We read one summary file and attribute it on the page; no code was copied. Field names were checked against `pipeline/floodline/compute.py`: `maturation[h].thresholds["10"]` counts scores strictly above 0.10 on the dated file at day+h.
 
 ## KEV CVEs: was CPE there when exploitation was confirmed? — Nov 7, 2026
 
-**Why:** red-team objections #1 and #21 ("where's the harm?"; "'when defenders need it' is undefined"). We define *when defenders need it* as **the KEV listing date**, the day CISA confirms exploitation. The CSV's `last_modified` cannot answer this, so `scripts/kev_enrichment.py` asks the NVD CVE Change History API (`/rest/json/cvehistory/2.0?cveId=`) for each KEV CVE in the 30-day sample and takes the first event that added a `CPE Configuration`. Output: `data/processed/kev_enrichment.json` (copied to `site/data/`). Run it after `fetch_sample.py` and before `build_site.py`; the build exits if it is missing or covers a different KEV count.
+**Why:** red-team objections #1 and #21 ("where's the harm?"; "'when defenders need it' is undefined"). We define *when defenders need it* as **the KEV listing date**, the day CISA confirms exploitation. (**Superseded:** the definition is now *before* the listing, compared by timestamp, and scored separately from NIST's one-business-day goal. See the last section. The counts below are still correct for the 18-CVE sample; the conclusions are revised there.) The CSV's `last_modified` cannot answer this, so `scripts/kev_enrichment.py` asks the NVD CVE Change History API (`/rest/json/cvehistory/2.0?cveId=`) for each KEV CVE in the 30-day sample and takes the first event that added a `CPE Configuration`. Output: `data/processed/kev_enrichment.json` (copied to `site/data/`). Run it after `fetch_sample.py` and before `build_site.py`; the build exits if it is missing or covers a different KEV count.
 
 **Result (18 KEV CVEs published Oct 8 – Nov 7, 2026):**
 
 | | Count |
 |---|---|
 | Have CPE now | 17 |
-| CPE by the KEV listing day (3 of them before listing: PHP2Shell ×2, CVE-2026-97229) | 7 |
+| CPE by the KEV listing day (3 of them before listing: PHP2Shell ×2, CVE-2026-97229). *Day-based; mixes readiness with same-day enrichment. Replaced by the timestamp measure in the last section: 3 of 12 public before listing* | 7 |
 | CPE within one business day of listing (metric 3, NIST's goal) | 17 of 17 enriched |
 | First CPE change made by `nvd@nist.gov` | 17 |
 | Longest calendar gap | 4 days (CVE-2026-118527: listed in KEV Oct 30, *before* NVD published it Nov 3; CPE the day NVD published) |
@@ -149,9 +160,9 @@ Same-cohort view (the 28,618 CVEs old enough for a day-30 score): 1 crossed 10% 
 
 **Rules:** the one-business-day clock starts at the later of KEV `dateAdded` and NVD publication, since NIST can't enrich an unpublished CVE. Weekdays only, no federal-holiday calendar. Dates are UTC days. Parser checked by hand against the raw history of CVE-2026-110447 (KEV event Fri Oct 23 22:00 UTC → NIST "Initial Analysis" with CPE Mon Oct 26 16:48 UTC).
 
-**What it means:** for the exploits CISA confirms, NIST is meeting its goal. The project's claim therefore rests on the CVEs that *don't* reach KEV, or reach it late, not on KEV CVEs lacking CPE. This was the "headline may turn out wrong" risk (red-team #5); the brief should say so up front.
+**What it means:** (**Superseded in part.**) NIST meets its goal *after* listing; that still holds, now for all 35 KEV additions in the window. But "the claim rests on CVEs that don't reach KEV" understated it. Most KEV CVEs that were public before listing lacked CPE until the listing (13 of 23), so the gap also covers the wait *before* KEV. The brief should still lead with this result (red-team #5).
 
-**Limits:** one 30-day window, 18 CVEs. CVEs published before the window but listed in it are not counted (a longer pull of all KEV additions would fix that). VulnCheck's broader exploited list (free account and token needed) was not checked.
+**Limits:** one 30-day window, 18 CVEs. CVEs published before the window but listed in it are not counted here. (**Resolved:** the last section covers all 35 KEV additions in the window, back to 2015.) VulnCheck's broader exploited list (free account and token needed) was not checked.
 
 **At-risk example, not confirmed exploited:** CVE-2026-59774 (Gitea Org-mode INCLUDE file read, chainable to command execution per the CNA), published Oct 14, Not Scheduled, no CPE, CNA `affected` names Gitea < 1.27.1, EPSS 0.283 on Nov 7, not in KEV. Exploitation sources other than KEV were not checked. Runner-up: CVE-2026-77690 (ManageEngine Key Manager Plus command injection, Awaiting Enrichment, EPSS 0.156).
 
