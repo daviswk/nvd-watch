@@ -68,7 +68,8 @@ RogoLabs (Jerry Gamblin, https://rogolabs.net) publishes free, open-source CVE t
 - Unverified: "V-etalon" (Socket only), GPT-6 Cyber figures (press only), Ivanti "6–12 days" (cut).
 
 ## Where things are
-- `PRODUCT.md` — product truth for design work (Impeccable); `DESIGN.md` — the visual system once documented
+- `docs/handoff.md` — **start here in a new session**: current state, how to run everything, what's next in order, gotchas
+- `PRODUCT.md` — product truth for design work (Impeccable); `DESIGN.md` — the visual system as built
 - `scripts/fetch_sample.py` — data pull (reads `NVD_API_KEY` from `.env`; `--from-raw` reprocesses without fetching)
 - `scripts/build_site.py` — renders `site/index.html` from `site/template.html` + `data/processed/summary.json`; edit the template, never index.html
 - `docs/data-notes.md` — what each pull showed, caveats, status-name mapping
