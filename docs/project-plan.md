@@ -13,17 +13,18 @@ A public scorecard that measures whether the U.S. vulnerability warning system s
 ## Recommendations (brief)
 | Stakeholder | Recommendation |
 |---|---|
-| **NIST** | Publish a re-check rule: re-queue any lowest-priority or "Not Scheduled" CVE for CPE enrichment when max(EPSS, KEV, LEV) (CSWP 41) crosses a published threshold, CISA SSVC marks exploitation PoC/Active, or credible third-party exploitation evidence arrives. Log every re-queue. Publish five quarterly metrics with frozen definitions. |
-| **CISA** | As CVE sponsor, require affected-product data in CNA records. As KEV owner, publish listing lag and speed review when credible third-party exploitation reports arrive. |
-| **Congress** | Attach the metrics to existing vehicles (the GAO review of CVE/NVD requested in June 2025; any CVE-codification bill, since the FY2027 NDAA texts have none) rather than new appropriations. Cite the OIG offset. |
+| **NIST** | Publish a re-check rule: move any CVE without CPE (Not Scheduled, Awaiting Enrichment, or Received) into the KEV queue, under the existing one-business-day goal, when max(EPSS, KEV, LEV) (CSWP 41) crosses a published threshold, CISA SSVC marks exploitation PoC/Active, or credible third-party exploitation evidence arrives. Log every re-queue. Publish five quarterly metrics with frozen definitions. Publish each CVE's priority tier. |
+| **CISA** | As CVE sponsor, phase in structured, machine-matchable product data in CNA records, starting with the largest vendor CNAs and building on the Supplier ADP pilot. As KEV owner, publish listing lag and speed review when credible third-party exploitation reports arrive. |
+| **Congress** | Attach the metrics to existing vehicles (the GAO review of CVE/NVD requested in June 2025; any CVE-codification bill, since the FY2027 NDAA texts have none) rather than new appropriations. Treat the rule as use of existing capacity (under 1% of peak output); cite the OIG re-scoring figure for scale only. |
 
 ## Build roadmap
 | Step | Output | Done when |
 |---|---|---|
 | 1. Data pull | `data/processed/cves_sample.csv`, `summary.json` | A 30–90 day NVD window joined to KEV and EPSS, with CPE / NIST-CVSS / any-CVSS / CWE flags per CVE |
 | 2. Definitions | `docs/metric-definitions.md` | Each of the five metrics defined in one paragraph with the exact field logic |
-| 3. KEV lag | `data/processed/kev_lag.csv` | Median CVE-published → KEV dateAdded by year, reproducing (or disagreeing with) Barracuda |
-| 4. Re-check estimate | `data/processed/requeue_estimate.json` | Count of "Not Scheduled"/awaiting CVEs with EPSS ≥ thresholds; monthly rate |
+| 3. KEV lag | `data/processed/kev_lag.json` (`scripts/kev_lag.py`), **done** | Median CVE-published → KEV dateAdded by year, reproducing (or disagreeing with) Barracuda |
+| 3b. KEV enrichment timing | `data/processed/kev_enrichment.json` (`scripts/kev_enrichment.py`), **done** | Readiness before listing and the one-business-day goal, from NVD change history |
+| 4. Re-check estimate | `summary.json` (`floodline` block, via `fetch_floodline()`), **done** | Floodline day-30 crossing rate × our 30-day volume; rough, biased both ways (see `data-notes.md`) |
 | 5. Scorecard page | `site/index.html` | Four sections populated only from processed data + cited constants |
 | 6. Brief | `brief/brief.md` → PDF | ≤3 pages, numbers match the site |
 | 7. AI log | `docs/ai-collaboration-log.md` | Final pass: every entry has a verification note |

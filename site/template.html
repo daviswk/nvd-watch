@@ -72,12 +72,12 @@
         </p>
       </div>
       <ul class="findings">
-        <li><b>{{ke_headline}}</b> {{ke_within_1bd}} of the {{kev_n}} CVEs in this window that CISA listed as exploited got CPE within NIST's one-business-day goal, by NVD change history ({{ke_before_kev}} before listing).{{ke_pending_note}} Among CVEs not in KEV, {{pct_cpe_if_not_in_kev}} have CPE. By our count, the median lag from CVE publication to a KEV listing rose from 4 days in 2023 to 10 in 2025, and stands at 9 so far in 2026.</li>
+        <li><b>{{ke_headline}}</b> Of the {{ke_l_n}} CVEs CISA added to KEV in this window, {{ke_l_1bd}} had CPE within one business day of the listing, NIST's goal.{{ke_pending_note}} But of the {{ke_l_pub}} that were already public, and not enriched before the April triage, only {{ke_l_ready}} had CPE before the listing. Among CVEs not in KEV, {{pct_cpe_if_not_in_kev}} have CPE. By our count, the median lag from CVE publication to a KEV listing rose from 4 days in 2023 to 10 in 2025, and stands at 9 so far in 2026.</li>
         <li><b>The fix is small next to NIST's capacity.</b> By day 30, about {{fl_share10}} of new CVEs have crossed EPSS 10% (CVE Floodline). A published rule to re-check Not Scheduled CVEs when that happens would re-queue on the order of {{requeue_default}} CVEs a month, {{sim_capacity}} of the roughly 5,000 CVEs a month NIST has processed at its peak. For scale: that is a fraction of the routine re-scoring NIST stopped in April 2026, which the Commerce Inspector General valued at about $400,000 a year.</li>
       </ul>
       <h2 id="h-rec" style="margin-top:30px">What we recommend</h2>
       <table class="recs">
-        <tr><th scope="row">NIST</th><td>Publish a re-check rule for Not Scheduled CVEs, log every re-queue, report five quarterly metrics with frozen definitions, and publish each CVE's priority tier.</td></tr>
+        <tr><th scope="row">NIST</th><td>Publish a re-check rule that moves CVEs without CPE into the KEV queue when attack signals rise, log every re-queue, report five quarterly metrics with frozen definitions, and publish each CVE's priority tier.</td></tr>
         <tr><th scope="row">CISA</th><td>As CVE Program sponsor, phase in structured product data in CNA records, largest vendor CNAs first; as KEV owner, publish listing lag and speed review when credible third-party exploitation reports arrive.</td></tr>
         <tr><th scope="row">Congress</th><td>Ask GAO to fold these metrics into the CVE program review House members requested in 2025, and write them into any bill that codifies the CVE program, rather than funding a new line.</td></tr>
       </table>
@@ -139,7 +139,7 @@
           <figcaption class="note">KEV listings by year added, CVEs published 2022 or later; calendar days from NVD publication to KEV <code>dateAdded</code>. 2026 is through November 6. Computed by <code>scripts/kev_lag.py</code>. Barracuda's July 2026 analysis of the same population reports a steeper rise, 6 to 14 days (vendor analysis).</figcaption>
         </figure>
         <p><b>In this window:</b> {{kev_n}} CVEs published {{window_start}} to {{window_end}} are in KEV; the median lag from NVD publication to listing was {{kev_lag_median}} days (n = {{kev_lag_n}}). Short windows catch only the fastest listings, so this understates the lag.</p>
-        <p><b>Did defenders have CPE when they needed it?</b> We define "when they needed it" as the day CISA confirmed exploitation. Of the {{ke_enriched}} KEV-listed CVEs in this window that now have CPE, {{ke_by_list_day}} had it by their listing day and {{ke_within_1bd}} within one business day; NIST made {{ke_by_nist}} of those first CPE changes. {{ke_verdict}}</p>
+        <p><b>Did defenders have CPE when they needed it?</b> We define "when they needed it" as before CISA confirmed exploitation, and score two things separately. <b>Readiness:</b> of the {{ke_l_pub}} CVEs added to KEV in this window that were already public (and not enriched before the April 2026 triage), {{ke_l_ready}} had CPE before the listing. The other {{ke_l_after}} got it only afterward, {{ke_l_2h}} of them within two hours of the listing; one had been public for {{ke_l_maxwait}} days. <b>The goal:</b> once listed, {{ke_l_1bd}} of {{ke_l_n}} had CPE within one business day, every first CPE record from NIST. {{ke_verdict}}</p>
         <p class="note">Method: first "CPE Configuration" event in the NVD CVE Change History API, against KEV <code>dateAdded</code>. The clock starts at the later of listing and NVD publication. Weekdays only, no holiday calendar. Data: <a href="data/kev_enrichment.json">kev_enrichment.json</a>.</p>
         <p>KEV is also narrow: VulnCheck counted 884 CVEs exploited in the wild in 2025, while CISA added 245 to KEV (vendor figure).</p>
       </div>
@@ -165,11 +165,11 @@
 <section class="section" id="fix" aria-labelledby="h-fix">
   <div class="wrap">
     <h2 id="h-fix"><span class="n">3</span>The fix and its cost</h2>
-    <p class="lede">A published re-check rule: when a Not Scheduled or Awaiting CVE's attack signal crosses a threshold, re-queue it for CPE enrichment and log the re-queue. No new money; well under one percent of existing capacity.</p>
+    <p class="lede">A published re-check rule: when the attack signal on a CVE without CPE crosses a threshold, move it into the queue NIST already runs for KEV entries and log the move. No new money; well under one percent of existing capacity.</p>
     <div class="two">
       <div>
         <h3>The rule</h3>
-        <p>Re-queue any Not Scheduled or Awaiting Enrichment CVE when the maximum of its EPSS score, its KEV status, and its LEV estimate (NIST's own composite, CSWP 41) crosses a published threshold, when CISA's SSVC decision marks exploitation as proof-of-concept or active, or when credible third-party exploitation evidence arrives. Publish the threshold. Publish every re-queue and its time to enrichment.</p>
+        <p>Move any CVE without CPE (Not Scheduled, Awaiting Enrichment, or still Received) into the KEV queue, under NIST's existing one-business-day goal, when the maximum of its EPSS score, its KEV status, and its LEV estimate (NIST's own composite, CSWP 41) crosses a published threshold, when CISA's SSVC decision marks exploitation as proof-of-concept or active, or when credible third-party exploitation evidence arrives. Publish the threshold. Publish every re-queue and its time to enrichment. Moving a CVE from Not Scheduled to the back of the Awaiting queue would not be enough: {{awaiting_pct}} of new CVEs already wait there with no CPE.</p>
         <p>NIST already designed the composite; FedRAMP's 2026 rules already use KEV. The rule adds nothing that does not exist, except the commitment to apply it and to say so.</p>
         <h3>What it would cost</h3>
         <p>No per-CVE enrichment cost has been published, so the estimate below is arithmetic on stated inputs. The volume input is measured, not assumed: {{requeue_source}} At an EPSS 10% threshold the rule fires rarely; a lower threshold catches more and costs more, and the input lets you try either. Change any input; the result updates and prints as shown.</p>      </div>
@@ -179,7 +179,7 @@
           <div class="controls">
             <label for="sim-cves"><span>CVEs re-queued per month</span>
               <input type="number" id="sim-cves" name="cves" min="0" max="100000" step="1" value="{{requeue_default_num}}" inputmode="numeric">
-              <span class="note">Measured: CVE Floodline's day-30 crossing rate ({{fl_share10}}) times our 30-day volume. Lower bound.</span>
+              <span class="note">Measured: CVE Floodline's day-30 crossing rate ({{fl_share10}}) times our 30-day volume. A rough estimate: biases run both ways (see below).</span>
             </label>
             <fieldset>
               <legend>Analyst-minutes per CVE</legend>
@@ -232,7 +232,7 @@
         <ol class="metrics">
           <li id="metric-1"><div><b>Share of new CVEs with CPE</b>Any source, and NIST-sourced, by observable tier: KEV status and NVD status. NIST does not publish which CVEs it placed in the federal or EO 14028 tiers, so no outsider can report by those tiers until it does. Denominator: CVEs published in the quarter, Rejected excluded.</div></li>
           <li id="metric-2"><div><b>Time to enrichment</b>Median and 90th percentile days from CVE publication to first CPE, by the same observable tiers. Measured from the NVD change history, not last-modified.</div></li>
-          <li id="metric-3"><div><b>KEV enrichment compliance</b>Share of KEV-listed CVEs enriched within NIST's one-business-day goal, timed from the NVD change history. This window: {{ke_within_1bd}} of {{kev_n}}.</div></li>
+          <li id="metric-3"><div><b>KEV enrichment compliance</b>Share of KEV-listed CVEs enriched within NIST's one-business-day goal, timed from the NVD change history. This window: {{ke_l_1bd}} of {{ke_l_n}} CVEs added to KEV.</div></li>
           <li id="metric-4"><div><b>Re-queue counts and outcomes</b>CVEs re-queued under the rule per month, by trigger, and their time to enrichment after re-queue.</div></li>
           <li id="metric-5"><div><b>Status definition change log</b>Every change to an NVD status category, its date, and the mapping from old to new. The categories changed on April 15, 2026; the current mapping is in the definitions below.</div></li>
         </ol>

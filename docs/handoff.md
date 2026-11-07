@@ -10,7 +10,7 @@ Written Nov 7, 2026 at the end of the first Claude Code session (Claude Fable 5.
 
 | Deliverable | State | What remains |
 |---|---|---|
-| Artifact (scorecard page) | Built, reviewed (Impeccable finish review: ship), live | Weekly rebuild action (proposed, not started); multi-year KEV lag pull; backlog-based re-check estimate (optional, see §5) |
+| Artifact (scorecard page) | Built, reviewed (Impeccable finish review: ship), live | Weekly rebuild action (proposed, not started); backlog-based re-check estimate (optional, see §5). Multi-year KEV lag is done (`scripts/kev_lag.py`) |
 | Policy brief (≤3 pages) | Outline only: `docs/brief-outline.md` | Write it. Numbers must match the page. Export to PDF, put it in `site/` or `docs/`, and point the band's "Policy brief" button at it (currently links to the outline on GitHub) |
 | AI collaboration log | `docs/ai-collaboration-log.md`, current through deploy | Keep adding a row per session. Final pass: every entry has a verification note |
 
@@ -37,7 +37,7 @@ Beyond the settled decisions in `CLAUDE.md`:
 - **Visual direction:** the "GAO Highlights page" world, chosen by Will from a two-hand Impeccable direction round. White report stock, one teal ink (`#1d4e5f`), Source Serif 4 + Public Sans, no dark scheme, no cards, no kickers. Recorded in `DESIGN.md`, `.impeccable/design.json`, and the direction contract in `.impeccable/surfaces/site-index-html.md`. Not GAO's seal, name, or exact blue.
 - **Mode:** Persuade. Primary reader: congressional/NIST/CISA policy staff with two minutes. Primary action: Copy citation. WCAG 2.1 AA, printable.
 - **The gap is standardized CPE, never "no product data."** 94% of CVEs already carry free-text CNA product names (`affected` field). Say "scanner-matchable product data (CPE)".
-- **Re-check volume is measured, not assumed.** CVE Floodline's day-30 EPSS crossing rate (0.094%) × our 30-day volume = 16 re-queues/month, $8K–$23K/yr. The old 250–470/month and $270K–$510K figures are retired (they came from misreading "2.7 per 1,000" as 2.7%). Floodline is reused via `fetch_floodline()`, one summary number, attributed on the page. Do not rebuild it.
+- **Re-check volume is measured, not assumed.** CVE Floodline's day-30 EPSS crossing rate × our 30-day volume. Two numbers, both right: the page's simulator loads the current rate (0.094%) → 16 re-queues/month, $8K–$23K/yr across 20–60 minutes; the brief's range also spans Floodline's earlier window (0.27%) → 16–46/month, $8K–$66K/yr. Say which is which wherever both appear. Rough, biased both ways (see `data-notes.md`). The old 250–470/month and $270K–$510K figures are retired (they came from misreading "2.7 per 1,000" as 2.7%). Floodline is reused via `fetch_floodline()`, one summary number, attributed on the page. Do not rebuild it.
 - **Related tools:** link to RogoLabs (CVE.ICU, Floodline, CNA Scorecard, CNAPulse, SADP Tracker); don't duplicate them. Positioning line is in `CLAUDE.md`.
 - **Status names:** API `Deferred` = display "Not Scheduled"; `Awaiting Analysis` = "Awaiting Enrichment"; `Analyzed` = "Enriched". Display names on the page, API values in code.
 
@@ -59,8 +59,8 @@ Beyond the settled decisions in `CLAUDE.md`:
 
 1. **Write the brief** from `docs/brief-outline.md`. Three pages. Every number must match `site/index.html` (pull the values from `data/processed/summary.json`, not from memory). Cost box uses the Floodline-based figures. Export PDF; link it from the band button in `site/template.html`; rebuild; push.
 2. **Weekly rebuild action** (a proposal card was left in the previous session; if it expired, the spec is: `.github/workflows/rebuild.yml`, Mondays 13:00 UTC + manual, Python 3.12, run fetch, then kev_enrichment, then build with `NVD_API_KEY` from a repo secret and `SITE_URL` as env, commit `summary.json`, `kev_enrichment.json`, `site/index.html` and `site/data/*.json` only if changed, `permissions: contents: write`, `concurrency` group). Will must add the `NVD_API_KEY` secret in Settings → Secrets and variables → Actions first.
-3. **Multi-year KEV lag** (section 2 currently cites Barracuda's annual medians, attributed). Pull KEV `dateAdded` vs NVD `published` for all KEV entries 2023–2026 via the NVD API (`cveId` lookups or `hasKev` filter), compute medians by year, and either confirm or correct Barracuda on the page. Roadmap step 3 in `docs/project-plan.md`.
-4. **Optional, if time:** a backlog-based re-check estimate (pull Deferred/Awaiting CVEs over a longer window, count threshold crossings per month) to tighten the lower bound; the EPSS v4-on-unenriched-CVEs question remains unmeasured and should stay flagged.
+3. ~~Multi-year KEV lag~~: done. `scripts/kev_lag.py` → `kev_lag.json`; the section 2 chart shows our 4 → 7 → 10 → 9, with Barracuda cited for comparison.
+4. **Optional, if time:** a backlog-based re-check estimate (pull Deferred/Awaiting CVEs over a longer window, count threshold crossings per month) to firm up the estimate; the EPSS v4-on-unenriched-CVEs question remains unmeasured and should stay flagged.
 5. **Final AI log pass:** every row has a verification note; add a closing "models used" line naming Claude Fable 5.1 (Nov 7) and Claude Opus (later sessions).
 
 Things to leave alone: the detector findings on `.impeccable/decision/*.html` (spent decision fixtures; ignore-file needs Will's say-so, or delete them); two dead CSS rules (`.copied`, print `.bars .fill`) noted by the documenter.

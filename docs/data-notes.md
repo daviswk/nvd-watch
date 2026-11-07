@@ -19,7 +19,7 @@ Running notes on each pull: what the numbers say, how they were checked, and wha
 | Share with any CVSS | 91.0% | CNA, CISA-ADP, or NIST |
 | Share with a CWE | 90.5% | |
 | In CISA KEV | 18 | 17 of 18 have CPE |
-| CPE share, not in KEV | 21.7% | |
+| CPE share, not in KEV | 22.6% | 3,846 of 17,052, Rejected excluded (an earlier draft of this table showed 21.7%, with Rejected in the denominator; `summary.json` was already right) |
 
 ### CPE by status (excluding Rejected)
 
@@ -87,7 +87,7 @@ Run for `docs/source-verification.md`. Scripts are not in the repo: a scratch sc
 
 To Jul 24 under Barracuda's rule: 654 newer CVEs (Barracuda: 608) and 133 pre-2022 (Barracuda: 132); overall median 8 days (Barracuda: 9); 50% listed within a week (Barracuda: 48%). The rise through 2025 reproduces under every rule. The levels run 2–3 days lower, possibly because Barracuda's data ends earlier or uses CVE.org publish dates (untested). 2026 has fallen back since July. Sixty-six CVEs have NVD publish dates after their KEV date (47 by more than a day). Those are kept as negative lags.
 
-**Volerion window (published Apr 15–Jun 15, 2026), status as of today:** 13,551 published, 13,426 non-rejected (Volerion: 13,441). 7,694 have CPE (57.3%). 2,984 have NIST-sourced CVSS (Volerion at mid-June: 2,645). Status: Analyzed 6,030 · Deferred 5,087 · Modified 1,556 · Awaiting Analysis 640 · Undergoing 113. Coverage keeps rising for months after publication, so our 30-day 22.6% is not comparable with window figures taken later. The page should say so.
+**Volerion window (published Apr 15–Jun 15, 2026), status as of today:** 13,551 published, 13,426 non-rejected (Volerion: 13,441). 7,694 have CPE (57.3%). 2,984 have NIST-sourced CVSS (Volerion at mid-June: 2,645). Status: Analyzed 6,030 · Deferred 5,087 · Modified 1,556 · Awaiting Analysis 640 · Undergoing 113. Coverage keeps rising for months after publication, so our 30-day 22.6% is not comparable with window figures taken later. The page should say so. Five months on, 5,087 (37.9%) of this cohort are still Not Scheduled, against 640 (4.8%) Awaiting Analysis. This is one snapshot, with no June status to compare, but it fits the reading that Awaiting CVEs get worked through and Not Scheduled ones stay put.
 
 **NVD CVEs by publish month, 2026** (`totalResults`, including Rejected): Jan 5,143 · Feb 4,808 · Mar 6,304 · Apr 5,885 · May 6,985 · Jun 8,001 · Jul 9,919 · Aug 12,719 · Sep 15,074 · Oct 17,481.
 
@@ -168,6 +168,35 @@ Same-cohort view (the 28,618 CVEs old enough for a day-30 score): 1 crossed 10% 
 
 **What it shows:** three different conditions, not one. Linux kernel CVEs (all from the kernel CNA) are spread across 13 publication days from Oct 9 to Nov 7, yet 900 are still "Received", so NIST has not triaged them. Mozilla's were triaged and set aside (published in batches, mostly Oct 13 and Oct 27). Red Hat's (`secalert@redhat.com`) are queued.
 
+**Two more checks:** the 900 Linux records are 900 of the 1,346 Received CVEs in our window (66.9%), not of the whole NVD. Of the 257 Not Scheduled Mozilla CVEs, 246 name Firefox and 251 name Thunderbird in the CNA `affected` block (a CVE can name both). Why kernel CVEs sit in Received is not documented in anything we have read. A claim that it reflects a NIST Linux-tooling pilot was unsourced and is not used.
+
 **What it does not show:** why. Firefox and Red Hat Enterprise Linux are widely used by the federal government, so "the federal-software tier covers proprietary software and skips open source" does not fit. NIST does not publish tier assignments, so the cause can't be observed from outside. Report it as status by vendor, and use it as support for the "publish tier assignments" recommendation. Not on the page yet.
 
 **Also corrected (from the same review):** 12,178 (71.3%) is the CVEs where the CNA names a product *and* there is no CPE. All CVEs without CPE: 13,207 of 17,070 (77.4%). The 57.3% for the Apr 15 – Jun 15 cohort (section above) is our recount as of Nov 7, not Volerion's figure (≈50%).
+
+## KEV cohort extended to every listing in the window; readiness vs goal — Nov 7, 2026
+
+**Why:** a third red-team round raised two points. The sample cohort (KEV CVEs *published* in the window) skips older CVEs that reach KEV later, some of which NIST may have parked. And "by the listing day" mixed two different tests. `scripts/kev_enrichment.py` now also covers every CVE CISA *added* to KEV between Oct 8 and Nov 7 (from the KEV feed, any publication year). It compares the CPE event with NVD's own KEV-update event **by timestamp**, not by day.
+
+**Two benchmarks, kept separate:**
+- **Readiness (when defenders need it = before the listing):** among CVEs that were public before CISA listed them and had not been enriched before the April 15, 2026 triage, did CPE exist before the listing?
+- **Goal (metric 3):** CPE within one business day of the later of listing and NVD publication.
+
+| | Sample (published in window) | All KEV additions in window |
+|---|---|---|
+| CVEs | 18 | 35 (17 published earlier, oldest 2015) |
+| Met the one-business-day goal | 17 (1 pending, listed Nov 6) | 34 (same pending CVE) |
+| First CPE record from NIST | 17 of 17 | 34 of 34 |
+| Public before listing, not enriched before the triage | 12 | 23 |
+| ... CPE before the listing | 3 | 10 |
+| ... CPE only after the listing | 9 | 13 |
+| ... of those, CPE within 2 hours of NVD's KEV event | 3 | 4 |
+| Longest public-without-CPE wait until listing | 15 days | 90 days (CVE-2026-41709, published Jul 30, listed Oct 28, CPE Oct 29) |
+
+Six of the older CVEs had CPE from before the triage (2015–2024), so they say nothing about the current rules and are excluded from readiness.
+
+**Reading:** NIST meets its goal once a CVE is listed, including older ones. Before the listing, 13 of 23 lacked CPE, and several got it within minutes of the KEV event: CVE-2026-102764 (10 min), CVE-2026-114625 (29 min), CVE-2026-21589 (40 min, public 10 days), CVE-2026-111357 (89 min, public 15 days). That is direct evidence that the KEV listing is what triggers enrichment for these CVEs.
+
+**Pushback on the red-team's framing:** "only 3 of 18 had CPE before listing" counts six CVEs that were published and listed on the same day (or listed before NVD published them), with no time to be enriched first. The fair denominator is the CVEs that were public before listing: 3 of 12 in the sample, 10 of 23 overall. Status before listing is not in the change history, so we cannot say which of the 13 were Not Scheduled rather than Awaiting.
+
+**Re-check volume bias, both directions:** of the 10 CVEs in the window currently at EPSS >= 0.10, 8 already have CPE (7 in KEV). Floodline's rate counts all crossings, so 16–46 a month overstates re-queues of *new* CVEs, possibly by several times (n = 10, so the size is not reliable). It also leaves out crossings after day 30, the older Not Scheduled stock, and SSVC or third-party triggers. It is a rough estimate, not a lower bound.
