@@ -13,7 +13,7 @@ A public scorecard that measures whether the U.S. vulnerability warning system s
 ## Recommendations (brief)
 | Stakeholder | Recommendation |
 |---|---|
-| **NIST** | Publish a re-check rule: move any CVE without CPE (Not Scheduled, Awaiting Enrichment, or Received) into the KEV queue, under the existing one-business-day goal, when max(EPSS, KEV, LEV) (CSWP 41) crosses a published threshold, CISA SSVC marks exploitation PoC/Active, or credible third-party exploitation evidence arrives. Log every re-queue. Publish five quarterly metrics with frozen definitions. Publish each CVE's priority tier. |
+| **NIST** | Publish a re-check rule: move any CVE without CPE (Not Scheduled, Awaiting Enrichment, or Received) into the KEV queue, under the existing one-business-day goal, when max(EPSS, KEV, LEV) (CSWP 41) crosses a published threshold, CISA SSVC marks exploitation PoC/Active, or credible third-party exploitation evidence arrives. Log every re-queue. Publish five quarterly metrics with frozen definitions. Publish each CVE's priority tier, or quarterly counts by tier where per-CVE tags would expose agency software. |
 | **CISA** | As CVE sponsor, phase in structured, machine-matchable product data in CNA records, starting with the largest vendor CNAs and building on the Supplier ADP pilot. As KEV owner, publish listing lag and speed review when credible third-party exploitation reports arrive. |
 | **Congress** | Attach the metrics to existing vehicles (the GAO review of CVE/NVD requested in June 2025; any CVE-codification bill, since the FY2027 NDAA texts have none) rather than new appropriations. Treat the rule as use of existing capacity (under 1% of peak output); cite the OIG re-scoring figure for scale only. |
 

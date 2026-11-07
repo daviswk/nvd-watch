@@ -111,7 +111,10 @@ def main():
     # Re-check volume. Rate from CVE Floodline (RogoLabs): share of a day's CVEs that have crossed
     # EPSS 10% by day 30. Volume is our own 30-day live count. Falls back to a flagged assumption.
     hi = live[live["epss"] >= 0.10]
-    hi_n, hi_cpe = int(len(hi)), int(hi["has_cpe"].sum())
+    hi_n = int(len(hi))
+    hi_kev = int(hi["in_kev"].sum())
+    hi_out = hi[~hi["in_kev"]]
+    hi_out_n, hi_out_nocpe = int(len(hi_out)), int((~hi_out["has_cpe"]).sum())
     fl = summary.get("floodline")
     if fl:
         share10 = fl["share_cross10_day30_pct"] / 100
@@ -120,10 +123,12 @@ def main():
             f"CVE Floodline: {fmt_int(fl['cross10_day30'])} of {fmt_int(fl['cves_with_30d_score'])} CVEs "
             f"published {fmt_date(fl['window'][0])} to {fmt_date(fl['window'][1])} crossed EPSS 10% by day 30 "
             f"({fl['share_cross10_day30_pct']:g}%), applied to our {fmt_int(summary['cves_live'])} CVEs per 30 days. "
-            f"It is a rough estimate, and its biases run both ways. Floodline counts every CVE that crosses, but in "
-            f"our window {hi_cpe} of the {hi_n} CVEs at EPSS 10% or higher already had CPE, most through KEV, which "
-            f"pushes the count down. It also misses crossings after day 30, the older Not Scheduled stock, and SSVC "
-            f"or third-party triggers, which push it up."
+            f"It is a rough estimate, and its biases run both ways. Floodline counts every CVE that crosses, "
+            f"including ones CISA has already listed: in our window, {hi_kev} of the {hi_n} CVEs at EPSS 10% or higher "
+            f"are in KEV, and EPSS tends to rise after a KEV listing (Nucleus Security), so those need no re-check. "
+            f"That pushes the count down. Of the {hi_out_n} outside KEV, {hi_out_nocpe} have no CPE. The estimate also "
+            f"misses crossings after day 30, the older Not Scheduled stock, and SSVC or third-party triggers, which "
+            f"push it up."
         )
     else:
         requeue_default = 40
@@ -172,8 +177,7 @@ def main():
     met_all = kl["within_one_business_day"] == kl["with_cpe_now"]
     ke_headline = ("Once CISA confirms an attack, NIST moves fast. Before that, it mostly waits." if met_all else
                    "Even after CISA confirms an attack, NIST sometimes misses its own goal.")
-    ke_verdict = ("NIST meets its goal once a CVE is listed. The gap is the wait before the listing: until CISA "
-                  "acts, nothing pulls these CVEs forward." if met_all else
+    ke_verdict = ("NIST meets its goal once a CVE is listed. The gap is the wait before the listing." if met_all else
                   f"{kl['with_cpe_now'] - kl['within_one_business_day']} took longer than one business day.")
 
     stale_notice = ""
@@ -240,6 +244,8 @@ def main():
         "ke_l_n": fmt_int(kl["kev_cves"]),
         "ke_l_1bd": fmt_int(kl["within_one_business_day"]),
         "ke_l_pub": fmt_int(kl["triage_public_before_kev"]),
+        "ke_l_sameday": fmt_int(kl["kev_cves"] - kl["public_before_kev"]),
+        "ke_l_pretriage": fmt_int(kl["public_before_kev"] - kl["triage_public_before_kev"]),
         "ke_l_ready": fmt_int(kl["triage_cpe_before_kev"]),
         "ke_l_after": fmt_int(kl["triage_cpe_only_after_kev"]),
         "ke_l_2h": fmt_int(kl["triage_cpe_within_2h_of_kev"]),
