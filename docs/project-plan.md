@@ -8,14 +8,14 @@ A public scorecard that measures whether the U.S. vulnerability warning system s
 2. **The backlog predates AI.** It began Feb 2024 when an enrichment contract lapsed (Commerce OIG, OIG-26-020-I, May 26, 2026). NIST cites a 263% rise in submissions (2020–2025), not AI.
 3. **Volume is surging.** Monthly CVEs ~5,045 (Jan) → ~10,740 (Aug 2026) (Google GTIG); only ~0.23% seen exploited.
 4. **Product data has no free substitute.** CISA Vulnrichment stopped adding CPE on Dec 10, 2024; NVD CPE coverage for 2024 CVEs was ~41% vs ~77% from a commercial service (VulnCheck via CSA).
-5. **KEV is slow and narrow.** Median CVE→KEV lag 6 (2023) → 14 days (2026) (Barracuda, Jul 24, 2026). VulnCheck logged 884 exploited CVEs in 2025 vs 245 added to CISA KEV.
+5. **KEV is slow and narrow.** Median CVE→KEV lag 4 (2023) → 10 days (2025), 9 in 2026 to Nov 6 (our count, `scripts/kev_lag.py`; Barracuda, Jul 24, 2026, reports 6 → 14). VulnCheck logged 884 exploited CVEs in 2025 vs 245 added to CISA KEV.
 
 ## Recommendations (brief)
 | Stakeholder | Recommendation |
 |---|---|
 | **NIST** | Publish a re-check rule: re-queue any lowest-priority or "Not Scheduled" CVE for CPE enrichment when max(EPSS, KEV, LEV) (CSWP 41) crosses a published threshold, CISA SSVC marks exploitation PoC/Active, or credible third-party exploitation evidence arrives. Log every re-queue. Publish five quarterly metrics with frozen definitions. |
 | **CISA** | As CVE sponsor, require affected-product data in CNA records. As KEV owner, publish listing lag and speed review when credible third-party exploitation reports arrive. |
-| **Congress** | Attach the metrics to existing vehicles (pending GAO review of CVE/NVD; NDAA CVE-codification language) rather than new appropriations. Cite the OIG offset. |
+| **Congress** | Attach the metrics to existing vehicles (the GAO review of CVE/NVD requested in June 2025; any CVE-codification bill, since the FY2027 NDAA texts have none) rather than new appropriations. Cite the OIG offset. |
 
 ## Build roadmap
 | Step | Output | Done when |

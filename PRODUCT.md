@@ -46,15 +46,15 @@ Framing line: NIST prioritizes by who uses the software, or confirmed attacks. W
 
 One scorecard page with four sections, in this order:
 1. **The gap.** CPE coverage by priority tier and status, computed from the NVD API, with definitions shown.
-2. **The gate.** CVE-to-KEV lag trend, with PHP2Shell as the worked example (probes Oct 17, unsuccessful; patch Oct 21; confirmed exploitation Oct 24–25; KEV Oct 26).
+2. **The gate.** CVE-to-KEV lag trend, with PHP2Shell as the worked example (honeypot attempt Oct 17; patch, NVD publication and NIST CPE Oct 21; exploitation reported Oct 24–25; KEV Oct 26). It shows KEV listing lag; PHP got CPE without waiting for KEV.
 3. **The fix and its cost.** An interactive re-check rule simulator: CVEs per month, percent of NIST capacity, cost range against the OIG offset. Minutes-per-CVE is a 20/45/60 range labeled as an assumption.
 4. **Who should act.** Recommendations for NIST, CISA, and Congress, plus five quarterly metrics with frozen definitions.
 
 Settled positions future work must preserve:
 - The gap is product data (CPE), not severity scores. Do not attack the "stop re-scoring" half of NIST's policy.
-- KEV is the gate: for most software, CPE comes only after a KEV listing. Median CVE-to-KEV lag rose 6 → 9 → 12 → 14 days (2023–2026, Barracuda).
+- KEV is the gate: for software outside NIST's federal and critical-software priorities, CPE comes only after a KEV listing. Median CVE-to-KEV lag rose 4 → 7 → 10 days (2023–2025) and is 9 in 2026 to date (our count, `scripts/kev_lag.py`; Barracuda reports 6 → 14).
 - EPSS is a re-check trigger, not an intake screen.
-- The ask is a rule change, not new money: about 250–470 CVEs/month, roughly 5–9% of NIST's ~5,000/month ceiling, crude cost ~$270K–$510K/yr vs. the OIG's ~$400K/yr redirectable re-scoring effort.
+- The ask is a rule change, not new money: about 16–46 CVEs/month, under 1% of NIST's ~5,000/month peak output (OIG), ~$8K–$66K/yr vs. the OIG's ~$800K over two years (~$400K/yr) from minimizing re-scoring.
 
 Hard rules:
 - Never invent data. Anything illustrative is labeled "illustrative" on the page. Every number traces to a query or a cited source.

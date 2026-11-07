@@ -14,10 +14,10 @@ Framing line: *NIST prioritizes by who uses the software, or confirmed attacks. 
 3. **AI collaboration log**: models used, key prompts and iterations, where AI failed or fabricated, how claims were verified. See `docs/ai-collaboration-log.md`; keep adding entries.
 
 ## Settled decisions (don't relitigate without a reason)
-- **The gap is product data (CPE), not severity scores.** CNAs supply CVSS for ~80% of CVEs; NIST re-scores matched the OIG in only 8 of 69 samples. Don't attack the "stop re-scoring" half of NIST's policy.
-- **KEV is the gate.** For most software, CPE comes only after a KEV listing. Median CVE-to-KEV lag rose 6 → 9 → 12 → 14 days (2023–2026, Barracuda).
+- **The gap is product data (CPE), not severity scores.** 91% of CVEs in our pull carry some CVSS (OIG: nearly 80% of CVE Program *participants* include scores); OIG's own specialists produced the same CVSS vector in only 8 of 69 double-scored CVEs (12%), so scoring is inconsistent even among experts. Don't attack the "stop re-scoring" half of NIST's policy.
+- **KEV is the gate.** For most software, CPE comes only after a KEV listing. Median CVE-to-KEV lag rose 6 → 9 → 12 → 14 days (2023–2026, Barracuda); our own recomputation of Barracuda's population gives 4 → 7 → 10 → 9 (2026 to Nov 6). See `docs/data-notes.md`. Federally used software (e.g., PHP2Shell) gets CPE without waiting for KEV.
 - **EPSS is a re-check trigger, not an intake screen.** EPSS crossed 0.10 before KEV in only 19% of cases, but led by ~201 days when it did. Re-queue stalled / "Not Scheduled" CVEs when max(EPSS, KEV, LEV) — NIST CSWP 41 — crosses a published threshold, or CISA SSVC marks exploitation PoC/Active.
-- **The ask is a rule change, not new money.** Re-check volume is measured, not assumed: CVE Floodline shows ~0.09% of new CVEs cross EPSS 10% by day 30 (27 of 28,618, Aug–Nov 2026; an earlier window showed 0.27%), which on our ~17,000 CVEs/30 days is ~16–46 re-queues a month, well under 1% of NIST's ~5,000/month ceiling, ~$8K–$66K/yr at 20–60 analyst-minutes and $120/h, vs. the OIG's ~$400K/yr redirectable re-scoring effort. The earlier "250–470 CVEs/month, $270K–$510K/yr" came from reading Floodline's "2.7 per 1,000" as 2.7%; it is retired (see `docs/data-notes.md`). A lower threshold (0.05, 0.01) raises the volume; the simulator lets readers try it.
+- **The ask is a rule change, not new money.** Re-check volume is measured, not assumed: CVE Floodline shows ~0.09% of new CVEs cross EPSS 10% by day 30 (27 of 28,618, Aug–Nov 2026; an earlier window showed 0.27%), which on our ~17,000 CVEs/30 days is ~16–46 re-queues a month, well under 1% of the ~5,000/month NIST has never exceeded (an OIG observation, not a NIST-stated ceiling), ~$8K–$66K/yr at 20–60 analyst-minutes and $120/h, vs. the OIG's ~$800K over two years (~$400K/yr, our division) from minimizing re-scoring, which NIST contests. The earlier "250–470 CVEs/month, $270K–$510K/yr" came from reading Floodline's "2.7 per 1,000" as 2.7%; it is retired (see `docs/data-notes.md`). A lower threshold (0.05, 0.01) raises the volume; the simulator lets readers try it.
 - **Stakeholders (brief):** NIST; CISA (as KEV owner *and* CVE sponsor — the CNA product-data ask goes here); Congress (Appropriations, Science, Homeland Security; GAO review request; NDAA CVE-codification vehicle). Context: FIRST (EPSS), MITRE/CVE Board, FedRAMP PMO, SLTT governments/MS-ISAC, commercial vendors, ENISA, AI labs.
 - **Answer NIST RFI question 7(e)** (91 FR 52042, Aug 12, 2026): "What metrics should be considered to track and evaluate the success of the NVD?"
 
@@ -64,19 +64,21 @@ RogoLabs (Jerry Gamblin, https://rogolabs.net) publishes free, open-source CVE t
 - Re-check volume now comes from CVE Floodline's day-30 crossing rate (see Related tools). Still open: the day-90 horizon (not yet observable in Floodline's window), crossings from the older Not Scheduled stock (which Floodline's 90-day window does not cover), and the SSVC / third-party-evidence triggers, none of which the estimate counts. It is a lower bound.
 - Does EPSS v4 accuracy degrade on unenriched CVEs? Unmeasured.
 - No per-CVE enrichment cost exists; cost figures are crude upper bounds.
-- PHP2Shell wording: probes Oct 17 (unsuccessful), patch Oct 21, confirmed exploitation Oct 24–25, KEV Oct 26.
-- Unverified: "V-etalon" (Socket only), GPT-6 Cyber figures (press only), Ivanti "6–12 days" (cut).
+- PHP2Shell (CVE-2026-109618, -109619): honeypot attempt Oct 17 (success unclear), patch and NVD publication Oct 21, NIST CPE Oct 21 (same day), exploitation reported Oct 24–25 (BleepingComputer only), KEV Oct 26. It shows KEV listing lag, not CPE waiting on KEV.
+- Source checks: see `docs/source-verification.md`. V-etalon is confirmed by NIST's Aug 12, 2026 blog (in development). GPT-6 Cyber figures are press-reported (CyberScoop, Nov 5). Ivanti "6–12 days" is cut.
 
 ## Where things are
 - `docs/handoff.md` — **start here in a new session**: current state, how to run everything, what's next in order, gotchas
 - `PRODUCT.md` — product truth for design work (Impeccable); `DESIGN.md` — the visual system as built
 - `scripts/fetch_sample.py` — data pull (reads `NVD_API_KEY` from `.env`; `--from-raw` reprocesses without fetching)
+- `scripts/kev_lag.py` — median CVE-to-KEV lag by year for the section 2 chart (writes `data/processed/kev_lag.json`; copy values into the template by hand)
 - `scripts/build_site.py` — renders `site/index.html` from `site/template.html` + `data/processed/summary.json`; edit the template, never index.html
 - `docs/data-notes.md` — what each pull showed, caveats, status-name mapping
 - `docs/project-plan.md` — full plan, recommendations, roadmap
 - `docs/brief-outline.md` — 3-page brief skeleton
 - `docs/ai-collaboration-log.md` — log, seeded with entries so far
 - `docs/sources.md` — key sources with links
+- `docs/source-verification.md` — verdict per claim (Nov 7, 2026), what each source actually says
 - `docs/research/` — evidence review report + raw research notes
 - `docs/learning/` — primer and drill pages (open in a browser), video list
 - `design/mockups/` — earlier scorecard mockups (reference only)

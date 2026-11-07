@@ -68,14 +68,14 @@
         </p>
       </div>
       <ul class="findings">
-        <li><b>KEV is the gate.</b> {{kev_with_cpe}} of the {{kev_n}} CVEs in this window that CISA listed as exploited have CPE; among CVEs not in KEV, {{pct_cpe_if_not_in_kev}} do. The median lag from CVE publication to a KEV listing has risen from 6 days in 2023 to 14 in 2026 (Barracuda).</li>
-        <li><b>The fix costs a fraction of what NIST already spends re-scoring.</b> By day 30, about {{fl_share10}} of new CVEs have crossed EPSS 10% (CVE Floodline). A published rule to re-check Not Scheduled CVEs when that happens would re-queue on the order of {{requeue_default}} CVEs a month, well under 1% of NIST's enrichment capacity, against roughly $400,000 a year of re-scoring effort the Commerce Inspector General found NIST could redirect.</li>
+        <li><b>KEV is the gate.</b> {{kev_with_cpe}} of the {{kev_n}} CVEs in this window that CISA listed as exploited have CPE; among CVEs not in KEV, {{pct_cpe_if_not_in_kev}} do. By our count, the median lag from CVE publication to a KEV listing rose from 4 days in 2023 to 10 in 2025, and stands at 9 so far in 2026.</li>
+        <li><b>The fix costs a fraction of what NIST already spends re-scoring.</b> By day 30, about {{fl_share10}} of new CVEs have crossed EPSS 10% (CVE Floodline). A published rule to re-check Not Scheduled CVEs when that happens would re-queue on the order of {{requeue_default}} CVEs a month, well under 1% of the roughly 5,000 CVEs a month NIST has processed at its peak. The Commerce Inspector General estimated NIST could put about $800,000 over two years to better use by cutting back re-scoring.</li>
       </ul>
       <h2 id="h-rec" style="margin-top:30px">What we recommend</h2>
       <table class="recs">
         <tr><th scope="row">NIST</th><td>Publish a re-check rule for Not Scheduled CVEs, log every re-queue, and report five quarterly metrics with frozen definitions.</td></tr>
         <tr><th scope="row">CISA</th><td>As CVE Program sponsor, require structured product data in CNA records; as KEV owner, publish listing lag and speed review when credible third-party exploitation reports arrive.</td></tr>
-        <tr><th scope="row">Congress</th><td>Attach the metrics to the pending GAO review of the CVE program and to NDAA CVE-codification language rather than to new appropriations.</td></tr>
+        <tr><th scope="row">Congress</th><td>Ask GAO to fold these metrics into the CVE program review House members requested in 2025, and write them into any bill that codifies the CVE program, rather than funding a new line.</td></tr>
       </table>
     </div>
   </div>
@@ -106,6 +106,7 @@
         <p><b>Time to enrichment, when it happens:</b> for the {{tte_n}} CVEs enriched in this window, the median was {{tte_median}} days after publication and the 90th percentile {{tte_p90}} days. <span class="note">Crude measure: last-modified minus published, counted only for CVEs already enriched, so slow cases are under-counted.</span></p>
         <h3>How this differs from the figures in circulation</h3>
         <p>Published coverage estimates range from about 50% (Volerion, April to June 2026) to 8.4% (Cyber Strategy Institute, Q3 2026) because each uses a different definition and window. Ours counts the share of non-rejected CVEs published in the last 30 days whose NVD record has a CPE configuration, and the definition does not change.</p>
+        <p>Coverage also rises as CVEs age: of the CVEs published April 15 to June 15, 2026, 57% had CPE by November 7. A 30-day window shows what defenders have while a vulnerability is new, which is when they need it.</p>
       </div>
     </div>
   </div>
@@ -114,37 +115,38 @@
 <section class="section" id="gate" aria-labelledby="h-gate">
   <div class="wrap">
     <h2 id="h-gate"><span class="n">2</span>The gate</h2>
-    <p class="lede">For most software, CPE arrives only after CISA lists the CVE as exploited. That gate opens later every year, and it opens after attacks have begun.</p>
+    <p class="lede">For software outside NIST's federal and critical-software priorities, CPE arrives only after CISA lists the CVE as exploited. That listing has slowed since 2023, and it comes after attacks have begun.</p>
     <div class="two">
       <div>
         <h3>Median days from CVE publication to KEV listing</h3>
         <figure class="chart">
           <svg viewBox="0 0 560 190" role="img" aria-labelledby="chart-title chart-desc">
             <title id="chart-title">Median CVE-to-KEV lag by year</title>
-            <desc id="chart-desc">2023: 6 days. 2024: 9 days. 2025: 12 days. 2026: 14 days. Source: Barracuda, July 2026.</desc>
+            <desc id="chart-desc">2023: 4 days. 2024: 7 days. 2025: 10 days. 2026 to November 6: 9 days. Computed by NVD Watch from the CISA KEV feed and NVD publication dates.</desc>
             <g class="lbl">
               <text x="0" y="36">2023</text><text x="0" y="74">2024</text><text x="0" y="112">2025</text><text x="0" y="150">2026</text>
             </g>
             <line class="axis" x1="60" y1="12" x2="60" y2="166"/>
-            <rect class="bar" x="60" y="20" width="180" height="24"/><text class="val" x="248" y="37">6 days</text>
-            <rect class="bar" x="60" y="58" width="270" height="24"/><text class="val" x="338" y="75">9 days</text>
-            <rect class="bar" x="60" y="96" width="360" height="24"/><text class="val" x="428" y="113">12 days</text>
-            <rect class="bar" x="60" y="134" width="420" height="24"/><text class="val" x="488" y="151">14 days</text>
+            <rect class="bar" x="60" y="20" width="120" height="24"/><text class="val" x="188" y="37">4 days</text>
+            <rect class="bar" x="60" y="58" width="210" height="24"/><text class="val" x="278" y="75">7 days</text>
+            <rect class="bar" x="60" y="96" width="300" height="24"/><text class="val" x="368" y="113">10 days</text>
+            <rect class="bar" x="60" y="134" width="270" height="24"/><text class="val" x="338" y="151">9 days</text>
           </svg>
-          <figcaption class="note">Barracuda, "The KEV gap," July 24, 2026 (vendor analysis). 2026 figure is year to date.</figcaption>
+          <figcaption class="note">KEV listings by year added, CVEs published 2022 or later; calendar days from NVD publication to KEV <code>dateAdded</code>. 2026 is through November 6. Computed by <code>scripts/kev_lag.py</code>. Barracuda's July 2026 analysis of the same population reports a steeper rise, 6 to 14 days (vendor analysis).</figcaption>
         </figure>
-        <p><b>In this window:</b> {{kev_n}} CVEs published {{window_start}} to {{window_end}} are in KEV; the median lag from NVD publication to listing was {{kev_lag_median}} days (n = {{kev_lag_n}}). Short windows catch only the fastest listings, so this understates the lag; a multi-year pull is planned.</p>
+        <p><b>In this window:</b> {{kev_n}} CVEs published {{window_start}} to {{window_end}} are in KEV; the median lag from NVD publication to listing was {{kev_lag_median}} days (n = {{kev_lag_n}}). Short windows catch only the fastest listings, so this understates the lag.</p>
         <p>KEV is also narrow: VulnCheck counted 884 CVEs exploited in the wild in 2025, while CISA added 245 to KEV (vendor figure).</p>
       </div>
       <div>
         <h3>Worked example: PHP2Shell</h3>
         <ol class="timeline">
-          <li><time datetime="2026-10-17">October 17</time>First probes observed; unsuccessful.</li>
-          <li><time datetime="2026-10-21">October 21</time>Patch released.</li>
-          <li><time datetime="2026-10-24">October 24 to 25</time>Successful exploitation confirmed by researchers.</li>
-          <li class="kev"><time datetime="2026-10-26">October 26</time>CISA confirms active exploitation; enrichment follows within NIST's one-business-day goal.</li>
+          <li><time datetime="2026-10-17">October 17</time>Amazon's honeypots log an exploit attempt; whether it would have worked on real systems is unclear.</li>
+          <li><time datetime="2026-10-21">October 21</time>Patch released; the NVD publishes CVE-2026-109618 and CVE-2026-109619, and NIST adds CPE within three hours.</li>
+          <li><time datetime="2026-10-24">October 24 to 25</time>Researchers report successful exploitation.</li>
+          <li class="kev"><time datetime="2026-10-26">October 26</time>CISA adds both CVEs to KEV.</li>
         </ol>
-        <p class="note">Sources: NVD change history; Recorded Future; The Register, October 27, 2026. Dates are the published reporting dates, not first-occurrence estimates.</p>
+        <p>PHP is federally used software, so NIST enriched it without waiting for KEV: the priority rules worked here. What the case shows is the KEV signal itself, nine days after the first attempt. For software outside NIST's priorities, that listing is when CPE work begins.</p>
+        <p class="note">Sources: NVD change history; CISA KEV; Recorded Future; BleepingComputer and The Register, October 27, 2026. Dates are the published reporting dates, not first-occurrence estimates.</p>
         <h3>Where EPSS fits</h3>
         <p>EPSS, FIRST's daily exploitation-probability score, led KEV in only 19% of cases, but by about 201 days when it did (Barracuda). It is not an intake screen for brand-new CVEs: in this window only {{epss_ge_010}} CVEs without CPE and outside KEV scored 0.10 or higher ({{epss_ge_005}} at 0.05; {{epss_ge_001}} at 0.01), and {{epss_missing}} had no score yet. It is a re-check trigger for the stock of CVEs that were set aside.</p>
         <p>The score matures after disclosure. CVE Floodline (RogoLabs) re-scores each day's CVEs against the dated EPSS archive: of {{fl_n}} CVEs old enough to have a day-30 score, {{fl_cross10_day0}} had crossed 10% on their disclosure day, {{fl_cross10_day7}} by day 7, and {{fl_cross10_day30}} by day 30 (data as of {{fl_generated}}). A low day-one score is provisional, not safe, which is why the trigger has to keep re-checking.</p>
@@ -161,7 +163,7 @@
       <div>
         <h3>The rule</h3>
         <p>Re-queue any Not Scheduled or Awaiting Enrichment CVE when the maximum of its EPSS score, its KEV status, and its LEV estimate (NIST's own composite, CSWP 41) crosses a published threshold, when CISA's SSVC decision marks exploitation as proof-of-concept or active, or when credible third-party exploitation evidence arrives. Publish the threshold. Publish every re-queue and its time to enrichment.</p>
-        <p>NIST already designed the composite; FedRAMP's 2026 rules already use KEV and EPSS. The rule adds nothing that does not exist, except the commitment to apply it and to say so.</p>
+        <p>NIST already designed the composite; FedRAMP's 2026 rules already use KEV. The rule adds nothing that does not exist, except the commitment to apply it and to say so.</p>
         <h3>What it would cost</h3>
         <p>No per-CVE enrichment cost has been published, so the estimate below is arithmetic on stated inputs. The volume input is measured, not assumed: {{requeue_source}} At an EPSS 10% threshold the rule fires rarely; a lower threshold catches more and costs more, and the input lets you try either. Change any input; the result updates and prints as shown.</p>
       </div>
@@ -190,10 +192,10 @@
           <table class="data" aria-live="polite">
             <tbody>
               <tr><th scope="row">Analyst-hours per year</th><td class="num" id="sim-hours">{{sim_hours}}</td></tr>
-              <tr><th scope="row">Share of NIST's stated capacity (~5,000 CVEs a month)</th><td class="num" id="sim-capacity">{{sim_capacity}}</td></tr>
+              <tr><th scope="row">Share of NIST's peak monthly output (~5,000 CVEs, per the OIG)</th><td class="num" id="sim-capacity">{{sim_capacity}}</td></tr>
               <tr><th scope="row">Yearly cost at the selected minutes</th><td class="num" id="sim-cost">{{sim_cost}}</td></tr>
               <tr><th scope="row">Range across 20 to 60 minutes</th><td class="num" id="sim-low-high">{{sim_low_high}}</td></tr>
-              <tr><th scope="row">Share of the OIG's ~$400K redirectable re-scoring effort</th><td class="num" id="sim-offset">{{sim_offset}}</td></tr>
+              <tr><th scope="row">Share of the OIG's re-scoring savings (~$800K over two years, so ~$400K a year)</th><td class="num" id="sim-offset">{{sim_offset}}</td></tr>
             </tbody>
           </table>
           <p class="result" id="sim-sentence">{{sim_sentence}}</p>
@@ -214,10 +216,10 @@
         <table class="recs">
           <tr><th scope="row">NIST</th><td>Adopt and publish the re-check rule and its threshold. Log every re-queue. Publish the five metrics quarterly with the definitions below, and a change log whenever a status category changes.</td></tr>
           <tr><th scope="row">CISA</th><td>As CVE Program sponsor, require affected-product data in a structured, machine-matchable form in CNA records so that CPE assignment is a lookup, not research. As KEV owner, publish listing lag by month and commit to a review clock when credible third-party exploitation reports arrive.</td></tr>
-          <tr><th scope="row">Congress</th><td>Through the Appropriations, Science, and Homeland Security committees: request that GAO's pending review of the CVE program include these metrics, and attach them to NDAA language codifying the CVE program. Cite the OIG offset; do not fund a new line.</td></tr>
+          <tr><th scope="row">Congress</th><td>Through the Appropriations, Science, and Homeland Security committees: ask GAO to include these metrics in the CVE program review that House Homeland Security and Science ranking members requested in June 2025, and write them into any bill that codifies the CVE program (neither chamber's FY2027 NDAA text does). Cite the OIG offset; do not fund a new line.</td></tr>
         </table>
         <h3>One limit, stated plainly</h3>
-        <p>Some threats never get a CVE, as in the 2026 Siemens S7 PLC campaign. No enrichment rule helps there. This page measures the system that exists.</p>
+        <p>Some threats never reach a CVE record defenders can match. The August 2026 joint advisory on attacks against Siemens S7 PLCs listed no CVE IDs at all, pointing defenders to the vendor's own advisories. No enrichment rule helps there. This page measures the system that exists.</p>
       </div>
       <div>
         <h3>Five quarterly metrics</h3>
@@ -260,7 +262,7 @@
       <li>NIST, <a href="https://www.nist.gov/news-events/news/2026/04/nist-updates-nvd-operations-address-record-cve-growth">NVD operations update</a>, April 15, 2026.</li>
       <li>NIST, <a href="https://nvd.nist.gov/vuln/vulnerability-status">Vulnerability status definitions</a>, updated April 14, 2026.</li>
       <li>NIST, <a href="https://www.federalregister.gov/documents/2026/08/12/2026-16371/request-for-information-rfi-on-modernizing-the-national-vulnerability-database-in-the-age-of">RFI on modernizing the NVD</a>, 91 FR 52042, August 12, 2026.</li>
-      <li>Commerce Office of Inspector General, <a href="https://www.oig.doc.gov/wp-content/OIGPublications/OIG-26-020-I_Abstract-SECURED.pdf">OIG-26-020-I</a>, May 26, 2026.</li>
+      <li>Commerce Office of Inspector General, <a href="https://www.oig.doc.gov/wp-content/OIGPublications/OIG-26-020-I-SECURED.pdf">OIG-26-020-I</a>, May 26, 2026 (full report; NIST's response in Appendix 4 disputes the re-scoring savings).</li>
       <li>Mell and Spring, <a href="https://nvlpubs.nist.gov/nistpubs/CSWP/NIST.CSWP.41.pdf">Likely Exploited Vulnerabilities</a>, NIST CSWP 41, May 2025.</li>
       <li>CISA, <a href="https://www.cisa.gov/known-exploited-vulnerabilities-catalog">Known Exploited Vulnerabilities catalog</a> and JSON feed.</li>
       <li>FIRST, <a href="https://www.first.org/epss/faq">EPSS</a> API and FAQ.</li>
@@ -269,7 +271,7 @@
       <li>VulnCheck, <a href="https://www.vulncheck.com/blog/state-of-exploitation-2026">State of Exploitation 2026</a>.<span class="v">Vendor</span></li>
       <li>Volerion via Dark Reading, <a href="https://darkreading.com/vulnerabilities-threats/nist-enrichment-reductions-cve-coverage-accuracy">NIST enrichment reductions and CVE coverage</a>, 2026.<span class="v">Vendor</span></li>
       <li>Cyber Strategy Institute, <a href="https://cyberstrategyinstitute.com/cve-state-of-risk-october-2026/">The Count Broke First</a>, October 23, 2026.<span class="v">Disputed</span></li>
-      <li>Recorded Future, <a href="https://www.recordedfuture.com/blog/php2shell-vulnerability-exploitation">PHP2Shell exploitation</a>; The Register, <a href="https://www.theregister.com/cyber-crime/2026/10/27/cisa-confirms-php2shell-under-attack-as-researchers-clock-successful-exploits/5305681">CISA confirms PHP2Shell under attack</a>, October 27, 2026.</li>
+      <li>Recorded Future, <a href="https://www.recordedfuture.com/blog/php2shell-vulnerability-exploitation">PHP2Shell exploitation</a>; BleepingComputer, <a href="https://bleepingcomputer.com/news/security/cisa-confirms-php2shell-vulnerabilities-now-exploited-in-attacks">CISA confirms PHP2Shell vulnerabilities now exploited in attacks</a>; The Register, <a href="https://www.theregister.com/cyber-crime/2026/10/27/cisa-confirms-php2shell-under-attack-as-researchers-clock-successful-exploits/5305681">CISA confirms PHP2Shell under attack</a>, October 27, 2026.</li>
       <li>RogoLabs (Jerry Gamblin), <a href="https://cvefloodline.org">CVE Floodline</a> (<a href="https://github.com/RogoLabs/cvefloodline.org">source</a>, Apache-2.0): EPSS re-scored at day 0, 7, 30, and 90 from the dated EPSS archive. The re-check volume above is derived from its published <code>data/floodline.json</code>.</li>
       <li>RogoLabs, <a href="https://cve.icu">CVE.ICU</a> (CVE counts), <a href="https://cnascorecard.org">CNA Scorecard</a> (CNA record completeness), and <a href="https://rogolabs.github.io/SADP-Tracker/index.html">SADP Tracker</a> (the CVE Program's Supplier ADP pilot: 3,349 CVEs with supplier-added affected-product data as of November 7, 2026). These measure the CVE ecosystem; this page measures NIST.</li>
     </ol>

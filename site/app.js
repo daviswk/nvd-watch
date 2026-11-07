@@ -5,8 +5,8 @@
   "use strict";
 
   /* ---------- Re-check cost simulator ---------- */
-  var CAPACITY_PER_MONTH = 5000;   // NIST's stated enrichment ceiling, CVEs per month (see Sources)
-  var OIG_OFFSET = 400000;         // Commerce OIG: ~$400K/yr of re-scoring effort NIST could redirect
+  var CAPACITY_PER_MONTH = 5000;   // OIG: NIST has never processed more than 5,000 CVEs in a month (peak output, not a stated ceiling)
+  var OIG_OFFSET = 400000;         // OIG: ~$800K over two years from minimizing re-scoring, i.e. ~$400K a year
 
   var form = document.getElementById("sim-form");
   if (form) {
@@ -57,11 +57,11 @@
       out.offset.textContent = Math.round(100 * ratio) + "%";
 
       var verdict = ratio <= 1
-        ? "within the roughly $400K a year of re-scoring effort the Commerce OIG found NIST could redirect"
-        : "about " + Math.round(100 * (ratio - 1)) + "% more than the roughly $400K a year of re-scoring effort the Commerce OIG found NIST could redirect";
+        ? "within the roughly $400K a year (about $800K over two years) the Commerce OIG estimated NIST could save by cutting back re-scoring"
+        : "about " + Math.round(100 * (ratio - 1)) + "% more than the roughly $400K a year (about $800K over two years) the Commerce OIG estimated NIST could save by cutting back re-scoring";
       out.sentence.innerHTML =
         "Re-checking <b>" + num(cves) + " CVEs a month</b> at " + minutes + " analyst-minutes each takes about <b>" +
-        num(r.hours) + " analyst-hours a year</b>, " + r.capacity.toFixed(1) + "% of NIST's stated capacity, and costs about <b>" +
+        num(r.hours) + " analyst-hours a year</b>, " + r.capacity.toFixed(1) + "% of NIST's peak monthly output, and costs about <b>" +
         money(r.cost) + " a year</b> at $" + num(rate) + " an hour: " + verdict + ".";
     }
     form.addEventListener("input", render);

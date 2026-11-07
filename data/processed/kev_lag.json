@@ -1,0 +1,24 @@
+{
+  "kev_catalog_version": "2026.11.06",
+  "kev_total": 1769,
+  "missing_from_nvd": 0,
+  "rule": "KEV dateAdded minus NVD published (calendar days); CVEs published 2022+; by year added",
+  "by_year": {
+    "2023": {
+      "median_days": 4.0,
+      "n": 146
+    },
+    "2024": {
+      "median_days": 7.0,
+      "n": 152
+    },
+    "2025": {
+      "median_days": 10,
+      "n": 207
+    },
+    "2026": {
+      "median_days": 9,
+      "n": 257
+    }
+  }
+}

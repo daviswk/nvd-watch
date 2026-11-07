@@ -136,10 +136,10 @@ def main():
     _, c_hi, _ = sim(requeue_default, 60)
     ratio = c_mid / 400000
     verdict = ("within" if ratio <= 1 else f"about {round(100 * (ratio - 1))}% more than") + \
-        " the roughly $400K a year of re-scoring effort the Commerce OIG found NIST could redirect"
+        " the roughly $400K a year (about $800K over two years) the Commerce OIG estimated NIST could save by cutting back re-scoring"
     sim_sentence = (
         f"Re-checking <b>{fmt_int(requeue_default)} CVEs a month</b> at 45 analyst-minutes each takes about "
-        f"<b>{fmt_int(h_mid)} analyst-hours a year</b>, {cap:.1f}% of NIST's stated capacity, and costs about "
+        f"<b>{fmt_int(h_mid)} analyst-hours a year</b>, {cap:.1f}% of NIST's peak monthly output, and costs about "
         f"<b>{money(c_mid)} a year</b> at $120 an hour: {verdict}."
     )
 

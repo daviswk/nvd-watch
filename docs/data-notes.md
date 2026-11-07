@@ -61,12 +61,37 @@ The NVD API now returns the CNA's `affected` block (vendor, product, versions as
 
 ### Weekly volume
 
-Published per week in the window: 1,124 (partial week), 5,499, 4,211, 3,645, 3,250 (partial). That is about 17,700 per 30 days including Rejected, higher than the ~10,700/month reported by Google GTIG for August 2026. Different denominators (Rejected, reserved-then-published) likely explain part of the gap; verify before citing either.
+Published per week in the window: 1,124 (partial week), 5,499, 4,211, 3,645, 3,250 (partial). That is about 17,700 per 30 days including Rejected. Google GTIG's 10,740 is a single month (August 2026, a record at the time), not a monthly average. Our NVD count for August is 12,719, and volume has kept rising since, so most of the gap is timing. See the monthly series under "Verification pulls" below.
 
 ### KEV rows worth a look
 
 - CVE-2026-118527 has a KEV `dateAdded` (Oct 30) four days before its NVD publish date (Nov 3): KEV listed it before the NVD record existed.
 - CVE-2026-19868 was added to KEV on Nov 6 and is still Undergoing Analysis, the only KEV CVE in the window without CPE.
+
+## Verification pulls — Nov 7, 2026
+
+Run for `docs/source-verification.md`. Scripts are not in the repo: a scratch script pulled the CISA KEV JSON (catalog 2026.11.06, 1,769 entries) and the NVD API (`hasKev`; publish-date windows; `cvehistory` for PHP2Shell).
+
+**KEV additions by `dateAdded` year:** 2021: 311 · 2022: 555 · 2023: 187 · 2024: 186 · **2025: 245** · 2026 to Nov 6: 285. This confirms CISA's 245 for 2025.
+
+**Median CVE-to-KEV lag, calendar days** (KEV `dateAdded` − NVD `published` date), by KEV-added year:
+
+| Cohort rule | 2023 | 2024 | 2025 | 2026 YTD |
+|---|---|---|---|---|
+| All KEV additions | 12 | 21.5 | 26 | 14 |
+| CVE published 2022+ (Barracuda's rule) | 4 | 7 | 10 | 9 |
+| Same as above, cut at Jul 24, 2026 | 4 | 7 | 10 | 11 |
+| CVE published same or prior year | 4 | 6 | 7 | 7 |
+| CVSS ≥ 7, all (Rapid7's subset) | 8.5 | 22 | 26 | 12 |
+| *Barracuda, as published* | *6* | *9* | *12* | *14* |
+
+To Jul 24 under Barracuda's rule: 654 newer CVEs (Barracuda: 608) and 133 pre-2022 (Barracuda: 132); overall median 8 days (Barracuda: 9); 50% listed within a week (Barracuda: 48%). The rise through 2025 reproduces under every rule. The levels run 2–3 days lower, possibly because Barracuda's data ends earlier or uses CVE.org publish dates (untested). 2026 has fallen back since July. Sixty-six CVEs have NVD publish dates after their KEV date (47 by more than a day). Those are kept as negative lags.
+
+**Volerion window (published Apr 15–Jun 15, 2026), status as of today:** 13,551 published, 13,426 non-rejected (Volerion: 13,441). 7,694 have CPE (57.3%). 2,984 have NIST-sourced CVSS (Volerion at mid-June: 2,645). Status: Analyzed 6,030 · Deferred 5,087 · Modified 1,556 · Awaiting Analysis 640 · Undergoing 113. Coverage keeps rising for months after publication, so our 30-day 22.6% is not comparable with window figures taken later. The page should say so.
+
+**NVD CVEs by publish month, 2026** (`totalResults`, including Rejected): Jan 5,143 · Feb 4,808 · Mar 6,304 · Apr 5,885 · May 6,985 · Jun 8,001 · Jul 9,919 · Aug 12,719 · Sep 15,074 · Oct 17,481.
+
+**PHP2Shell (CVE-2026-109618, -109619):** NVD published both Oct 21, 14:17 UTC. NIST's Initial Analysis added CPE configurations at 17:01 UTC the same day. KEV `dateAdded` is Oct 26, and NVD logged the KEV update Oct 27, 01:00 UTC. CPE preceded the KEV listing by five days.
 
 ## Status name mapping (for metric 5)
 

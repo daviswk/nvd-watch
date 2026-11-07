@@ -1,0 +1,68 @@
+# Source verification log
+
+Nov 7, 2026. Checked by Claude Code (Claude Opus 5.5) for Will.
+
+This replaces the excerpt-based log of the same date (saved as "NVD Watch — Source Verification Log.md" in Downloads). That log was built from search-result excerpts. This pass opened each page. Pages were read with automated fetches, or in Chrome where a site refused automated reads. Numbers were recomputed from CISA KEV and the NVD API where that was possible. Two of its verdicts changed (Barracuda and GPT-6), and several of its citations were corrected. It also skipped the claims that carry the page, and those are added here first.
+
+Verdict scale: **Confirmed** (read in the originating source) · **Corroborated** (an independent source agrees) · **Conflicting** · **Reproducible** / **Reproduced** (recomputed from public data) · **Correct before use** (wrong as written) · **Unverified** · **Not read** (page would not load).
+
+## 1. Claims the page and brief rely on
+
+| Claim as written in the repo | Verdict | What the source says | Source read |
+|---|---|---|---|
+| OIG: "~$400K/yr redirectable re-scoring effort" | **Correct before use** | OIG estimates about **$800,000 over the next 2 years** from minimizing severity scoring (Rec. 3). $400K/yr is our division of that. In Appendix 4, NIST contests the premise of the recommendation | [OIG-26-020-I full report](https://www.oig.doc.gov/wp-content/OIGPublications/OIG-26-020-I-SECURED.pdf), pp. 1, 10 (text extracted and checked) |
+| "NIST re-scores matched the OIG in only 8 of 69 samples" | **Correct before use** | Three OIG specialists scored 72 sampled CVEs twice each, and 69 were analyzed. The specialists produced the same vector string 8 times (12%). This measures **consistency among OIG's own evaluators**, not NIST against OIG | OIG full report, App. 1 (checked) |
+| "CNAs supply CVSS for ~80% of CVEs" | **Correct before use** | Nearly 80% of CVE Program **participants** included severity scores, as of Aug 2025. That is a share of participants, not of CVEs. (Our own pull: 91% of CVEs carry some CVSS.) | OIG full report, p. 9 (checked) |
+| "NIST's stated capacity (~5,000 CVEs a month)" | **Correct before use** | The figure is OIG's observation that NIST "has not processed more than 5,000 vulnerabilities in any month". OIG separately estimates ~5,300/month if fully staffed. No NIST statement of a ceiling was found | OIG full report, pp. 5–6 (checked) |
+| Backlog began with the Feb 2024 contract lapse | **Confirmed, incomplete** | The full report confirms the lapse. Appendix 2 adds that CISA did not renew ~$3.8M in FY2024 support (about half of NVD funding) | OIG full report (agent read; lapse text checked) |
+| NIST's April 15, 2026 triage and the one-business-day KEV goal | **Confirmed** | Priorities: KEV, software used in the federal government, and EO 14028 critical software; everything else Not Scheduled. NIST does not number them as "tiers" | NIST NVD notice (agent read) |
+| PHP2Shell as the example of the KEV gate | **Correct before use** | CVE-2026-109618 and -109619. NVD published both Oct 21, 14:17 UTC. NIST's Initial Analysis **added CPE at 17:01 UTC the same day**. KEV listed them Oct 26 (NVD logged the KEV update Oct 27). So CPE did not wait for KEV: PHP was prioritized as federally used software. The case still shows KEV listing lag; it does not show the CPE gap | NVD API + change history (checked); CISA KEV JSON |
+| PHP2Shell "probes Oct 17 (unsuccessful)" | **Conflicting** | Amazon logged an attempt in honeypot telemetry and says it is unclear whether such attempts would have worked on real systems. Recorded Future logs Patchstack reporting active exploitation incidents early on Oct 21. "Confirmed Oct 24–25" rests on BleepingComputer alone | AWS blog, BleepingComputer, Recorded Future (agent read) |
+| CSI 8.4% enriched in Q3 2026 | **Confirmed it exists; figure unvalidated** | Found: ["The Count Broke First"](https://cyberstrategyinstitute.com/cve-state-of-risk-october-2026/), Oct 23, 2026. Its table gives ~3,120 of 36,970 Q3 CVEs enriched, with no stated method | Agent read |
+| "FedRAMP's 2026 rules already use KEV and EPSS" | **Correct before use** | KEV appears in the Vulnerability Detection and Response rules and NTC-0014. **EPSS appears in none** of VER, VDR, NTC-0014 or BOD 26-04. The rules are mandatory from Dec 7, 2026 (grace period to Mar 7, 2027). Legacy NVD-CVSS scanning is "reference-only", with no formal revocation found | fedramp.gov pages (agent read) |
+| NDAA language codifying the CVE program | **Correct before use** | No CVE language in H.R. 8800 (engrossed or reported) or S. 4784. A House amendment (Ramirez, Whitesides) was not made in order. NDAA not enacted as of CRS IN12704 (Sept 1); later status Unverified | govinfo bill text, Rules amendment PDF, Nextgov, CRS (agent read) |
+| GAO's "pending" review of the CVE program | **Correct before use** | Ranking Members Thompson and Lofgren *requested* one (letter June 6, 2025). No GAO acceptance or product was found. Say "requested" | House Homeland Democrats release, CyberScoop (agent read; letter PDF 404) |
+| Siemens S7: threats without CVEs | **Correct before use** | Advisory AA26-231A (Aug 19, 2026; NSA, CISA, FBI, DOE, EPA) cites known vulnerabilities and misconfigurations and lists **no CVE IDs**. It does not say the threats lack CVEs | [ic3.gov PDF](https://www.ic3.gov/CSA/2026/260819.pdf) (agent read) |
+| MS-ISAC lost federal funding | **Confirmed (date); members single-source** | DHS support ended Sept 30, 2025 (CIS FAQ). Membership 18,574 → 5,618 by mid-June 2026 (Cybersecurity Dive only). Dollar figures conflict ($10M vs $27M) | Agent read |
+
+The agent's reading of the OIG report was spot-checked against the extracted PDF text for the $800K, 12%, 5,000/5,300, 80%-of-participants and lapse passages. The other rows marked "agent read" were not re-read by hand.
+
+## 2. Vendor and single-source figures
+
+| Claim | Verdict | Finding |
+|---|---|---|
+| Barracuda: KEV lag 6 → 9 → 12 → 14 days (2023–2026) | **Direction reproduced; levels not** | Barracuda's [article](https://blog.barracuda.com/2026/07/24/KEV-gap-how-fast-do-exploited-bugs-get-flagged) (Arve Kjoelen, Jul 24, 2026) covers CVEs published 2022+ among KEV additions since 2023. Our calendar-day recomputation of the same population (KEV `dateAdded` − NVD `published`) gives **4 → 7 → 10 → 11** to Jul 24, and **9** for 2026 through Nov 6. Overall median 8 (Barracuda: 9); 50% within a week (Barracuda: 48%). The rise to 2025 holds under every cohort rule tried; 2026 YTD has since fallen. Barracuda does not define its per-year grouping, and may use CVE.org rather than NVD publish dates. See `data-notes.md` |
+| Rapid7 "median fell 8.5 → 5.0 days" as a contradiction | **Correct before use** (the log's "Conflicting") | The log's link (longform.social) did not resolve. Rapid7's own [press release](https://www.rapid7.com/about/press-releases/rapid7-2026-global-threat-landscape-report-shows-exploited-high-and-critical-severity-vulnerabilities-surged-105-as-attack-timelines-collapsed) (Mar 18, 2026) limits the figures to high- and critical-severity vulnerabilities and gives no years for 8.5 and 5.0. We could not reproduce them from KEV (high/critical medians: 8.5, 22, 26, 12 for 2023–2026). It is a different population, not a contradiction of Barracuda |
+| Barracuda: EPSS led KEV in 19% of cases, by ~201 days | **Confirmed** (in source) | 19% led, 57% KEV first, 23% never crossed 0.10. The ~201 days is an **average**. 17% before EPSS v4 (Sept 17, 2025), 24% after |
+| Nucleus: largest EPSS spike 2 days after KEV | **Confirmed, small sample** | [Nucleus](https://nucleussec.com/?p=5914) (May 12, 2026). 22 of the 122 KEV additions from Oct 2025 to Mar 2026. Use it as "EPSS mostly follows KEV", not as a rate |
+| Volerion ~50% enriched (Apr 15–Jun 15) | **Confirmed; reproduced in part** | [Dark Reading](https://www.darkreading.com/vulnerabilities-threats/nist-enrichment-reductions-cve-coverage-accuracy) (Rob Wright, Jun 29, 2026): 13,441 accepted CVEs; 8,342 prioritized; 6,759 enriched by NIST; 2,645 with a NIST CVSS vector. Our pull of the same window **today**: 13,426 non-rejected, 7,694 with CPE (57.3%), 2,984 with NIST CVSS. Consistent with more enrichment since June. We cannot recover the status as of Jun 15 |
+| VulnCheck 884 vs CISA 245 (2025) | **245 reproduced; 884 confirmed in source** | KEV JSON: 245 rows with a 2025 `dateAdded`. The VulnCheck *State of Exploitation 2026* PDF says 884 KEVs with first-time evidence in 2025, across 518 vendors, against CISA's 245 across 99. Zafran gives 883. **The log's "47.7% disclosed in 2025" is not in the PDF's extractable text**: unverified, so do not use it |
+| CSA ~29,000 moved to Not Scheduled | **Corroborated** | [Brian Martin](https://jericho.blog/2026/04/17/nvd-gives-up/) (Apr 17, 2026): Awaiting Analysis 32,495 → 3,255 (−29,240) and Deferred/Not Scheduled 94,546 → 123,755 (+29,209) overnight. The move is the author's inference from the counts. Not Scheduled then fell by another 19,969 on Apr 16 with no matching bucket |
+| GTIG ~10,700 CVEs a month | **Correct before use** | [CybersecAsia](https://cybersecasia.net/news/ai-drives-surge-in-software-vulnerability-disclosures-in-2026-analysis/) (Oct 6, 2026) relays GTIG: 5,045 (Jan), 10,477 (Jul), 10,740 (Aug, a record). It is one month, not an average. The GTIG original (`sources.md`) was not re-opened |
+| Our ~17,700 per 30 days | **Reproduced** | NVD API count by publish month, 2026 (including Rejected): Jan 5,143 · Feb 4,808 · Mar 6,304 · Apr 5,885 · May 6,985 · Jun 8,001 · Jul 9,919 · Aug 12,719 · Sep 15,074 · Oct 17,481. Our window is the newest, highest month, not a typical one. Others: Gamblin, June 7,454 (cvelistV5, Rejected excluded); CyberHire via DEV, September 14,934 |
+
+## 3. Conditional claims (only if used)
+
+| Claim | Verdict | Finding |
+|---|---|---|
+| V-etalon | **Confirmed** | [NIST Cybersecurity Insights](https://www.nist.gov/blogs/cybersecurity-insights/shaping-nvd-future-we-need-your-feedback-ai-enabled-vulnerability) (Booth and Boyens, Aug 12, 2026): an AI enrichment tool, **in development**, not released. Cite NIST, not Socket |
+| GPT-6 Cyber figures | **Press-reported** (the log's "Unverified" is outdated) | [CyberScoop](https://cyberscoop.com/openai-gpt-6-cyber-security-model/) (Nov 5, 2026) reports the launch and attributes "at least 81 novel" Firefox bugs and exploits for 948 Linux kernel vulnerabilities to OpenAI officials, who spoke of "GPT-6". **"588 previously unknown" is not in that article**, so drop it from the CyberScoop citation. SecurityLab.ru (Sept 28) and OrcaRouter (Oct 24) predate the launch |
+| BOD 26-04 | **Confirmed** | [CISA directives page](https://www.cisa.gov/news-events/directives/bod-26-04-prioritizing-security-updates-based-risk): it "supersedes and hereby revokes" BOD 19-02 and 22-01. Issued Jun 10, 2026; the CISA bulletin gives no separate effective date |
+| CISA weekly Vulnerability Bulletin discontinued | **Confirmed** | CISA GovDelivery notice, Sept 16, 2026: weekly bulletin ends Sept 28, 2026 |
+| SSVC coverage 51.5% → 93.0% | **Confirmed in source; not reproduced** | CSA "AI-Assisted CVE Enrichment" v3 (Apr 25, 2026), Section 1.3 table; sources include cisagov/vulnrichment. The page does not call itself unreviewed, so attribute it as "CSA analysis". Recompute from vulnrichment before using it |
+| EU CRA identifier amendment | **Unverified** | The CSA ENISA note (Aug 11, 2026) does not mention it. Drop |
+| MISI contract | **Unverified** | Drop. The documented award: [GovConWire](https://www.govconwire.com/articles/nist-selects-analygence-for-125m-cyber-vulnerability-processing-support-contract) (Jun 3, 2024) says Analygence won a **task order** under a five-year, $125M IDIQ to process NVD vulnerabilities. $125M is the vehicle ceiling, not the task order |
+| NVD Consortium | **Confirmed as history** | [Socket](https://socket.dev/blog/vulncon-2025-nvd-scraps-consortium-plan) (Apr 10, 2025): NIST's Matthew Scholl said at VulnCon 2025 that the CRADA-based plan was dropped for informal collaboration. Write "proposed in 2024, dropped in 2025" |
+| curl intake pause | **Confirmed** | [Stenberg](https://daniel.haxx.se/blog/2026/06/15/curl-summer-of-bliss/) (Jun 15, 2026): HackerOne form and security email paused Jul 1, 00:00 CEST to Aug 3, 09:00 CEST, 2026. The repo's "Jul 1 – Aug 3" was already right |
+| Video list | **Unverified** | Not checked |
+
+## 4. Not read
+
+- SOCRadar CVE Radar: 403 to automated fetches, and Chrome redirected the page off-domain. Not needed now that KEV lag is recomputed from source.
+- longform.social: the host did not resolve. Replaced by Rapid7's own release.
+- The Rapid7 full report and the GTIG original: neither was opened.
+
+## 5. Open data checks
+
+- [ ] Recompute SSVC coverage from cisagov/vulnrichment, if the brief uses it.
+- [ ] KEV lag using CVE.org `datePublished` instead of NVD `published`, to test whether that explains the 2–3 day gap with Barracuda.
