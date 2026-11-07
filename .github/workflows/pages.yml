@@ -27,6 +27,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true   # creates the Pages site on first run, so no manual Settings step
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site
