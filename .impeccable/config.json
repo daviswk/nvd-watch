@@ -74,6 +74,15 @@
         ],
         "createdAt": "2026-11-07T19:54:39.510Z",
         "reason": "Claude: same finding as site/index.html; detector reads clamp() as 168px, computed h1 verified in browser at 38px (max 2.2rem)"
+      },
+      {
+        "rule": "cream-palette",
+        "value": "*",
+        "files": [
+          "site/story.html"
+        ],
+        "createdAt": "2026-11-07T22:08:22.159Z",
+        "reason": "Will chose prototype variant A (Nov 7, 2026), which uses this background; #f7f5f1 is DESIGN.md's paper-2 token, not a reflex off-white"
       }
     ]
   }

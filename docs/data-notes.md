@@ -131,3 +131,26 @@ Same-cohort view (the 28,618 CVEs old enough for a day-30 score): 1 crossed 10% 
 **What it does not count (so it is a lower bound):** crossings between day 30 and day 90 (Floodline's day-90 cells are mostly null for now), crossings from the older Not Scheduled stock outside Floodline's 90-day window, and the SSVC / third-party-evidence triggers. A lower threshold changes the picture: in our own pull, 288 CVEs without CPE scored ≥ 0.01 on current scores, versus 7 at ≥ 0.05 and 2 at ≥ 0.10.
 
 **Reuse and license:** Floodline's code is Apache-2.0; its data derives from the FIRST EPSS archive (empiricalsec/epss_scores), CISA KEV (public domain), and cvelistV5 (CVE Program terms). We read one summary file and attribute it on the page; no code was copied. Field names were checked against `pipeline/floodline/compute.py`: `maturation[h].thresholds["10"]` counts scores strictly above 0.10 on the dated file at day+h.
+
+## KEV CVEs: was CPE there when exploitation was confirmed? — Nov 7, 2026
+
+**Why:** red-team objections #1 and #21 ("where's the harm?"; "'when defenders need it' is undefined"). We define *when defenders need it* as **the KEV listing date**, the day CISA confirms exploitation. The CSV's `last_modified` cannot answer this, so `scripts/kev_enrichment.py` asks the NVD CVE Change History API (`/rest/json/cvehistory/2.0?cveId=`) for each KEV CVE in the 30-day sample and takes the first event that added a `CPE Configuration`. Output: `data/processed/kev_enrichment.json` (copied to `site/data/`). Run it after `fetch_sample.py` and before `build_site.py`; the build exits if it is missing or covers a different KEV count.
+
+**Result (18 KEV CVEs published Oct 8 – Nov 7, 2026):**
+
+| | Count |
+|---|---|
+| Have CPE now | 17 |
+| CPE by the KEV listing day (3 of them before listing: PHP2Shell ×2, CVE-2026-97229) | 7 |
+| CPE within one business day of listing (metric 3, NIST's goal) | 17 of 17 enriched |
+| First CPE change made by `nvd@nist.gov` | 17 |
+| Longest calendar gap | 4 days (CVE-2026-118527: listed in KEV Oct 30, *before* NVD published it Nov 3; CPE the day NVD published) |
+| No CPE yet | CVE-2026-19868, listed Nov 6, "Undergoing Analysis" on Nov 7 (still within the goal) |
+
+**Rules:** the one-business-day clock starts at the later of KEV `dateAdded` and NVD publication, since NIST can't enrich an unpublished CVE. Weekdays only, no federal-holiday calendar. Dates are UTC days. Parser checked by hand against the raw history of CVE-2026-110447 (KEV event Fri Oct 23 22:00 UTC → NIST "Initial Analysis" with CPE Mon Oct 26 16:48 UTC).
+
+**What it means:** for the exploits CISA confirms, NIST is meeting its goal. The project's claim therefore rests on the CVEs that *don't* reach KEV, or reach it late, not on KEV CVEs lacking CPE. This was the "headline may turn out wrong" risk (red-team #5); the brief should say so up front.
+
+**Limits:** one 30-day window, 18 CVEs. CVEs published before the window but listed in it are not counted (a longer pull of all KEV additions would fix that). VulnCheck's broader exploited list (free account and token needed) was not checked.
+
+**At-risk example, not confirmed exploited:** CVE-2026-59774 (Gitea Org-mode INCLUDE file read, chainable to command execution per the CNA), published Oct 14, Not Scheduled, no CPE, CNA `affected` names Gitea < 1.27.1, EPSS 0.283 on Nov 7, not in KEV. Exploitation sources other than KEV were not checked. Runner-up: CVE-2026-77690 (ManageEngine Key Manager Plus command injection, Awaiting Enrichment, EPSS 0.156).

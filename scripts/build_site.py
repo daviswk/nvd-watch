@@ -135,13 +135,39 @@ def main():
     _, c_lo, _ = sim(requeue_default, 20)
     _, c_hi, _ = sim(requeue_default, 60)
     ratio = c_mid / 400000
-    verdict = ("within" if ratio <= 1 else f"about {round(100 * (ratio - 1))}% more than") + \
-        " the roughly $400K a year (about $800K over two years) the Commerce OIG estimated NIST could save by cutting back re-scoring"
+    # Scale comparison only (same wording as app.js): NIST already stopped routine re-scoring in
+    # April 2026 and moved that capacity to triage, so the OIG figure is not unspent money.
+    share = f"about {round(100 * ratio)}% of" if ratio <= 1 else f"about {round(ratio, 1):g} times"
+    verdict = (f"{share} the value of the routine re-scoring NIST stopped in April 2026 (the Commerce OIG put it at "
+               "roughly $400K a year; NIST disputes the figure). That capacity already went to triage, so this "
+               "compares scale; it is not spare money")
     sim_sentence = (
         f"Re-checking <b>{fmt_int(requeue_default)} CVEs a month</b> at 45 analyst-minutes each takes about "
         f"<b>{fmt_int(h_mid)} analyst-hours a year</b>, {cap:.1f}% of NIST's peak monthly output, and costs about "
         f"<b>{money(c_mid)} a year</b> at $120 an hour: {verdict}."
     )
+
+    # Harm metric and metric 3, from NVD change history (scripts/kev_enrichment.py).
+    # "When defenders need it" = by the day CISA confirms exploitation (KEV listing).
+    ke_path = PROCESSED / "kev_enrichment.json"
+    if not ke_path.exists():
+        sys.exit("data/processed/kev_enrichment.json missing; run scripts/kev_enrichment.py after fetch_sample.py")
+    ke = json.loads(ke_path.read_text())
+    if ke["kev_cves"] != summary["in_kev"]:
+        sys.exit(f"kev_enrichment.json covers {ke['kev_cves']} KEV CVEs, summary.json has {summary['in_kev']}; re-run kev_enrichment.py")
+    pending = [r for r in ke["rows"] if not r["first_cpe"]]
+    kev_pending_note = (
+        "" if not pending else
+        " " + ("; ".join(f"{r['cve_id']} (listed {fmt_date(r['kev_date_added'])})" for r in pending))
+        + (" has" if len(pending) == 1 else " have") + " no CPE yet."
+    )
+    # Claims about NIST's speed are generated from the data so a weekly rebuild can't leave them false.
+    met_all = ke["within_one_business_day"] == ke["with_cpe_now"]
+    ke_headline = ("Once CISA confirms an attack, NIST is fast. Before that, nothing re-checks." if met_all else
+                   "Even after CISA confirms an attack, NIST sometimes misses its own goal.")
+    ke_verdict = ("In this window NIST met its goal for every KEV-listed CVE it has enriched. "
+                  "The risk is in the CVEs that never reach KEV, or reach it late." if met_all else
+                  f"{ke['with_cpe_now'] - ke['within_one_business_day']} took longer than one business day.")
 
     stale_notice = ""
     if age_days > STALE_AFTER_DAYS:
@@ -204,6 +230,14 @@ def main():
         "sim_low_high": f"{money(c_lo)} to {money(c_hi)}",
         "sim_offset": f"{round(100 * ratio)}%",
         "sim_sentence": sim_sentence,
+        "ke_enriched": fmt_int(ke["with_cpe_now"]),
+        "ke_within_1bd": fmt_int(ke["within_one_business_day"]),
+        "ke_by_list_day": fmt_int(ke["cpe_by_kev_day"]),
+        "ke_before_kev": fmt_int(ke["enriched_before_kev"]),
+        "ke_by_nist": fmt_int(ke["first_cpe_by_nist"]),
+        "ke_pending_note": kev_pending_note,
+        "ke_headline": ke_headline,
+        "ke_verdict": ke_verdict,
     }
 
     template = (SITE / "template.html").read_text(encoding="utf-8")
@@ -215,6 +249,9 @@ def main():
 
     (SITE / "data").mkdir(exist_ok=True)
     shutil.copy(PROCESSED / "summary.json", SITE / "data" / "summary.json")
+    if (PROCESSED / "kev_lag.json").exists():          # read by the 3D figures and the story page
+        shutil.copy(PROCESSED / "kev_lag.json", SITE / "data" / "kev_lag.json")
+    shutil.copy(ke_path, SITE / "data" / "kev_enrichment.json")   # the per-CVE evidence behind metric 3
     print(f"wrote site/index.html from data pulled {values['pulled_at']} ({values['n_total']} CVEs)")
 
 

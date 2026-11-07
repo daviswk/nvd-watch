@@ -277,6 +277,11 @@ The display figure beside a 1.25rem serif definition with `small` sans print ben
 ### Chart (`.chart`)
 Inline SVG, max 560px, sans. Bars fill teal, value labels bold teal 14px, year labels 13px text colour, a 1px `rule-strong` axis. Carries `<title>` and `<desc>`; a `.note` figcaption cites the source. Bars print black.
 
+**The 2D Rule (scorecard).** The scorecard's figures stay flat SVG. 3D figures were prototyped twice (in-section studio, isometric, and hero-model figures; then a vendor flow graph, an every-CVE scatter, and a clay vendor city) and rejected by Will on Nov 7, 2026. The record is on branch `prototype/scorecard-figures`. 3D belongs on the story page only.
+
+### Story page (`story.html`)
+A companion scroll story, not part of the report: one point per CVE in the window sorting into status towers, then the KEV and re-queue rings. It keeps the paper (`paper-2` background), the serif/sans pairing, and teal emphasis, but uses a brighter dot teal (#0e7c99) so 17,000 small points read as teal at screen size. Linked from the band ("The data in 3D") and links back; without JavaScript it shows a link to the scorecard.
+
 ### Notice and citation block
 - **Notice:** sans 0.9rem on `ink-tint`, padded 10px by the gutter, no margin; `role="status"`. Prints white with a 1pt grey border.
 - **Citation (`.cite`):** `paper-2` block padded 18px 20px, max 860px, h3 title, sans 0.9rem paragraph with `user-select: all` so one click selects the citation.

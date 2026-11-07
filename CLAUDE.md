@@ -17,7 +17,7 @@ Framing line: *NIST prioritizes by who uses the software, or confirmed attacks. 
 - **The gap is product data (CPE), not severity scores.** 91% of CVEs in our pull carry some CVSS (OIG: nearly 80% of CVE Program *participants* include scores); OIG's own specialists produced the same CVSS vector in only 8 of 69 double-scored CVEs (12%), so scoring is inconsistent even among experts. Don't attack the "stop re-scoring" half of NIST's policy.
 - **KEV is the gate.** For most software, CPE comes only after a KEV listing. Median CVE-to-KEV lag rose 6 → 9 → 12 → 14 days (2023–2026, Barracuda); our own recomputation of Barracuda's population gives 4 → 7 → 10 → 9 (2026 to Nov 6). See `docs/data-notes.md`. Federally used software (e.g., PHP2Shell) gets CPE without waiting for KEV.
 - **EPSS is a re-check trigger, not an intake screen.** EPSS crossed 0.10 before KEV in only 19% of cases, but led by ~201 days when it did. Re-queue stalled / "Not Scheduled" CVEs when max(EPSS, KEV, LEV) — NIST CSWP 41 — crosses a published threshold, or CISA SSVC marks exploitation PoC/Active.
-- **The ask is a rule change, not new money.** Re-check volume is measured, not assumed: CVE Floodline shows ~0.09% of new CVEs cross EPSS 10% by day 30 (27 of 28,618, Aug–Nov 2026; an earlier window showed 0.27%), which on our ~17,000 CVEs/30 days is ~16–46 re-queues a month, well under 1% of the ~5,000/month NIST has never exceeded (an OIG observation, not a NIST-stated ceiling), ~$8K–$66K/yr at 20–60 analyst-minutes and $120/h, vs. the OIG's ~$800K over two years (~$400K/yr, our division) from minimizing re-scoring, which NIST contests. The earlier "250–470 CVEs/month, $270K–$510K/yr" came from reading Floodline's "2.7 per 1,000" as 2.7%; it is retired (see `docs/data-notes.md`). A lower threshold (0.05, 0.01) raises the volume; the simulator lets readers try it.
+- **The ask is a rule change, not new money.** Re-check volume is measured, not assumed: CVE Floodline shows ~0.09% of new CVEs cross EPSS 10% by day 30 (27 of 28,618, Aug–Nov 2026; an earlier window showed 0.27%), which on our ~17,000 CVEs/30 days is ~16–46 re-queues a month, well under 1% of the ~5,000/month NIST has never exceeded (an OIG observation, not a NIST-stated ceiling), ~$8K–$66K/yr at 20–60 analyst-minutes and $120/h, vs. the OIG's ~$800K over two years (~$400K/yr, our division) from minimizing re-scoring, which NIST contests. NIST already stopped routine re-scoring in April 2026, so the OIG figure is a **scale comparison, not spare money**; lead with share of capacity. The earlier "250–470 CVEs/month, $270K–$510K/yr" came from reading Floodline's "2.7 per 1,000" as 2.7%; it is retired (see `docs/data-notes.md`). A lower threshold (0.05, 0.01) raises the volume; the simulator lets readers try it.
 - **Stakeholders (brief):** NIST; CISA (as KEV owner *and* CVE sponsor — the CNA product-data ask goes here); Congress (Appropriations, Science, Homeland Security; GAO review request; NDAA CVE-codification vehicle). Context: FIRST (EPSS), MITRE/CVE Board, FedRAMP PMO, SLTT governments/MS-ISAC, commercial vendors, ENISA, AI labs.
 - **Answer NIST RFI question 7(e)** (91 FR 52042, Aug 12, 2026): "What metrics should be considered to track and evaluate the success of the NVD?"
 
@@ -31,9 +31,9 @@ One scorecard page with four sections:
 **Out of scope (cut on purpose):** wildfire/hero map, funnel chart, separate lifecycle tracker, Siemens S7 case (one sentence in the brief), CNA-vs-NIST score disagreement view, GitLab, cve.now, formal verification, forum monitoring.
 
 ## The five quarterly metrics (freeze these definitions)
-1. Share of new CVEs with CPE (any source; NIST-sourced), by status/tier.
-2. Median and 90th-percentile time to enrichment, by tier.
-3. Compliance with NIST's one-business-day KEV enrichment goal.
+1. Share of new CVEs with CPE (any source; NIST-sourced), by observable tier: KEV status and NVD status. NIST does not publish its tier assignments; publishing them is a recommendation.
+2. Median and 90th-percentile time to enrichment, by the same observable tiers.
+3. Compliance with NIST's one-business-day KEV enrichment goal (NVD change history; clock starts at the later of KEV listing and NVD publication).
 4. Re-queue counts and time-to-enrichment after re-queue.
 5. A change log of NVD status-category definitions (they changed on Apr 15, 2026).
 
@@ -58,6 +58,7 @@ RogoLabs (Jerry Gamblin, https://rogolabs.net) publishes free, open-source CVE t
 - **SADP Tracker** (https://rogolabs.github.io/SADP-Tracker/index.html): the CVE Program's Supplier ADP pilot. Siemens (from Apr 14, 2026) and Red Hat (from Jun 30, 2026) have added affected-product data to 3,349 unique CVEs (3,391 records) as of Nov 7, 2026. A partial, non-NIST path to product data; it fills CVE's `affected` field, not CPE.
 
 ## Known open items
+- **KEV CVEs are covered fast (Nov 7 pull):** 17 of 18 KEV CVEs got CPE within one business day, all by NIST (`scripts/kev_enrichment.py`). The claim is about CVEs *before or outside* KEV, not KEV CVEs lacking CPE. "When defenders need it" = by the KEV listing date. At-risk example: CVE-2026-59774 (Gitea, Not Scheduled, EPSS 0.28, not confirmed exploited).
 - Coverage figures: our first pull (Nov 7, 2026, 30 days) shows 22.6% of non-rejected CVEs with CPE; see `docs/data-notes.md`. Vendor figures (Volerion ≈50%, CSI 8.4%) are now context, not headline.
 - NVD API status values differ from display labels: API `Deferred` = "Not Scheduled", `Awaiting Analysis` = "Awaiting Enrichment", `Analyzed` = "Enriched". Use display labels on the page, API values in code.
 - The NVD API now returns CNA `affected` data (free-text vendor/product). 94% of CVEs have it; the gap is *standardized* CPE, not any product data. Say "CPE" or "scanner-matchable product identifiers", never "no product data".
@@ -71,7 +72,10 @@ RogoLabs (Jerry Gamblin, https://rogolabs.net) publishes free, open-source CVE t
 - `docs/handoff.md` — **start here in a new session**: current state, how to run everything, what's next in order, gotchas
 - `PRODUCT.md` — product truth for design work (Impeccable); `DESIGN.md` — the visual system as built
 - `scripts/fetch_sample.py` — data pull (reads `NVD_API_KEY` from `.env`; `--from-raw` reprocesses without fetching)
-- `scripts/kev_lag.py` — median CVE-to-KEV lag by year for the section 2 chart (writes `data/processed/kev_lag.json`; copy values into the template by hand)
+- `scripts/kev_enrichment.py` — NVD change history for each KEV CVE in the sample: first CPE date vs KEV listing (harm metric, metric 3). Run after `fetch_sample.py`, before `build_site.py`; the build exits without its output
+- `scripts/kev_lag.py` — median CVE-to-KEV lag by year for the section 2 chart (writes `data/processed/kev_lag.json`; `build_site.py` copies it to `site/data/` for the story page; the SVG values in the template are copied by hand)
+- `site/story.html`, `site/story.js` — "The data in 3D" scroll story, one dot per CVE; reads `site/data/*.json` at runtime. The scorecard itself stays 2D (see DESIGN.md, The 2D Rule)
+- Branches `prototype/3d-variants` (chose the story page) and `prototype/scorecard-figures` (3D scorecard figures, rejected) — throwaway prototypes; not for main
 - `scripts/build_site.py` — renders `site/index.html` from `site/template.html` + `data/processed/summary.json`; edit the template, never index.html
 - `docs/data-notes.md` — what each pull showed, caveats, status-name mapping
 - `docs/project-plan.md` — full plan, recommendations, roadmap

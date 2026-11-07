@@ -20,6 +20,7 @@ Written Nov 7, 2026 at the end of the first Claude Code session (Claude Fable 5.
 # Windows: use the venv's python directly; no activation needed
 ./.venv/Scripts/python.exe scripts/fetch_sample.py --days 30     # full pull (~3 min with API key)
 ./.venv/Scripts/python.exe scripts/fetch_sample.py --from-raw    # reprocess data/raw/nvd_sample.json without hitting the NVD API
+./.venv/Scripts/python.exe scripts/kev_enrichment.py            # NVD change history for KEV CVEs (~18 calls); required by the build
 ./.venv/Scripts/python.exe scripts/build_site.py                 # renders site/index.html from site/template.html + summary.json
 ./.venv/Scripts/python.exe -m http.server 8765 --directory site  # local preview (or preview_start name "site" via .claude/launch.json)
 ```
@@ -57,7 +58,7 @@ Beyond the settled decisions in `CLAUDE.md`:
 ## 5. What to do next, in order
 
 1. **Write the brief** from `docs/brief-outline.md`. Three pages. Every number must match `site/index.html` (pull the values from `data/processed/summary.json`, not from memory). Cost box uses the Floodline-based figures. Export PDF; link it from the band button in `site/template.html`; rebuild; push.
-2. **Weekly rebuild action** (a proposal card was left in the previous session; if it expired, the spec is: `.github/workflows/rebuild.yml`, Mondays 13:00 UTC + manual, Python 3.12, run fetch then build with `NVD_API_KEY` from a repo secret and `SITE_URL` as env, commit `summary.json` + `site/index.html` + `site/data/summary.json` only if changed, `permissions: contents: write`, `concurrency` group). Will must add the `NVD_API_KEY` secret in Settings → Secrets and variables → Actions first.
+2. **Weekly rebuild action** (a proposal card was left in the previous session; if it expired, the spec is: `.github/workflows/rebuild.yml`, Mondays 13:00 UTC + manual, Python 3.12, run fetch, then kev_enrichment, then build with `NVD_API_KEY` from a repo secret and `SITE_URL` as env, commit `summary.json`, `kev_enrichment.json`, `site/index.html` and `site/data/*.json` only if changed, `permissions: contents: write`, `concurrency` group). Will must add the `NVD_API_KEY` secret in Settings → Secrets and variables → Actions first.
 3. **Multi-year KEV lag** (section 2 currently cites Barracuda's annual medians, attributed). Pull KEV `dateAdded` vs NVD `published` for all KEV entries 2023–2026 via the NVD API (`cveId` lookups or `hasKev` filter), compute medians by year, and either confirm or correct Barracuda on the page. Roadmap step 3 in `docs/project-plan.md`.
 4. **Optional, if time:** a backlog-based re-check estimate (pull Deferred/Awaiting CVEs over a longer window, count threshold crossings per month) to tighten the lower bound; the EPSS v4-on-unenriched-CVEs question remains unmeasured and should stay flagged.
 5. **Final AI log pass:** every row has a verification note; add a closing "models used" line naming Claude Fable 5.1 (Nov 7) and Claude Opus (later sessions).

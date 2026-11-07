@@ -56,9 +56,10 @@
       out.lowHigh.textContent = money(lo) + " to " + money(hi);
       out.offset.textContent = Math.round(100 * ratio) + "%";
 
-      var verdict = ratio <= 1
-        ? "within the roughly $400K a year (about $800K over two years) the Commerce OIG estimated NIST could save by cutting back re-scoring"
-        : "about " + Math.round(100 * (ratio - 1)) + "% more than the roughly $400K a year (about $800K over two years) the Commerce OIG estimated NIST could save by cutting back re-scoring";
+      // Scale comparison only: NIST already stopped routine re-scoring in April 2026 and moved that
+      // capacity to triage, so the OIG figure is not unspent money the rule can draw on.
+      var share = ratio <= 1 ? "about " + Math.round(100 * ratio) + "% of" : "about " + (Math.round(ratio * 10) / 10) + " times";
+      var verdict = share + " the value of the routine re-scoring NIST stopped in April 2026 (the Commerce OIG put it at roughly $400K a year; NIST disputes the figure). That capacity already went to triage, so this compares scale; it is not spare money";
       out.sentence.innerHTML =
         "Re-checking <b>" + num(cves) + " CVEs a month</b> at " + minutes + " analyst-minutes each takes about <b>" +
         num(r.hours) + " analyst-hours a year</b>, " + r.capacity.toFixed(1) + "% of NIST's peak monthly output, and costs about <b>" +

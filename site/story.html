@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NVD Watch · The data in 3D</title>
+<meta name="description" content="A scroll story of one month of new vulnerabilities: every CVE as a dot, sorted by NVD status, with the exploited ones and the proposed re-checks pulled out. Companion to the NVD Watch scorecard.">
+<meta name="author" content="Will Davis">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231d4e5f'/%3E%3Crect x='6' y='22' width='20' height='3' fill='%23fff'/%3E%3Crect x='6' y='8' width='9' height='3' fill='%23fff'/%3E%3C/svg%3E">
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+</script>
+<style>
+  :root { color-scheme: light; --ink: #1d4e5f; --dot-ink: #0e7c99; --text: #1f2328; --text-2: #4a4f55; --paper: #f7f5f1; --focus: #b8471b;
+          --serif: "Source Serif 4", Georgia, serif; --sans: "Public Sans", "Helvetica Neue", Arial, sans-serif; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; }
+  body { background: var(--paper); color: var(--text); font-family: var(--serif); font-variant-numeric: lining-nums tabular-nums; }
+  a { color: var(--ink); }
+  :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; }
+
+  .stage { position: fixed; inset: 0; width: 100vw; height: 100vh; display: block; }
+  .tower-labels { position: fixed; inset: 0; pointer-events: none; }
+  .tower-labels span { position: absolute; transform: translate(-50%, 0); font: 700 12px var(--sans); color: var(--text-2); text-align: center; white-space: nowrap; }
+  .tower-labels b { display: block; color: var(--ink); font-size: 14px; }
+  .progress { position: fixed; top: 0; left: 0; height: 3px; width: 0; background: var(--ink); z-index: 3; }
+
+  header { position: fixed; top: 0; left: 0; right: 0; display: flex; justify-content: space-between; align-items: center; padding: 18px 28px; z-index: 2; font-family: var(--sans); font-size: 14px; }
+  header .brand { font-weight: 800; color: var(--ink); text-decoration: none; }
+  header .brand span { font-weight: 400; color: var(--text-2); }
+  header .back { font-weight: 700; }
+
+  .step { position: relative; min-height: 100vh; display: flex; align-items: center; padding: 80px 6vw; pointer-events: none; }
+  .step.right { justify-content: flex-end; }
+  .copy { max-width: 400px; pointer-events: auto; background: rgba(247, 245, 241, 0.88); padding: 22px 24px; }
+  .kicker { font: 700 12px var(--sans); letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-2); margin: 0 0 12px; }
+  h1, h2 { font: 600 clamp(2.2rem, 5vw, 4.2rem)/0.98 var(--serif); letter-spacing: -0.025em; margin: 0 0 16px; }
+  h1 em, h2 em { font-style: normal; color: var(--ink); }
+  .copy p { font-size: 1.1rem; line-height: 1.5; margin: 0 0 10px; }
+  .copy .src { font: 400 12px/1.45 var(--sans); color: var(--text-2); }
+  .legend { font: 700 12px var(--sans); display: flex; gap: 14px; margin-top: 12px; color: var(--text-2); }
+  .legend i { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: -1px; }
+  .scrollhint { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%); font: 700 12px var(--sans); letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-2); transition: opacity 0.4s; }
+  .nojs { max-width: 560px; margin: 20vh auto; padding: 0 24px; font-size: 1.15rem; line-height: 1.5; }
+
+  @media (max-width: 900px) {
+    .step, .step.right { justify-content: center; align-items: flex-end; padding-bottom: 12vh; }
+    .copy { max-width: 520px; }
+    .tower-labels span { font-size: 10px; } .tower-labels b { font-size: 12px; }
+  }
+  @media (max-width: 600px) { .tower-labels { display: none; } }
+  @media print { .stage, .tower-labels, .scrollhint, .progress { display: none; } .step { min-height: 0; padding: 12pt 0; } .copy { background: none; } }
+</style>
+</head>
+<body>
+<noscript><div class="nojs"><p>This page draws one dot for each new vulnerability and needs JavaScript and WebGL. The same findings, in text and tables, are on the <a href="./">NVD Watch scorecard</a>.</p></div></noscript>
+
+<div class="progress" aria-hidden="true"></div>
+<canvas class="stage" aria-hidden="true"></canvas>
+<div class="tower-labels" aria-hidden="true"></div>
+<header>
+  <a class="brand" href="./">NVD Watch <span>· the data in 3D</span></a>
+  <a class="back" href="./">Read the scorecard</a>
+</header>
+<div class="scrollhint" aria-hidden="true">Scroll</div>
+
+<main>
+  <section class="step"><div class="copy">
+    <p class="kicker">30 days of new vulnerabilities</p>
+    <h1><em data-fill="live"></em> CVEs.<br>One dot each.</h1>
+    <p>Every vulnerability the NVD published from <span data-fill="window"></span>, Rejected records excluded. Scroll to sort them.</p>
+  </div></section>
+
+  <section class="step right"><div class="copy">
+    <p class="kicker">1 · The gap</p>
+    <h2>Only <em data-fill="pct_cpe"></em> can be matched by a scanner.</h2>
+    <p>Sorted into towers by NVD status, height proportional to count. Teal dots carry CPE, the product identifier scanners match on: <span data-fill="with_cpe"></span> of <span data-fill="live"></span>. The tallest tower is Not Scheduled, which has none.</p>
+    <div class="legend" aria-hidden="true"><span><i style="background:var(--dot-ink)"></i>Has CPE</span><span><i style="background:#cdc5b8"></i>No CPE</span></div>
+  </div></section>
+
+  <section class="step"><div class="copy">
+    <p class="kicker">2 · The gate</p>
+    <h2>Exploited ones get through: <em data-fill="kev"></em>.</h2>
+    <p>The CVEs CISA listed as exploited are pulled forward. For software outside NIST's federal and critical-software priorities, a KEV listing is what unlocks CPE, and the median listing lag rose from <span data-fill="lag_first"></span> to <span data-fill="lag_peak"></span>.</p>
+  </div></section>
+
+  <section class="step right"><div class="copy">
+    <p class="kicker">3 · The fix</p>
+    <h2>Re-check <em data-fill="requeue"></em> a month.</h2>
+    <p>Re-queue a set-aside CVE when its attack signal crosses a threshold. At EPSS 10% that is about <span data-fill="requeue"></span> CVEs a month, <span data-fill="share_peak"></span> of NIST's peak monthly output, roughly <span data-fill="cost"></span> a year.</p>
+    <p class="src">Volume: CVE Floodline's day-30 crossing rate (<span data-fill="floodline"></span>) times our 30-day count, a lower bound. Peak output: Commerce OIG. Cost: 45 analyst-minutes at $120 an hour, an assumption.</p>
+  </div></section>
+
+  <section class="step"><div class="copy">
+    <p class="kicker">Where this comes from</p>
+    <p>Counts from the NVD API 2.0, the CISA KEV catalog, FIRST EPSS, CVE Floodline (RogoLabs), and Commerce OIG-26-020-I, pulled <span data-fill="pulled"></span>. Each dot is one CVE; its place inside a tower is arbitrary.</p>
+    <p><a href="./">Read the full scorecard</a>: definitions, the five metrics we recommend, sources, and a citation.</p>
+  </div></section>
+</main>
+
+<script type="module" src="story.js"></script>
+</body>
+</html>
