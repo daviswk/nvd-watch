@@ -28,7 +28,7 @@
 2. **CISA:** require product data in CNA records (as CVE sponsor); publish KEV listing lag; speed review on credible third-party reports.
 3. **Congress:** route oversight through the pending GAO review and CVE-codification language; tie it to the metrics, not new spending.
 
-Cost box: re-check rule at an EPSS 10% threshold ≈ 16–46 CVEs/month (CVE Floodline day-30 crossing rate × our 30-day volume), well under 1% of NIST capacity, ~$7K–$58K/yr at 20–60 analyst-minutes and $120/h, vs. ~$400K/yr OIG offset. Lower bound: day-90 crossings, the older Not Scheduled stock, and SSVC/third-party triggers are not counted. (The earlier 250–470/month and $270K–$510K figures are retired; see `docs/data-notes.md`.)
+Cost box: re-check rule at an EPSS 10% threshold ≈ 16–46 CVEs/month (CVE Floodline day-30 crossing rate × our 30-day volume), well under 1% of NIST capacity, ~$8K–$66K/yr at 20–60 analyst-minutes and $120/h, vs. ~$400K/yr OIG offset. Lower bound: day-90 crossings, the older Not Scheduled stock, and SSVC/third-party triggers are not counted. (The earlier 250–470/month and $270K–$510K figures are retired; see `docs/data-notes.md`.)
 
 ## Checks before submitting
 - [ ] Every number matches the scorecard and its source

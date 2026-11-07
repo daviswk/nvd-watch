@@ -101,7 +101,7 @@ Same-cohort view (the 28,618 CVEs old enough for a day-30 score): 1 crossed 10% 
 
 **Old estimate (retired):** 250–470 CVEs/month, 5–9% of NIST's ~5,000/month ceiling, ~$270K–$510K/yr. Traced to reading Floodline's "2.7 per 1,000 at day 30" as 2.7%: 2.7% × ~15,000 CVEs/month ≈ 400. Not reproducible from any data.
 
-**New estimate:** share crossing 10% by day 30 (0.094% now; 0.27% in the earlier window) × our 17,070 non-rejected CVEs per 30 days = 16 to 46 re-queues a month, 0.3% to 0.9% of capacity. At 20/45/60 analyst-minutes and $120/h: $7K to $58K a year, against the OIG's ~$400K. The page's simulator defaults to the current-data figure and labels it; the pipeline recomputes it weekly.
+**New estimate:** share crossing 10% by day 30 (0.094% now; 0.27% in the earlier window) × our 17,070 non-rejected CVEs per 30 days = 16 to 46 re-queues a month, 0.3% to 0.9% of capacity. At 20/45/60 analyst-minutes and $120/h: $8K to $66K a year (16 × 12 × 20 min ≈ $7.7K; 46 × 12 × 60 min ≈ $66K), against the OIG's ~$400K. An earlier $7K–$58K range is retired: it does not follow from 16–46 a month and matches about 15,000 CVEs a month rather than 17,070. The page's simulator defaults to the current-data figure and labels it; the pipeline recomputes it weekly.
 
 **What it does not count (so it is a lower bound):** crossings between day 30 and day 90 (Floodline's day-90 cells are mostly null for now), crossings from the older Not Scheduled stock outside Floodline's 90-day window, and the SSVC / third-party-evidence triggers. A lower threshold changes the picture: in our own pull, 288 CVEs without CPE scored ≥ 0.01 on current scores, versus 7 at ≥ 0.05 and 2 at ≥ 0.10.
 
