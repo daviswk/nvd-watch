@@ -2,48 +2,95 @@
 
 **Title (working):** Re-check, Then Measure: Closing the Product-Data Gap in the National Vulnerability Database
 
-**Lead with measurement, not failure.** Opening line: no one publishes how quickly NIST attaches product data to CVEs; here are the numbers. The first result partly vindicates NIST: once CISA lists a CVE as exploited, NIST attaches CPE within its one-business-day goal (34 of 35 KEV additions Oct 8 – Nov 7, any publication year; the 35th was listed the day before the pull). The gap is *before and outside* KEV. The brief has to work whatever the weekly data shows.
+**Spine:** NIST's triage has a front door (KEV) but no side door. Add the side door (re-check rule), then measure whether both doors work (five metrics). *Test every section against this sentence; cut what doesn't serve it.*
 
-**Shape (red-team #23):** three findings, three recommendations. Everything else goes to the scorecard's methods and an appendix link. The brief must stand alone without the site (#17).
+**BLUF** (≤ 120 words: the three asks and the price; if they don't fit, scope is still too wide)
+> _[empty: write last]_
 
-## Page 1 — Background
-- What the NVD does, and why product data (CPE) is what lets scanners tell an organization it is affected.
-- NIST's April 15, 2026 triage: KEV, federal, and EO 14028 critical software first; no routine re-scoring of CNA-scored CVEs.
-- Why now: CVE volume roughly doubled in 2026; AI discovery accelerates a capacity gap that began with a February 2024 contract lapse (OIG).
-- Hook figure: median CVE-to-KEV lag 4 → 10 days (2023 → 2025; 9 in 2026 to Nov 6), our count from KEV + NVD (`scripts/kev_lag.py`), grouped by year added. Barracuda reports 6 → 14 for the same population. Know the biases (#6): grouping by year added mixes in old CVEs listed late (pushes up); the current year is incomplete (pushes down).
-- Definition (#21): CPE arrives "when defenders need it" if it is there **before CISA confirms exploitation** (KEV listing), compared by timestamp. Score this (readiness) separately from NIST's one-business-day goal after listing; never let one number stand for both.
+**Word budget:** P1 ~400 · P2 ~450 + 1 figure · P3 ~400 (≈1,250 words total).
 
-## Page 2 — Challenges and opportunities
+**Number labels:** [stable] = yearly or one-time measurements that won't move week to week; [volatile] = 30-day-window shares that move every pull; [fragile] = small n, may swing. Report fragile numbers as a range if `scripts/stability.py` shows them swinging.
+
+**Jargon allowlist:** CPE, KEV, EPSS. Everything else in plain words (e.g. CNA → "the organizations that write CVE records"; enrichment → "adding product data"; CVSS → "severity score"). *Open: CVE itself is not on the list; define it once on first use or add it.*
+
+**Lead with measurement, not failure.** No one publishes how quickly NIST attaches product data to CVEs; here are the numbers. Once CISA lists a CVE as exploited, NIST meets its own goal. The gap is before and outside KEV. The brief must stand alone without the site (#17) and work whatever the weekly data shows.
+
+## Page 1 — Background (~400 words)
+- **Why now** — *emerging-tech hook (assignment requirement).* New CVEs in the NVD rose from 5,143 in January 2026 to 17,481 in October [stable] (our count, NVD API; `data-notes.md`, Verification pulls). Google's threat intelligence team (GTIG, Sep 30, 2026) sees "emerging signals" that AI is contributing to vulnerability discovery, but does **not** attribute the rise to AI: it names other drivers, such as about 5,000 Linux kernel CVEs Jan–Aug and vendor disclosure cycles. OpenAI officials told CyberScoop (Nov 5) its new model found 81+ novel Firefox bugs (press-reported). Frame: AI is one force raising volume and likely to raise it further; the capacity gap began earlier (February 2024 contract lapse, OIG). Do not say "AI-driven surge."
+- What the NVD does, and why CPE is what lets scanners tell an organization it is affected.
+- NIST's April 15, 2026 triage: KEV, federal, and EO 14028 critical software first; everything else waits.
+- Definition (#21): CPE arrives "when defenders need it" if it is there **before** CISA confirms exploitation (the KEV listing). Readiness is scored apart from NIST's one-business-day goal after listing; never let one number stand for both.
+- KEV lag, one sentence: median days from CVE publication to KEV listing rose from 4 (2023) to 10 (2025), 9 in 2026 to Nov 6 [stable] (our count, `scripts/kev_lag.py`; Barracuda reports 6 → 14, vendor).
+
+## Page 2 — Challenges and opportunities (~450 words + 1 figure)
+**Figure:** status breakdown of new CVEs, with CPE share per status (Not Scheduled 40.8% [volatile] of new CVEs, 0% with CPE). Source: site section 1 table.
+
 **Three findings**
-1. **CPE follows the KEV listing; after it, NIST performs.** Goal: 34 of 35 CVEs added to KEV Oct 8 – Nov 7 had CPE within one business day, every first CPE record from NIST, including older CVEs listed late. Readiness: of the 23 that were public before listing and not enriched before the April triage, only 10 had CPE beforehand (35 additions, minus 6 listed on or before the day NVD published them, minus 6 with CPE from before the triage = 23; state this so the arithmetic adds up). Several of the other 13 got CPE within minutes of NVD logging the listing (CVE-2026-111357: public 15 days, CPE 89 minutes after; CVE-2026-41709: public 90 days, CPE the day after). Do not claim NIST starts from scratch at the listing: it may release work it had prepared, and NVD's KEV event is its own sync time, not CISA's. The defensible claim is the defender's view: whatever NIST does internally, NVD users did not see CPE for these 13 until CISA listed them. Use 10 of 23, not "3 of 18" (`scripts/kev_enrichment.py`, NVD change history).
-2. **Before KEV, nothing re-checks.** 22.6% of non-KEV CVEs have CPE; 40.8% of new CVEs are Not Scheduled. Not Scheduled persists: in the Apr 15 – Jun 15 cohort, 5,087 of 13,426 (37.9%) are still Not Scheduled five months later, against 640 (4.8%) Awaiting (one snapshot). Example: CVE-2026-59774 (Gitea unauthenticated file read, chainable to command execution per the CNA), Not Scheduled, no CPE, EPSS 0.28 on Nov 7, not in KEV. Present it as at risk; it is *not* confirmed exploited, and we checked only KEV. Runner-up CVE-2026-77690 (ManageEngine, EPSS 0.16) is Awaiting, not Not Scheduled, which is why the rule has to cover every status without CPE.
-3. **KEV is late and narrow.** It lists after attacks begin (PHP2Shell: KEV nine days after the first attempt; PHP got CPE on day one as federally used software, so it shows listing lag, not the CPE gap), and it is narrow (VulnCheck's 884 vs CISA's 245 exploited CVEs in 2025; vendor figure, different inclusion rules).
+1. **After KEV, NIST performs; before it, CPE mostly isn't there.** Goal: 34 of 35 [fragile] KEV additions Oct 8 – Nov 7 had CPE within one business day, all from NIST. Readiness: only 10 of 23 [fragile] had CPE before the listing. Defender's view only: NVD users did not see CPE for the other 13 until CISA listed them (don't claim NIST starts from scratch at the listing). Arithmetic → footnote.
+2. **Before KEV, nothing re-checks.** 22.6% [volatile] of new CVEs have CPE; 40.8% [volatile] are Not Scheduled, and they stay that way: 37.9% [stable, one snapshot] of the Apr 15 – Jun 15 cohort is still Not Scheduled five months later. Example: CVE-2026-59774 (Gitea), Not Scheduled, no CPE, EPSS 0.28 on Nov 7 [volatile]; at risk, *not* confirmed exploited (we checked only KEV).
+3. **KEV is late and narrow.** It lists after attacks begin (PHP2Shell: KEV nine days after the first attempt; PHP got CPE on day one as federal software, so it shows listing lag, not the CPE gap) and catches a fraction of exploitation (VulnCheck 884 vs CISA 245 in 2025 [stable]; vendor figure, different rules).
 
 **Context (one line each)**
-- Coverage numbers conflict (≈50% vs 8.4%) because no official definition exists; status labels changed mid-series.
-- Format-neutral (#12): 94% of new CVEs carry CNA free-text product data, but 71.3% have it without CPE. The gap is machine-matchable product data from any source (CPE, structured `affected`, purl); NVD Watch measures coverage regardless of who supplies it (#14). Distributed enrichment (EU vulnerability database, GCVE, vendors) complements this; the NVD stays the free baseline FedRAMP and PCI reference.
-- Who bears the gap: state/local governments (MS-ISAC lost federal funding in 2025), hospitals, small businesses — organizations that can't buy commercial enrichment.
-- Limits stated plainly: counts are CVEs, not risk (#22). A missing label on an obscure plugin is not the same as one on a firewall; the EPSS cuts are a partial exposure weighting. Some threats never reach a matchable CVE record (the Aug 2026 Siemens S7 advisory AA26-231A listed no CVE IDs).
+- The gap is standardized identifiers, not product information: CNAs name a product for 94.0% [volatile] of new CVEs, but 71.3% [volatile] have that and no CPE.
+- Who bears it: state and local governments, hospitals, small businesses — those that can't buy commercial product data.
+- Limits: counts are CVEs, not risk (#22); some threats never get a matchable CVE (one sentence: Aug 2026 Siemens S7 advisory listed no CVE IDs).
 
 **Opportunities**
-- EPSS leads KEV by ~201 days when it leads at all (Barracuda, KEV-only sample, #8), so it is a re-check trigger for stalled CVEs, not an intake screen. Precision (how many re-queued CVEs later prove exploited) is unmeasured, and so is EPSS accuracy on unenriched CVEs (#9). Both should be stated as open.
-- NIST already designed the composite (CSWP 41: max of EPSS, KEV, LEV). FedRAMP's 2026 rules already use KEV (not EPSS).
-- The CVE Program's Supplier ADP pilot already lets product vendors add affected-product data to other CNAs' records: Siemens and Red Hat have covered 3,349 CVEs since April 2026 (SADP Tracker). It fills CVE's `affected` field, not CPE.
-- NIST's RFI (question 7(e)) asked the public for metrics. NVD Watch is a working answer. RogoLabs' trackers measure the CVE ecosystem; none measures NIST's enrichment performance (#19).
+- EPSS leads KEV by ~201 days when it leads at all [stable, vendor: Barracuda], so it is a re-check trigger, not an intake screen. Its precision on unenriched CVEs is unmeasured; say so.
+- NIST already designed the trigger (CSWP 41) and answers to its own RFI question on metrics (7(e)); NVD Watch is a working answer.
 
-## Page 3 — Recommendations
-1. **NIST:** adopt and publish a re-check rule that moves any CVE without CPE (Not Scheduled, Awaiting, or Received) into the KEV queue under the existing one-business-day goal when its signal crosses the threshold (moving it to the back of the Awaiting line would not help); log every re-queue; publish five quarterly metrics with frozen definitions; **publish each CVE's priority tier** (KEV, federal, EO 14028, none) so the triage itself can be checked (#3). Expect an OPSEC objection: per-CVE "federal" tags reveal what agencies run. Fallback: quarterly counts by tier, which is enough to audit metrics 1 and 2 (a single combined "federal or EO 14028" flag still leaks, since a flagged CVE in software outside the public EO 14028 categories implies federal use). Until it does, metrics 1 and 2 are reported by observable tiers: KEV status and NVD status.
-2. **CISA:** as CVE sponsor, **phase in** structured product data in CNA records, starting with the largest vendor CNAs and building on the Supplier ADP pilot (#15); as KEV owner, publish listing lag and set a review clock for credible third-party reports.
-3. **Congress:** route oversight through the GAO review House ranking members requested in June 2025 (no GAO product yet) and any CVE-codification bill (none in the FY2027 NDAA texts); tie it to the metrics, not new spending.
+## Page 3 — Recommendations (~400 words)
+**One headline ask per stakeholder**
+1. **NIST:** adopt and publish a re-check rule — any CVE without CPE moves into the KEV queue when its EPSS crosses a published threshold — and report five quarterly metrics on both doors, including quarterly counts by tier.
+2. **CISA:** as CVE Program sponsor, phase in machine-matchable product data in CVE records, largest vendor CNAs first.
+3. **Congress:** make the five metrics the yardstick for oversight, in the GAO review House members requested and in any bill that codifies the CVE program; no new money.
 
-Cost box (#4): measured from the whole NVD stock on Nov 7, 2026 (`scripts/research/recheck_volume.py`, `data/processed/recheck_measured.json`), at an EPSS 10% threshold. Two parts, matching the page: **a one-time load of 303 CVEs** (no CPE, not in KEV, already at EPSS ≥ 0.10, out of 76,217 such CVEs), about 6% of one peak month, **$12K–$36K once**; then **11–28 re-queues a month** (four 30-day windows, Jul 10 – Nov 6, NVD change history included), **0.2–0.6% of NIST's ~5,000/month peak output** (OIG), ~$5K–$40K/yr at 20–60 analyst-minutes and $120/h (the page's simulator defaults to the highest month, 28: ~$30K/yr at 45 minutes, $13K–$40K across 20–60). For scale only: about 1–10% of the ~$400K/yr (≈$800K over two years) the OIG put on routine re-scoring, which NIST stopped in April 2026 and NIST disputes. That capacity already went to triage, so it is a comparison, not found money. Most monthly crossers were published more than 90 days earlier, so the flow comes from the set-aside stock, not new CVEs. Left out, which push it up: LEV, SSVC and third-party triggers; lower thresholds (at 5%, 443 once; at 1%, 3,384 once and a few hundred a month). Five months under one EPSS model (v5), so flow stability is unproven. The earlier Floodline-based 16–46/month ($8K–$66K/yr) is superseded; the totals overlap by coincidence (see `docs/data-notes.md`).
+**Cost box:** a one-time load of 303 CVEs [stable] ($12K–$36K once), then 11–28 a month [stable] (0.2–0.6% of NIST's ~5,000/month peak output, OIG; ~$5K–$40K a year). For scale only, not spare money: the OIG valued the re-scoring NIST stopped at ~$400K a year (NIST disputes it). Full derivation → footnote.
 
-**What would change the recommendation (#5, say it in the brief):** if high-EPSS *Not Scheduled* CVEs get CPE anyway within a few weeks, without a rule, the rule adds nothing and the ask shrinks to the metrics. (Awaiting CVEs are expected to clear over months; the test is whether Not Scheduled ones do.) If NIST stopped meeting its KEV goal, the priority would shift from the re-check rule to KEV compliance.
+**Liveness as evidence:** the metrics are already computed weekly from public APIs (NVD Watch), so publishing them is cheap for NIST.
 
-**RAND (#10), one sentence:** RAND has not studied the NVD directly; this project applies RAND frameworks (incentives, accountability, continuous measurement) to it, and EPSS's lineage includes RAND-affiliated authors.
+**Alternatives considered** (no prose; one "why not" each)
+- Restore full enrichment — ~17,000 CVEs a month [volatile] against a ~5,000 peak; NIST already chose triage.
+- Commercial enrichment — leaves out exactly the organizations that can't pay.
+- Push upstream to CNAs only — right long-term (the CISA ask), but slow, risks small CNAs publishing less, and does nothing for the 76,217 [stable] CVEs already set aside.
+- Status quo — CPE keeps waiting on KEV, which is late and narrow.
+
+**What would change the recommendation (#5):** if high-EPSS Not Scheduled CVEs get CPE within a few weeks without a rule, the ask shrinks to the metrics. If NIST stopped meeting its KEV goal, KEV compliance would come first.
+
+**RAND (#10), one sentence:** RAND has not studied the NVD directly; this applies RAND frameworks (incentives, accountability, continuous measurement), and EPSS's lineage includes RAND-affiliated authors.
+
+## Footnote / site only
+Not in the brief body. Footnote where a reader needs it; otherwise link to the site.
+
+*Sub-asks moved off Page 3*
+- NIST: log every re-queue; freeze metric definitions; publish each CVE's priority tier (KEV, federal, EO 14028, none). OPSEC objection: per-CVE "federal" tags reveal what agencies run, and a combined "federal or EO 14028" flag still leaks; hence quarterly counts by tier in the headline ask. Until then, metrics 1–2 use observable tiers (KEV status, NVD status).
+- NIST: re-queue into the KEV queue under the existing one-business-day goal; moving to the back of Awaiting would not help. Triggers beyond EPSS: KEV, LEV (CSWP 41), CISA SSVC PoC/Active, credible third-party reports.
+- CISA as KEV owner: publish listing lag by month; set a review clock for credible third-party exploitation reports. Build the CNA ask on the Supplier ADP pilot.
+- Congress: Appropriations, Science, Homeland Security committees; the June 2025 GAO request (no GAO product yet); FY2027 NDAA texts have no CVE codification.
+
+*Detail moved out of the body*
+- Readiness arithmetic: 35 additions − 6 listed on or before the day NVD published them − 6 with CPE from before the triage = 23 [fragile]. Of the 13 without CPE before listing, 4 got it within two hours of NVD logging the listing; NVD's KEV event is its own sync time, not CISA's.
+- Runner-up CVEs: CVE-2026-77690 (ManageEngine, EPSS 0.16 [volatile], Awaiting — why the rule covers every status); CVE-2026-111357 (public 15 days, CPE 89 minutes after the KEV event); CVE-2026-41709 (public 90 days, CPE the day after).
+- LEV / SSVC / SADP / purl / GCVE / EU vulnerability database details. SADP: Siemens and Red Hat added product data to 3,349 CVEs [volatile] (SADP Tracker, Nov 7); it fills `affected`, not CPE. Distributed enrichment complements the NVD, which stays the free baseline FedRAMP and PCI reference.
+- Full cost derivation: measured from the whole NVD stock Nov 7, 2026 (`scripts/research/recheck_volume.py`, `data/processed/recheck_measured.json`), EPSS 10%. Stock 76,217 [stable] (no CPE, not KEV). One-time 303 ≈ 6% of one peak month. Monthly 11, 12, 23, 28 in four 30-day windows Jul 10 – Nov 6, change history included; mostly CVEs over 90 days old. 20–60 analyst-minutes at $120/h; simulator default 28 → ~$30K/yr at 45 min ($13K–$40K). OIG: ~$800K over two years ≈ $400K/yr; the rule is ~1–10% of that, a scale comparison. Left out (push it up): LEV, SSVC, third-party triggers; at 5%, 443 once; at 1%, 3,384 once and a few hundred a month. Five months under one EPSS model (v5). The earlier 16–46/month is superseded (`data-notes.md`).
+- The five metric definitions (site section 4; CLAUDE.md, frozen).
+- Coverage figures in circulation (≈50% Volerion, 8.4% CSI) differ by definition and window; status labels changed Apr 15, 2026.
+- KEV-lag biases (#6): grouping by year added mixes in old CVEs listed late (up); the current year is incomplete (down).
+
+## Data snapshot
+- Snapshot tag: `brief-v1` (created at submission, not now)
+- Pull date / CVE window: _TBD_
+- Disclaimer: "Figures on the live site will differ; this brief uses the [date] snapshot."
+- Cite the tag for numbers; cite the live site for the tracker ("updated weekly").
 
 ## Checks before submitting
-- [ ] Every number matches the scorecard and its source (`summary.json`, `kev_enrichment.json`)
+- [ ] Every number matches the `brief-v1` tag (`summary.json`, `kev_enrichment.json`, `recheck_measured.json` at that tag), not the live site
+- [ ] Fragile numbers reported as a range if they swing (`python scripts/stability.py`)
+- [ ] Every number carries its label in this outline; volatile ones are dated in the brief
+- [ ] Only CPE, KEV, EPSS used as unexplained acronyms
+- [ ] BLUF ≤ 120 words; each page within its word budget; under 3 pages including the figure
 - [ ] Vendor-sourced figures are attributed
-- [ ] Under 3 pages including any figure
 - [ ] Each number in the brief has a "how verified" note in the AI log (#20)
+
+## Later (at submission, not now)
+- `git tag brief-v1 && git push origin brief-v1`; fill in **Data snapshot**; add a "Brief data snapshot" link on the site pointing to the tagged data.

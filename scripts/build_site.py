@@ -294,6 +294,13 @@ def main():
         shutil.copy(PROCESSED / "kev_lag.json", SITE / "data" / "kev_lag.json")
     shutil.copy(ke_path, SITE / "data" / "kev_enrichment.json")   # the per-CVE evidence behind metric 3
     shutil.copy(rm_path, SITE / "data" / "recheck_measured.json")  # read by the story page
+
+    # Keep each pull's figures, keyed by pull date, so week-to-week stability can be checked
+    # (scripts/stability.py). Rebuilding from the same pull overwrites the same folder.
+    hist = ROOT / "data" / "history" / pulled.strftime("%Y-%m-%d")
+    hist.mkdir(parents=True, exist_ok=True)
+    shutil.copy(PROCESSED / "summary.json", hist / "summary.json")
+    shutil.copy(ke_path, hist / "kev_enrichment.json")
     print(f"wrote site/index.html from data pulled {values['pulled_at']} ({values['n_total']} CVEs)")
 
 

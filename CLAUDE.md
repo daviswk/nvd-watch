@@ -76,6 +76,7 @@ RogoLabs (Jerry Gamblin, https://rogolabs.net) publishes free, open-source CVE t
 - `PRODUCT.md` — product truth for design work (Impeccable); `DESIGN.md` — the visual system as built
 - `scripts/fetch_sample.py` — data pull (reads `NVD_API_KEY` from `.env`; `--from-raw` reprocesses without fetching)
 - `scripts/kev_enrichment.py` — NVD change history for each KEV CVE in the sample: first CPE date vs KEV listing (harm metric, metric 3). Run after `fetch_sample.py`, before `build_site.py`; the build exits without its output
+- `data/history/YYYY-MM-DD/` — each pull's `summary.json` and `kev_enrichment.json`, written by `build_site.py`; `scripts/stability.py` prints readiness and KEV-goal x of n per pull, with min/max (decides point vs range in the brief)
 - `scripts/kev_lag.py` — median CVE-to-KEV lag by year for the section 2 chart (writes `data/processed/kev_lag.json`; `build_site.py` copies it to `site/data/` for the story page; the SVG values in the template are copied by hand)
 - `site/story.html`, `site/story.js` — "The data in 3D" scroll story, one dot per CVE; reads `site/data/*.json` at runtime. The scorecard itself stays 2D (see DESIGN.md, The 2D Rule)
 - Branches `prototype/3d-variants` (chose the story page) and `prototype/scorecard-figures` (3D scorecard figures, rejected) — throwaway prototypes; not for main
