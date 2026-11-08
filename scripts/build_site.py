@@ -187,7 +187,7 @@ def main():
     # Orphaned CVEs (scripts/research/osv_orphans.py): no CPE and no open package advisory in OSV.
     # A research run over ~3 GB of OSV exports, not part of the weekly pull, so it is shown only while it
     # describes the same window as summary.json; after a new pull the row and its paragraph drop out.
-    orphan_row = orphan_para = ""
+    orphan_row = orphan_para = osv_source_li = ""
     op_path = PROCESSED / "osv_orphans.json"
     if op_path.exists():
         op = json.loads(op_path.read_text())
@@ -215,10 +215,19 @@ def main():
                 "<span class=\"note\">Open advisories only; vendor bulletins are not counted, and the share falls "
                 "as late advisories arrive. Data: <a href=\"data/osv_orphans.json\">osv_orphans.json</a>.</span></p>"
             )
+            osv_source_li = (
+                "      <li>OSV.dev (Google), <a href=\"https://google.github.io/osv.dev/data/\">open-source "
+                "vulnerability database exports</a>, all package ecosystems except GIT, downloaded "
+                f"{fmt_date(op['run_date'])}. The section 1 orphan count is ours "
+                "(<a href=\"data/osv_orphans.json\">osv_orphans.json</a>).</li>"
+            )
             (SITE / "data").mkdir(exist_ok=True)
             shutil.copy(op_path, SITE / "data" / "osv_orphans.json")
         else:
             print(f"note: osv_orphans.json is for {op['window']}, not this pull; orphan row left out", file=sys.stderr)
+    if not orphan_row:
+        # Don't publish a file the page no longer uses or cites.
+        (SITE / "data" / "osv_orphans.json").unlink(missing_ok=True)
 
     # Every figure and sentence of the estimate comes from cost_model; site/cost.js recomputes the
     # same strings in the browser from the model written into the page.
@@ -280,6 +289,16 @@ def main():
                    "Even after CISA confirms an attack, NIST sometimes misses its own goal.")
     ke_verdict = ("NIST meets its goal once a CVE is listed. The gap is the wait before the listing." if met_all else
                   f"{kl['with_cpe_now'] - kl['within_one_business_day']} took longer than one business day.")
+
+    # While a listed CVE has no CPE yet, it is neither a hit nor a miss: say "x of y resolved, z pending".
+    ke_pending_n = kl["kev_cves"] - kl["with_cpe_now"]
+    if ke_pending_n:
+        ke_l_goal = f"{fmt_int(kl['within_one_business_day'])} of {fmt_int(kl['with_cpe_now'])} resolved, {fmt_int(ke_pending_n)} pending"
+        ke_l_goal_sentence = (f"{fmt_int(kl['within_one_business_day'])} of the {fmt_int(kl['with_cpe_now'])} with CPE so far "
+                              f"had it within one business day ({fmt_int(ke_pending_n)} still pending)")
+    else:
+        ke_l_goal = f"{fmt_int(kl['within_one_business_day'])} of {fmt_int(kl['kev_cves'])}"
+        ke_l_goal_sentence = f"{ke_l_goal} had CPE within one business day"
 
     stale_notice = ""
     if age_days > STALE_AFTER_DAYS:
@@ -367,7 +386,9 @@ def main():
             f'                <label><input type="radio" name="minutes" value="{m}"'
             f'{" checked" if m == cm.DEFAULT_MINUTES else ""}><span>{m}</span></label>' for m in cm.MINUTES),
         "ke_l_n": fmt_int(kl["kev_cves"]),
-        "ke_l_1bd": fmt_int(kl["within_one_business_day"]),
+        "ke_l_goal": ke_l_goal,
+        "ke_l_goal_sentence": ke_l_goal_sentence,
+        "osv_source_li": osv_source_li,
         "ke_l_pub": fmt_int(kl["triage_public_before_kev"]),
         "ke_l_sameday": fmt_int(kl["kev_cves"] - kl["public_before_kev"]),
         "ke_l_pretriage": fmt_int(kl["public_before_kev"] - kl["triage_public_before_kev"]),
