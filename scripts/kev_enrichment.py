@@ -17,6 +17,10 @@ timestamp. That separates two questions the page used to blur:
 
 Reads:  data/processed/cves_sample.csv, data/processed/summary.json, CISA KEV feed
 Writes: data/processed/kev_enrichment.json
+        data/history/kev_cumulative.json: every row from every run, keyed by CVE ID (latest row wins),
+        with readiness on the union. Each weekly window is rebuilt from scratch, so the window's n never
+        grows; the union does. It lives in data/history/ because the weekly workflow commits that
+        folder (and not other new files in data/processed/). Seeded from data/history/*/ on first run.
 Run:    python scripts/kev_enrichment.py
 """
 import json
@@ -112,6 +116,32 @@ def stats(rows):
     }
 
 
+def update_cumulative(rows, pulled_at):
+    """Append this run's rows to the cumulative file (latest row per CVE wins); return its union stats."""
+    hist = ROOT / "data" / "history"
+    path = hist / "kev_cumulative.json"
+    if path.exists():
+        cum = json.loads(path.read_text())["rows"]
+    else:   # first run: seed from earlier pulls, oldest first, so later rows overwrite earlier ones
+        cum = {}
+        for f in sorted(hist.glob("*/kev_enrichment.json")):
+            for r in json.loads(f.read_text())["rows"]:
+                cum[r["cve_id"]] = {**r, "pull": f.parent.name}
+    for r in rows:
+        cum[r["cve_id"]] = {**r, "pull": pulled_at[:10]}
+    out = {
+        "about": ("Union of every KEV row from every kev_enrichment.py run (sample and listed cohorts), keyed by "
+                  "CVE ID, latest row wins. Readiness rules as in kev_enrichment.json."),
+        "updated_utc": pulled_at,
+        "pulls": sorted({r["pull"] for r in cum.values()}),
+        "union": stats(list(cum.values())),
+        "rows": cum,
+    }
+    hist.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(out, indent=1, default=int))
+    return out["union"]
+
+
 def main():
     load_dotenv()
     key = os.environ.get("NVD_API_KEY")
@@ -149,6 +179,9 @@ def main():
     path = ROOT / "data" / "processed" / "kev_enrichment.json"
     path.write_text(json.dumps(out, indent=2, default=int))
     print(json.dumps({k: v for k, v in out.items() if k != "rows"}, indent=1, default=int))
+    u = update_cumulative(list(rows.values()), out["pulled_at_utc"])
+    print(f"cumulative: readiness {u['triage_cpe_before_kev']} of {u['triage_public_before_kev']} "
+          f"over {u['kev_cves']} KEV CVEs seen in any pull")
 
 
 if __name__ == "__main__":
