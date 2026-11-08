@@ -2,15 +2,17 @@
 
 Written Nov 7, 2026 at the end of the first Claude Code session (Claude Fable 5.1). Read this, then `CLAUDE.md`, then the **Current conclusions** list at the top of `docs/data-notes.md`. That file is appended in order, so a section further down can revise an earlier one; the list at the top is the current state, and older passages that were revised are marked **Superseded**. Everything below is verified against the repo and the live site as of that date.
 
+**Updated Nov 8, 2026 (Claude Opus 5.5 session):** the weekly rebuild workflow was added and its first run (manual, Nov 8 05:21 UTC) passed end to end. The page now refreshes itself every Monday, so the live numbers move week to week. See §5 item 2 and the new gotchas in §6.
+
 ## 1. Where the project stands
 
-**Live:** https://daviswk.github.io/nvd-watch/ (GitHub Pages, deployed on every push to `main` by `.github/workflows/pages.yml`). Repo: https://github.com/daviswk/nvd-watch, public. Check `git log` for the latest commit; the tree is kept clean between sessions.
+**Live:** https://daviswk.github.io/nvd-watch/ (GitHub Pages, deployed on every push to `main` by `.github/workflows/pages.yml`, and every Monday 12:47 UTC by `.github/workflows/rebuild.yml`, which pulls fresh data, commits it as github-actions[bot] and deploys). Latest pull: Nov 8, 2026 (window Oct 9 – Nov 8). Repo: https://github.com/daviswk/nvd-watch, public. Check `git log` for the latest commit; the tree is kept clean between sessions.
 
 **The three graded deliverables**
 
 | Deliverable | State | What remains |
 |---|---|---|
-| Artifact (scorecard page) | Built, reviewed (Impeccable finish review: ship), live | First run of the weekly rebuild (`.github/workflows/rebuild.yml`, added Nov 7, not yet run). Done: multi-year KEV lag (`scripts/kev_lag.py`), backlog-based re-check volume (`recheck_measured.json`), orphan count (`osv_orphans.json`), legacy share |
+| Artifact (scorecard page) | Built, reviewed (Impeccable finish review: ship), live | Nothing required. Done: weekly rebuild (`.github/workflows/rebuild.yml`, first run Nov 8), multi-year KEV lag (`scripts/kev_lag.py`), backlog-based re-check volume (`recheck_measured.json`), orphan count (`osv_orphans.json`), legacy share |
 | Policy brief (≤3 pages) | Outline only: `docs/brief-outline.md` | Write it. Numbers must match the page. Export to PDF, put it in `site/` or `docs/`, and point the band's "Policy brief" button at it (currently links to the outline on GitHub) |
 | AI collaboration log | `docs/ai-collaboration-log.md`, current through deploy | Keep adding a row per session. Final pass: every entry has a verification note |
 
@@ -54,12 +56,14 @@ Beyond the settled decisions in `CLAUDE.md`:
 | `docs/ai-collaboration-log.md` | Log. Add a row under "Entries from Claude Code" for each session. |
 | `PRODUCT.md`, `DESIGN.md`, `.impeccable/` | Impeccable product truth, design system, surface brief with direction contract, decision-round fixtures. |
 | `.github/workflows/pages.yml` | Deploys `site/` on push to `main`. |
+| `.github/workflows/rebuild.yml` | Weekly rebuild: Mondays 12:47 UTC + manual (Actions → Weekly rebuild → Run workflow). fetch → kev_enrichment → kev_lag → build → commit if changed → deploy Pages. Uses the `NVD_API_KEY` repo secret. |
+| `data/history/YYYY-MM-DD/`, `scripts/stability.py` | One folder per pull (written by the build). `stability.py` prints readiness and the KEV goal per pull with min/max; after 4+ pulls it says whether to cite a point or a range. |
 | `.claude/launch.json` | `preview_start` config for the local server. |
 
 ## 5. What to do next, in order
 
-1. **Write the brief** from `docs/brief-outline.md`. Three pages. Every number must match `site/index.html` (pull the values from `data/processed/summary.json` and `kev_enrichment.json`, not from memory or from older sections of `data-notes.md`). Cost box uses the measured figures (303 once, 11–28 a month; `recheck_measured.json`). Export PDF; link it from the band button in `site/template.html`; rebuild; push.
-2. **Weekly rebuild action: added Nov 7, not yet run.** `.github/workflows/rebuild.yml`: Mondays 12:47 UTC + manual. Runs fetch → kev_enrichment → kev_lag → build, commits changed data/page as github-actions[bot], then deploys Pages itself (bot commits don't trigger `pages.yml`). Not run weekly: `osv_orphans.py` (the orphan row drops off after the first new pull), `recheck_volume.py`, `check_cost_model.py`. Trigger it once by hand (Actions → Weekly rebuild → Run workflow) and check the commit and the live page.
+1. **Write the brief** from `docs/brief-outline.md`. Three pages. Every number must match `site/index.html` **as of a named pull date** (the page now changes weekly: write "as of Nov N" and take every figure from that pull's `summary.json` and `kev_enrichment.json` in `data/history/YYYY-MM-DD/`, not from memory or from older sections of `data-notes.md`). Cost box uses the measured figures (303 once, 11–28 a month; `recheck_measured.json`). Export PDF; link it from the band button in `site/template.html`; rebuild; push.
+2. ~~Weekly rebuild action~~: done. First run Nov 8 (manual): all steps passed; bot commit `b80cd47`; live page identical to the committed build. Window moved Oct 8 – Nov 7 → Oct 9 – Nov 8: coverage 22.6% → 22.3% (3,795 of 17,035); KEV cohort 35 → 30 (the 5 dropped were all listed Oct 8, old CVEs with pre-triage CPE); readiness unchanged at 10 of 23; KEV goal 29 of 30 (1 pending). The section 1 orphan row dropped off as designed. Not run weekly: `osv_orphans.py`, `recheck_volume.py`, `check_cost_model.py`. After each Monday run, `git pull` before working locally, and run `scripts/stability.py`.
 3. ~~Multi-year KEV lag~~: done. `scripts/kev_lag.py` → `kev_lag.json`; the section 2 chart shows our 4 → 7 → 10 → 9, with Barracuda cited for comparison.
 4. ~~Backlog-based re-check estimate~~: done (`recheck_measured.json`, on the page). Still unmeasured: whether EPSS (v5, not v4) ranks unenriched CVEs worse; keep it flagged.
 5. **Final AI log pass:** every row has a verification note; add a closing "models used" line naming Claude Fable 5.1 (Nov 7) and Claude Opus (later sessions).
@@ -77,6 +81,10 @@ Things to leave alone: the detector findings on `.impeccable/decision/*.html` (s
 - **GitHub Pages:** the first deploy failed because the Pages site didn't exist; Will enabled it under Settings → Pages → Source: GitHub Actions, and `configure-pages` has `enablement: true`. An empty commit does not trigger the workflow unless it has no `paths` filter (it has none now).
 - **Windows line endings:** git warns "LF will be replaced by CRLF" on every commit. Harmless; ignore it or set `git config core.autocrlf false` if it bothers you.
 - **PHP2Shell has no CVE ID on the page on purpose.** A draft wrongly attached CVE-2026-104935 (that's the Ivanti CVE from the mockups). Only add an ID after verifying it in the NVD.
+
+- **Pull before you work.** The Monday bot commit lands on `main`; a local session that hasn't pulled will hit a rejected push. `git pull --ff-only origin main` first.
+- **Push declined for email privacy (Nov 8).** GitHub refused a push because the commit email was Will's private Gmail; Will turned off "Block command line pushes that expose my email" (Settings → Emails). If it comes back, use `8902489+daviswk@users.noreply.github.com` as this repo's `user.email`.
+- **Shifting window, shifting small-n figures.** A few hours' move of the 30-day window drops whole KEV listing days (Nov 8: 35 → 30). Before reporting a change in a KEV figure, check which CVEs left or entered and why.
 
 ## 7. How this session verified things (keep doing this)
 

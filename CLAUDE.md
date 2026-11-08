@@ -48,7 +48,7 @@ One scorecard page with four sections:
 - **Verify before citing.** Prefer primary sources (NIST, OIG, Federal Register, FIRST, CISA). Mark single-source or vendor-sourced figures (VulnCheck, Volerion, CSA, Barracuda all have interests).
 - **Log AI failures as they happen** in `docs/ai-collaboration-log.md` (fabrications, wrong dates, unfindable sources, overstated framing).
 - **Keep it simple.** Will prefers simple, concise solutions and wants the reasoning explained, not just working code.
-- Tech stack preference: Python (requests, pandas) for the pipeline → JSON → one static HTML page. Weekly rebuild via a scheduled GitHub Action is the stretch goal.
+- Tech stack preference: Python (requests, pandas) for the pipeline → JSON → one static HTML page. Weekly rebuild runs as a scheduled GitHub Action (`.github/workflows/rebuild.yml`, Mondays 12:47 UTC; live since Nov 8, 2026).
 
 ## Related tools (don't duplicate)
 RogoLabs (Jerry Gamblin, https://rogolabs.net) publishes free, open-source CVE tools. Positioning: **RogoLabs measures the CVE ecosystem (volume, CNAs, suppliers); NVD Watch measures NIST's own performance and prices a policy rule. No public tool measures CPE coverage by NIST priority tier, time to enrichment, KEV-goal compliance, or re-queues.**
@@ -58,8 +58,8 @@ RogoLabs (Jerry Gamblin, https://rogolabs.net) publishes free, open-source CVE t
 - **SADP Tracker** (https://rogolabs.github.io/SADP-Tracker/index.html): the CVE Program's Supplier ADP pilot. Siemens (from Apr 14, 2026) and Red Hat (from Jun 30, 2026) have added affected-product data to 3,349 unique CVEs (3,391 records) as of Nov 7, 2026. A partial, non-NIST path to product data; it fills CVE's `affected` field, not CPE.
 
 ## Known open items
-- **KEV: goal met, readiness not (Nov 7 pull):** all 35 CVEs added to KEV Oct 8 – Nov 7 (any publication year) met the one-business-day goal or are pending, all by NIST. But of the 23 that were public before listing (and not enriched pre-triage), only 10 had CPE beforehand; several got it within minutes of the KEV event (`scripts/kev_enrichment.py`). "When defenders need it" = before the KEV listing. Keep readiness and the goal separate. At-risk example: CVE-2026-59774 (Gitea, Not Scheduled, EPSS 0.28, not confirmed exploited).
-- Coverage figures: our first pull (Nov 7, 2026, 30 days) shows 22.6% of non-rejected CVEs with CPE; see `docs/data-notes.md`. Vendor figures (Volerion ≈50%, CSI 8.4%) are now context, not headline.
+- **KEV: goal met, readiness not (Nov 7 pull; Nov 8 pull: goal 29 of 30, readiness still 10 of 23):** all 35 CVEs added to KEV Oct 8 – Nov 7 (any publication year) met the one-business-day goal or are pending, all by NIST. But of the 23 that were public before listing (and not enriched pre-triage), only 10 had CPE beforehand; several got it within minutes of the KEV event (`scripts/kev_enrichment.py`). "When defenders need it" = before the KEV listing. Keep readiness and the goal separate. At-risk example: CVE-2026-59774 (Gitea, Not Scheduled, EPSS 0.28, not confirmed exploited).
+- Coverage figures: our first pull (Nov 7, 2026, 30 days) shows 22.6% of non-rejected CVEs with CPE (Nov 8 pull: 22.3%). The page now updates weekly, so cite figures with their pull date and take them from one `data/history/` folder; see `docs/data-notes.md`. Vendor figures (Volerion ≈50%, CSI 8.4%) are now context, not headline.
 - NVD API status values differ from display labels: API `Deferred` = "Not Scheduled", `Awaiting Analysis` = "Awaiting Enrichment", `Analyzed` = "Enriched". Use display labels on the page, API values in code.
 - The NVD API now returns CNA `affected` data (free-text vendor/product). 94% of CVEs have it; the gap is *standardized* CPE, not any product data. Say "CPE" or "scanner-matchable product identifiers", never "no product data".
 - Re-check volume (researched Nov 7; `docs/research/notes/open_items_recheck_volume.md`):
@@ -76,6 +76,7 @@ RogoLabs (Jerry Gamblin, https://rogolabs.net) publishes free, open-source CVE t
 ## Where things are
 - `docs/handoff.md` — **start here in a new session**: current state, how to run everything, what's next in order, gotchas
 - `PRODUCT.md` — product truth for design work (Impeccable); `DESIGN.md` — the visual system as built
+- `.github/workflows/rebuild.yml` — weekly pull, build, commit (github-actions[bot]) and Pages deploy; `pages.yml` deploys on ordinary pushes. Run `git pull` before local work after a Monday
 - `scripts/fetch_sample.py` — data pull (reads `NVD_API_KEY` from `.env`; `--from-raw` reprocesses without fetching)
 - `scripts/kev_enrichment.py` — NVD change history for each KEV CVE in the sample: first CPE date vs KEV listing (harm metric, metric 3). Run after `fetch_sample.py`, before `build_site.py`; the build exits without its output
 - `data/history/YYYY-MM-DD/` — each pull's `summary.json` and `kev_enrichment.json`, written by `build_site.py`; `scripts/stability.py` prints readiness and KEV-goal x of n per pull, with min/max (decides point vs range in the brief)
