@@ -1,7 +1,8 @@
 """
 build_site.py — render the scorecard page from processed data.
 
-Reads  data/processed/summary.json and data/processed/cves_sample.csv
+Reads  data/processed/summary.json; data/processed/cves_sample.csv only as a cross-check, when it is from the
+       same pull (it is git-ignored, so it lags after a weekly bot commit)
 Fills  site/template.html  ({{token}} placeholders)
 Writes site/index.html and site/data/summary.json
 
@@ -123,21 +124,43 @@ def kev_lag_figure(lag):
     return svg, sentence, note
 
 
-def kev_lag_in_window(df):
-    """Median days from NVD publication to KEV listing for KEV CVEs published in the window."""
-    k = df[df["in_kev"]].copy()
+def kev_lag_in_window(k):
+    """Median days from NVD publication to KEV listing for KEV CVEs published in the window.
+    k: rows with `published` and `kev_date_added` (the CSV's in_kev rows, or kev_enrichment.json's sample rows)."""
     if k.empty:
         return None, 0
-    pub = pd.to_datetime(k["published"]).dt.normalize()
+    pub = pd.to_datetime(k["published"].str[:10])
     added = pd.to_datetime(k["kev_date_added"])
     lag = (added - pub).dt.days
     return float(lag.median()), int(len(lag))
 
 
+def load_csv_if_current(summary):
+    """The per-CVE CSV, or None if it is missing or from another pull.
+
+    The weekly workflow commits summary.json but cves_sample.csv is git-ignored, so after a bot commit the
+    local CSV belongs to an older pull. It matches this summary only if it has the same number of CVEs and
+    every publication date falls inside summary.json's window."""
+    path = PROCESSED / "cves_sample.csv"
+    if not path.exists():
+        print("WARNING: data/processed/cves_sample.csv not found; skipping the CSV cross-check.")
+        return None
+    df = pd.read_csv(path)
+    start, end = (pd.Timestamp(w).tz_localize(None) for w in summary["window_utc"])
+    pub = pd.to_datetime(df["published"])
+    if len(df) != summary["cves_in_window"] or pub.min() < start or pub.max() > end:
+        print(f"WARNING: cves_sample.csv is from another pull ({len(df):,} CVEs published {pub.min():%Y-%m-%d} to "
+              f"{pub.max():%Y-%m-%d}; summary.json has {summary['cves_in_window']:,}, window "
+              f"{start:%Y-%m-%d} to {end:%Y-%m-%d}, pulled {summary['pulled_at_utc'][:16]} UTC). Skipping the CSV "
+              "cross-check; KEV lag in the window comes from kev_enrichment.json. Run fetch_sample.py to refresh it.")
+        return None
+    return df
+
+
 def main():
     load_dotenv()
     summary = json.loads((PROCESSED / "summary.json").read_text())
-    df = pd.read_csv(PROCESSED / "cves_sample.csv")
+    df = load_csv_if_current(summary)   # None when the local CSV lags a bot commit of summary.json
 
     pulled = datetime.fromisoformat(summary["pulled_at_utc"])
     age_days = (datetime.now(timezone.utc) - pulled).days
@@ -146,14 +169,15 @@ def main():
     deferred = by_status.get("Deferred", {"count": 0, "pct_of_live": 0})
     awaiting = by_status.get("Awaiting Analysis", {"count": 0, "pct_of_live": 0})
     enriched = by_status.get("Analyzed", {"count": 0})
-    kev_lag_median, kev_lag_n = kev_lag_in_window(df)
     tiers = summary["epss_without_cpe_not_kev"]
     tte = summary["time_to_enrichment"]
-    # Counted by the pipeline, never back-derived from a rounded percentage. The CSV count is a cross-check.
-    live = df[df["vuln_status"] != "Rejected"]
-    n_cpe_live = int(summary.get("with_cpe_live", live["has_cpe"].sum()))
-    if n_cpe_live != int(live["has_cpe"].sum()):
-        sys.exit(f"summary.json with_cpe_live={n_cpe_live} disagrees with the CSV ({int(live['has_cpe'].sum())}); re-run fetch_sample.py")
+    # Counted by the pipeline, never back-derived from a rounded percentage. The CSV count is a cross-check,
+    # run only when the CSV is from the same pull as summary.json.
+    n_cpe_live = int(summary["with_cpe_live"])
+    if df is not None:
+        live = df[df["vuln_status"] != "Rejected"]
+        if n_cpe_live != int(live["has_cpe"].sum()):
+            sys.exit(f"summary.json with_cpe_live={n_cpe_live} disagrees with the CSV ({int(live['has_cpe'].sum())}); re-run fetch_sample.py")
 
     # Canonical URL for the static citation (JS-off and print). Set SITE_URL in .env or the environment
     # once the page is deployed; until then the citation carries no URL rather than a placeholder.
@@ -278,6 +302,11 @@ def main():
     ke = json.loads(ke_path.read_text())
     if ke["kev_cves"] != summary["in_kev"]:
         sys.exit(f"kev_enrichment.json covers {ke['kev_cves']} KEV CVEs, summary.json has {summary['in_kev']}; re-run kev_enrichment.py")
+    # KEV lag for CVEs published in the window: from the CSV when it is current, else from kev_enrichment.json's
+    # sample rows (same CVEs, same publication and KEV dates; committed by the weekly workflow).
+    kev_rows = (df[df["in_kev"]] if df is not None
+                else pd.DataFrame([r for r in ke["rows"] if r["in_sample"]], columns=["published", "kev_date_added"]))
+    kev_lag_median, kev_lag_n = kev_lag_in_window(kev_rows)
     pending = [r for r in ke["rows"] if not r["first_cpe"]]
     kev_pending_note = (
         "" if not pending else
