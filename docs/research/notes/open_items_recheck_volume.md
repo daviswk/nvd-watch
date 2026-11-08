@@ -34,7 +34,7 @@ All new numbers come from `scripts/research/recheck_volume.py` (run on NVD feeds
 - **Monthly flow** (stock CVEs whose EPSS first reached 0.10 in a 30-day window, Jul 10 – Nov 6): **9–21 per month**. Change history shows **2–7 more per month** that crossed while still without CPE and were enriched afterwards. That gives **~11–28 re-queues a month**, mean ~18.5.
 - **Where the flow comes from:** most crossers were published **more than 90 days** before crossing (6–14 a month). Very few are new CVEs (0–4 a month, ages 0–30 days).
 - **What this does to the 16–46 estimate:** total volume is the same order of magnitude, but the composition differs. The Floodline-based figure counts mostly *new* CVEs that already have CPE. The measured re-queue flow comes mostly from old stock.
-- **Lower thresholds** raise the flow: 8–30 a month at 0.05, and **183–656 a month at 0.01** (before the change-history correction).
+- **Lower thresholds** raise the flow: 8–30 a month at 0.05 and **183–656 a month at 0.01** before the change-history correction. **Nov 8:** with the correction, 0.05 is **34, 36, 11, 32** (11–36; `scripts/research/recheck_flow_corrected.py`, which reproduced 28, 23, 11, 12 at 0.10).
 - **Confidence:** high for the stock counts (full census). Medium for the flow (four windows, all under one EPSS model, about 2–28 events each).
 
 ### 3. EPSS accuracy on unenriched CVEs

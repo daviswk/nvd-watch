@@ -4,7 +4,7 @@ Combines, without fetching anything:
   recall       data/processed/kev_trigger_recall.json   (kev_trigger_recall.py)
   EPSS volume  data/processed/recheck_measured.json     (0.10, change-history corrected) and
                data/processed/recheck_volume_rerun_2026-11-08.txt (recheck_volume.py re-run on Nov 8
-               feeds; 0.05 / 0.01 monthly flows = stock-status crossers, no change-history correction)
+               feeds; 0.01 monthly flow = stock-status crossers, no change-history correction; 0.05 corrected, Nov 8)
   SSVC, LEV    data/processed/trigger_volume.json       (trigger_volume.py)
   cost         scripts/cost_model.py at 45 minutes and $120/h (one-time load cost; yearly flow cost)
   benefit      sum of current EPSS over the one-time load = expected CVEs with exploitation activity in
@@ -24,8 +24,10 @@ P = ROOT / "data" / "processed"
 rec = json.loads((P / "kev_trigger_recall.json").read_text())["recall"]
 rm = json.loads((P / "recheck_measured.json").read_text())
 tv = json.loads((P / "trigger_volume.json").read_text())
-flows10 = [w["requeues"] for w in rm["monthly_flow"]["windows"]]
-FLOW_RERUN = {"0.05": [23, 30, 8, 25], "0.01": [183, 384, 655, 449]}   # "in stock statuses", rerun file
+flows10 = [w["requeues"] for w in rm["monthly_flow_0_10"]["windows"]]
+# 0.05: change-history corrected since Nov 8 (recheck_flow_corrected.py; recheck_measured.json's monthly_flow).
+# 0.01: stock crossers only ("in stock statuses", rerun file), no correction.
+FLOW_RERUN = {"0.05": [w["requeues"] for w in rm["monthly_flow"]["windows"]], "0.01": [183, 384, 655, 449]}
 
 
 def recall_cells(key):

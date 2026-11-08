@@ -68,13 +68,13 @@
 
 | | ≥ 0.05 | ≥ 0.10 |
 |---|---|---|
-| One-time load | 443 CVEs, ~$40K ($18K–$53K) | 303 CVEs, ~$27K ($12K–$36K) |
-| Monthly flow | 8–30, ~$32K/yr at 30 ($4K–$43K) | 11–28, ~$30K/yr at 28 ($5K–$40K) |
-| Share of ~5,000/month peak | 0.16–0.6% | 0.22–0.56% |
+| One-time load | 443 CVEs (~9% of one peak month), ~$40K ($18K–$53K) | 303 CVEs (~6%), ~$27K ($12K–$36K) |
+| Monthly flow | 11–36, ~$39K/yr at 36 ($5K–$52K) | 11–28, ~$30K/yr at 28 ($5K–$40K) |
+| Share of ~5,000/month peak | 0.22–0.72% | 0.22–0.56% |
 | KEV CVEs caught before listing (2025–26 / v5) | 22 of 172 / 4 of 51 | 15 of 172 / 2 of 51 |
 | EPSS-expected exploitation in the load, 30 days | ~105 | ~95 |
 
-[stable except the flow, measured in four 30-day windows Jul 10 – Nov 6.] For scale only, not spare money: the OIG valued the re-scoring NIST stopped at ~$400K a year (NIST disputes it). Full derivation → footnote.
+[stable except the flow, measured in four 30-day windows Jul 10 – Nov 6, NVD change history included at both thresholds: 34, 36, 11, 32 at 0.05; 28, 23, 11, 12 at 0.10 (`recheck_flow_corrected.json`, which reproduced the 0.10 counts). The overnight 8–30 at 0.05 left out the change-history correction.] The site and simulator use 0.05 since Nov 8 (default 36 a month). For scale only, not spare money: the OIG valued the re-scoring NIST stopped at ~$400K a year (NIST disputes it). Full derivation → footnote.
 
 **Liveness as evidence:** the metrics are already computed weekly from public APIs (NVD Watch), so publishing them is cheap for NIST.
 

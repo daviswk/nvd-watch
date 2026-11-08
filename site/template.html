@@ -82,7 +82,7 @@
             </tbody>
           </table>
           The groups differ: readiness counts only CVEs that were already public, and not enriched before the April triage, when CISA listed them.{{ke_pending_note}} Among CVEs not in KEV, {{pct_cpe_if_not_in_kev}} have CPE. {{kev_lag_sentence}}</li>
-        <li><b>The fix is small next to NIST's capacity.</b> A published rule to re-check CVEs without CPE when their EPSS score crosses 10% would re-queue {{rq_one_time}} set-aside CVEs once, then {{rq_lo}} to {{rq_hi}} a month (our count, {{rq_measured_on}}): at most {{sim_capacity}} of the roughly {{cm_capacity}} CVEs a month NIST has processed at its peak. For scale: that is a fraction of the routine re-scoring NIST stopped in April 2026, which the Commerce Inspector General valued at about {{cm_oig_full}} a year.</li>
+        <li><b>The fix is small next to NIST's capacity.</b> A published rule to re-check CVEs without CPE when their EPSS score reaches {{rq_t_pct}} would re-queue {{rq_one_time}} set-aside CVEs once, then {{rq_lo}} to {{rq_hi}} a month (our count, {{rq_measured_on}}): at most {{sim_capacity}} of the roughly {{cm_capacity}} CVEs a month NIST has processed at its peak. For scale: that is a fraction of the routine re-scoring NIST stopped in April 2026, which the Commerce Inspector General valued at about {{cm_oig_full}} a year.</li>
       </ul>
       <h2 id="h-rec" style="margin-top:30px">What we recommend</h2>
       <table class="recs">
@@ -174,14 +174,14 @@
         <p>NIST already designed the composite; FedRAMP's 2026 rules already use KEV. The rule adds nothing that does not exist, except the commitment to apply it and to say so.</p>
         <h3>What it would cost</h3>
         <p>No per-CVE enrichment cost has been published, so the estimate below is arithmetic on stated inputs. The volume input is measured, not assumed: {{requeue_source}}</p>
-        <p>The one-time load of {{rq_one_time}} CVEs is about {{rq_one_time_share}} of one peak month and costs {{rq_one_time_cost}} once, on the same minutes and rate. At an EPSS 10% threshold the rule fires rarely after that. A lower threshold catches more and costs more: at 5%, {{rq_one_time_05}} CVEs once; at 1%, {{rq_one_time_01}} once and a few hundred a month. Enter any volume in the estimate; the result updates and prints as shown.</p>
+        <p>The one-time load of {{rq_one_time}} CVEs is about {{rq_one_time_share}} of one peak month and costs {{rq_one_time_cost}} once, on the same minutes and rate. At an EPSS {{rq_t_pct}} threshold the rule fires rarely after that. The threshold trades cost against early warning: of 172 KEV additions in 2025–26 that were public without CPE before listing, EPSS was at 5% or more the day before listing for 22, and at 10% or more for 15 (4 and 2 of the 51 under the current EPSS model; <a href="https://github.com/daviswk/nvd-watch/blob/main/data/processed/kev_trigger_recall.json">kev_trigger_recall.json</a>). At 10%, the rule would re-queue {{rq_one_time_10}} CVEs once and {{rq_lo_10}} to {{rq_hi_10}} a month; at 1%, {{rq_one_time_01}} once and a few hundred a month. Its main job is the set-aside stock outside KEV, not beating CISA to a listing; publishing each re-queue's outcome (metric 5) shows whether the threshold is worth keeping. Enter any volume in the estimate; the result updates and prints as shown.</p>
         <table class="data stack" id="t-requeues">
-          <caption>Re-queues at EPSS 10%, by 30-day window (measured {{rq_measured_on}})</caption>
+          <caption>Re-queues at EPSS {{rq_t_pct}}, by 30-day window (measured {{rq_measured_on}})</caption>
           <thead><tr><th scope="col">Window</th><th scope="col" class="num">Still no CPE</th><th scope="col" class="num">Got CPE later</th><th scope="col" class="num">Re-queues</th></tr></thead>
           <tbody>
 {{rq_window_rows}}
           </tbody>
-          <tfoot><tr><td colspan="4">"Still no CPE": CVEs in the stock (no CPE, not in KEV) whose EPSS first reached 10% in the window. "Got CPE later": CVEs that crossed 10% while they had no CPE and were enriched afterward, found in the NVD change history; the rule would have re-queued them too. Data: <a href="data/recheck_measured.json">recheck_measured.json</a>.</td></tr></tfoot>
+          <tfoot><tr><td colspan="4">"Still no CPE": CVEs in the stock (no CPE, not in KEV) whose EPSS first reached {{rq_t_pct}} in the window. "Got CPE later": CVEs that crossed {{rq_t_pct}} while they had no CPE and were enriched afterward, found in the NVD change history; the rule would have re-queued them too. Data: <a href="data/recheck_measured.json">recheck_measured.json</a>.</td></tr></tfoot>
         </table>
       </div>
       <div>
@@ -210,7 +210,7 @@
               <tr><th scope="row">Share of NIST's peak monthly output (~{{cm_capacity}} CVEs, per the OIG)</th><td class="num" id="sim-capacity">{{sim_capacity}}</td></tr>
               <tr><th scope="row">Yearly cost at the selected minutes</th><td class="num" id="sim-cost">{{sim_cost}}</td></tr>
               <tr><th scope="row">Range across {{cm_minutes_lo}} to {{cm_minutes_hi}} minutes</th><td class="num" id="sim-low-high">{{sim_low_high}}</td></tr>
-              <tr><th scope="row">One-time load ({{rq_one_time}} CVEs already at EPSS 10%), paid once at the selected minutes</th><td class="num" id="sim-once">{{sim_once}}</td></tr>
+              <tr><th scope="row">One-time load ({{rq_one_time}} CVEs already at EPSS {{rq_t_pct}}), paid once at the selected minutes</th><td class="num" id="sim-once">{{sim_once}}</td></tr>
               <tr><th scope="row">Compared with the re-scoring NIST stopped in April 2026 (OIG: ~{{cm_oig_short}} a year; scale only, not spare money)</th><td class="num" id="sim-offset">{{sim_offset}}</td></tr>
             </tbody>
           </table>

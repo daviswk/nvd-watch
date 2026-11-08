@@ -28,13 +28,13 @@
    ],
    "one_time": 443,
    "flow": [
-    8,
-    30
+    11,
+    36
    ],
    "benefit_30d": 105.26,
    "cost_once": "$40K",
-   "cost_year_max_flow": "$32K",
-   "capacity_max_flow": "0.6%"
+   "cost_year_max_flow": "$39K",
+   "capacity_max_flow": "0.7%"
   },
   {
    "trigger": "EPSS >= 0.01",

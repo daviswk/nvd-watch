@@ -82,7 +82,7 @@
             </tbody>
           </table>
           The groups differ: readiness counts only CVEs that were already public, and not enriched before the April triage, when CISA listed them. CVE-2026-19868 (listed November 6, 2026) has no CPE yet. Among CVEs not in KEV, 22.2% have CPE. By our count, the median lag from CVE publication to a KEV listing was 4 days in 2023, 7 in 2024, 10 in 2025, and 9 so far in 2026.</li>
-        <li><b>The fix is small next to NIST's capacity.</b> A published rule to re-check CVEs without CPE when their EPSS score crosses 10% would re-queue 303 set-aside CVEs once, then 11 to 28 a month (our count, November 7, 2026): at most 0.6% of the roughly 5,000 CVEs a month NIST has processed at its peak. For scale: that is a fraction of the routine re-scoring NIST stopped in April 2026, which the Commerce Inspector General valued at about $400,000 a year.</li>
+        <li><b>The fix is small next to NIST's capacity.</b> A published rule to re-check CVEs without CPE when their EPSS score reaches 5% would re-queue 443 set-aside CVEs once, then 11 to 36 a month (our count, November 7, 2026): at most 0.7% of the roughly 5,000 CVEs a month NIST has processed at its peak. For scale: that is a fraction of the routine re-scoring NIST stopped in April 2026, which the Commerce Inspector General valued at about $400,000 a year.</li>
       </ul>
       <h2 id="h-rec" style="margin-top:30px">What we recommend</h2>
       <table class="recs">
@@ -189,27 +189,27 @@
         <p>Move any CVE without CPE (Not Scheduled, Awaiting Enrichment, or still Received) into the KEV queue, under NIST's existing one-business-day goal, when the maximum of its EPSS score, its KEV status, and its LEV estimate (NIST's own composite, CSWP 41) crosses a published threshold, when CISA's SSVC decision marks exploitation as proof-of-concept or active, or when credible third-party exploitation evidence arrives. Publish the threshold. Publish every re-queue and its time to enrichment. Moving a CVE from Not Scheduled to the back of the Awaiting queue would not be enough: 24.4% of new CVEs already wait there with no CPE.</p>
         <p>NIST already designed the composite; FedRAMP's 2026 rules already use KEV. The rule adds nothing that does not exist, except the commitment to apply it and to say so.</p>
         <h3>What it would cost</h3>
-        <p>No per-CVE enrichment cost has been published, so the estimate below is arithmetic on stated inputs. The volume input is measured, not assumed: we counted it from the whole NVD stock on November 7, 2026. Of the 76,217 CVEs without CPE in Not Scheduled, Awaiting Enrichment or Received, none in KEV, 303 already score EPSS 10% or higher: a one-time load. After that, 11 to 28 a month crossed 10% before they had CPE, in four 30-day windows from July 10, 2026 to November 6, 2026 (NVD change history included). Most had been published more than 90 days earlier, so the flow comes from the set-aside stock, not from new CVEs. The default below is the highest month. The count leaves out the LEV, SSVC and third-party triggers, which would add to it, and covers five months under one EPSS model (v5, from June 15, 2026).</p>
-        <p>The one-time load of 303 CVEs is about 6% of one peak month and costs $12K to $36K once, on the same minutes and rate. At an EPSS 10% threshold the rule fires rarely after that. A lower threshold catches more and costs more: at 5%, 443 CVEs once; at 1%, 3,384 once and a few hundred a month. Enter any volume in the estimate; the result updates and prints as shown.</p>
+        <p>No per-CVE enrichment cost has been published, so the estimate below is arithmetic on stated inputs. The volume input is measured, not assumed: we counted it from the whole NVD stock on November 7, 2026. Of the 76,217 CVEs without CPE in Not Scheduled, Awaiting Enrichment or Received, none in KEV, 443 already score EPSS 5% or higher: a one-time load. After that, 11 to 36 a month crossed 5% before they had CPE, in four 30-day windows from July 10, 2026 to November 6, 2026 (NVD change history included). 28 of the 86 that were still without CPE had been published more than 90 days before crossing. The default below is the highest month. The count leaves out the LEV, SSVC and third-party triggers, which would add to it, and covers five months under one EPSS model (v5, from June 15, 2026).</p>
+        <p>The one-time load of 443 CVEs is about 9% of one peak month and costs $18K to $53K once, on the same minutes and rate. At an EPSS 5% threshold the rule fires rarely after that. The threshold trades cost against early warning: of 172 KEV additions in 2025–26 that were public without CPE before listing, EPSS was at 5% or more the day before listing for 22, and at 10% or more for 15 (4 and 2 of the 51 under the current EPSS model; <a href="https://github.com/daviswk/nvd-watch/blob/main/data/processed/kev_trigger_recall.json">kev_trigger_recall.json</a>). At 10%, the rule would re-queue 303 CVEs once and 11 to 28 a month; at 1%, 3,384 once and a few hundred a month. Its main job is the set-aside stock outside KEV, not beating CISA to a listing; publishing each re-queue's outcome (metric 5) shows whether the threshold is worth keeping. Enter any volume in the estimate; the result updates and prints as shown.</p>
         <table class="data stack" id="t-requeues">
-          <caption>Re-queues at EPSS 10%, by 30-day window (measured November 7, 2026)</caption>
+          <caption>Re-queues at EPSS 5%, by 30-day window (measured November 7, 2026)</caption>
           <thead><tr><th scope="col">Window</th><th scope="col" class="num">Still no CPE</th><th scope="col" class="num">Got CPE later</th><th scope="col" class="num">Re-queues</th></tr></thead>
           <tbody>
-<tr><th scope="row">Jul 10 to Aug 8</th><td class="num" data-label="Still no CPE">21</td><td class="num" data-label="Got CPE later">7</td><td class="num" data-label="Re-queues"><b>28</b></td></tr>
-<tr><th scope="row">Aug 9 to Sep 7</th><td class="num" data-label="Still no CPE">21</td><td class="num" data-label="Got CPE later">2</td><td class="num" data-label="Re-queues"><b>23</b></td></tr>
-<tr><th scope="row">Sep 8 to Oct 7</th><td class="num" data-label="Still no CPE">9</td><td class="num" data-label="Got CPE later">2</td><td class="num" data-label="Re-queues"><b>11</b></td></tr>
-<tr><th scope="row">Oct 8 to Nov 6</th><td class="num" data-label="Still no CPE">10</td><td class="num" data-label="Got CPE later">2</td><td class="num" data-label="Re-queues"><b>12</b></td></tr>
+<tr><th scope="row">Jul 10 to Aug 8</th><td class="num" data-label="Still no CPE">23</td><td class="num" data-label="Got CPE later">11</td><td class="num" data-label="Re-queues"><b>34</b></td></tr>
+<tr><th scope="row">Aug 9 to Sep 7</th><td class="num" data-label="Still no CPE">30</td><td class="num" data-label="Got CPE later">6</td><td class="num" data-label="Re-queues"><b>36</b></td></tr>
+<tr><th scope="row">Sep 8 to Oct 7</th><td class="num" data-label="Still no CPE">8</td><td class="num" data-label="Got CPE later">3</td><td class="num" data-label="Re-queues"><b>11</b></td></tr>
+<tr><th scope="row">Oct 8 to Nov 6</th><td class="num" data-label="Still no CPE">25</td><td class="num" data-label="Got CPE later">7</td><td class="num" data-label="Re-queues"><b>32</b></td></tr>
           </tbody>
-          <tfoot><tr><td colspan="4">"Still no CPE": CVEs in the stock (no CPE, not in KEV) whose EPSS first reached 10% in the window. "Got CPE later": CVEs that crossed 10% while they had no CPE and were enriched afterward, found in the NVD change history; the rule would have re-queued them too. Data: <a href="data/recheck_measured.json">recheck_measured.json</a>.</td></tr></tfoot>
+          <tfoot><tr><td colspan="4">"Still no CPE": CVEs in the stock (no CPE, not in KEV) whose EPSS first reached 5% in the window. "Got CPE later": CVEs that crossed 5% while they had no CPE and were enriched afterward, found in the NVD change history; the rule would have re-queued them too. Data: <a href="data/recheck_measured.json">recheck_measured.json</a>.</td></tr></tfoot>
         </table>
       </div>
       <div>
-        <form class="sim" id="sim-form" aria-labelledby="h-sim" data-default-cves="28" data-one-time="303">
+        <form class="sim" id="sim-form" aria-labelledby="h-sim" data-default-cves="36" data-one-time="443">
           <h3 id="h-sim" style="margin-top:0">Re-check cost estimate</h3>
           <div class="controls">
             <label for="sim-cves"><span>CVEs re-queued per month</span>
-              <input type="number" id="sim-cves" name="cves" min="0" max="100000" step="1" value="28" inputmode="numeric">
-              <span class="note">Measured: highest month (range 11–28). The one-time load is costed separately below.</span>
+              <input type="number" id="sim-cves" name="cves" min="0" max="100000" step="1" value="36" inputmode="numeric">
+              <span class="note">Measured: highest month (range 11–36). The one-time load is costed separately below.</span>
             </label>
             <fieldset>
               <legend>Analyst-minutes per CVE</legend>
@@ -227,15 +227,15 @@
           </div>
           <table class="data" aria-live="polite">
             <tbody>
-              <tr><th scope="row">Analyst-hours per year</th><td class="num" id="sim-hours">252</td></tr>
-              <tr><th scope="row">Share of NIST's peak monthly output (~5,000 CVEs, per the OIG)</th><td class="num" id="sim-capacity">0.6%</td></tr>
-              <tr><th scope="row">Yearly cost at the selected minutes</th><td class="num" id="sim-cost">$30K</td></tr>
-              <tr><th scope="row">Range across 20 to 60 minutes</th><td class="num" id="sim-low-high">$13K to $40K</td></tr>
-              <tr><th scope="row">One-time load (303 CVEs already at EPSS 10%), paid once at the selected minutes</th><td class="num" id="sim-once">$27K</td></tr>
-              <tr><th scope="row">Compared with the re-scoring NIST stopped in April 2026 (OIG: ~$400K a year; scale only, not spare money)</th><td class="num" id="sim-offset">8%</td></tr>
+              <tr><th scope="row">Analyst-hours per year</th><td class="num" id="sim-hours">324</td></tr>
+              <tr><th scope="row">Share of NIST's peak monthly output (~5,000 CVEs, per the OIG)</th><td class="num" id="sim-capacity">0.7%</td></tr>
+              <tr><th scope="row">Yearly cost at the selected minutes</th><td class="num" id="sim-cost">$39K</td></tr>
+              <tr><th scope="row">Range across 20 to 60 minutes</th><td class="num" id="sim-low-high">$17K to $52K</td></tr>
+              <tr><th scope="row">One-time load (443 CVEs already at EPSS 5%), paid once at the selected minutes</th><td class="num" id="sim-once">$40K</td></tr>
+              <tr><th scope="row">Compared with the re-scoring NIST stopped in April 2026 (OIG: ~$400K a year; scale only, not spare money)</th><td class="num" id="sim-offset">10%</td></tr>
             </tbody>
           </table>
-          <p class="result" id="sim-sentence">Re-checking <b>28 CVEs a month</b> at 45 analyst-minutes each takes about <b>252 analyst-hours a year</b>, 0.6% of NIST's peak monthly output, and costs about <b>$30K a year</b> at $120 an hour: about 8% of the value of the routine re-scoring NIST stopped in April 2026 (the Commerce OIG put it at roughly $400K a year; NIST disputes the figure). That capacity already went to triage, so this compares scale; it is not spare money.</p>
+          <p class="result" id="sim-sentence">Re-checking <b>36 CVEs a month</b> at 45 analyst-minutes each takes about <b>324 analyst-hours a year</b>, 0.7% of NIST's peak monthly output, and costs about <b>$39K a year</b> at $120 an hour: about 10% of the value of the routine re-scoring NIST stopped in April 2026 (the Commerce OIG put it at roughly $400K a year; NIST disputes the figure). That capacity already went to triage, so this compares scale; it is not spare money.</p>
           <button type="button" class="reset" id="sim-reset">Reset to defaults</button>
         </form>
       </div>

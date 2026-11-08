@@ -1,0 +1,85 @@
+{
+ "about": "recheck_flow_corrected.py \u2014 monthly re-queue flow at EPSS 0.05, with the change-history correction.",
+ "epss_files": [
+  "2026-06-15",
+  "2026-11-07"
+ ],
+ "thresholds": {
+  "0.10": [
+   {
+    "from": "2026-07-10",
+    "to": "2026-08-08",
+    "all_crossers": 183,
+    "stock_crossers": 21,
+    "enriched_after_crossing": 7,
+    "of_which_in_kev": 2,
+    "requeues": 28
+   },
+   {
+    "from": "2026-08-09",
+    "to": "2026-09-07",
+    "all_crossers": 254,
+    "stock_crossers": 21,
+    "enriched_after_crossing": 2,
+    "of_which_in_kev": 2,
+    "requeues": 23
+   },
+   {
+    "from": "2026-09-08",
+    "to": "2026-10-07",
+    "all_crossers": 109,
+    "stock_crossers": 9,
+    "enriched_after_crossing": 2,
+    "of_which_in_kev": 2,
+    "requeues": 11
+   },
+   {
+    "from": "2026-10-08",
+    "to": "2026-11-06",
+    "all_crossers": 123,
+    "stock_crossers": 10,
+    "enriched_after_crossing": 2,
+    "of_which_in_kev": 2,
+    "requeues": 12
+   }
+  ],
+  "0.05": [
+   {
+    "from": "2026-07-10",
+    "to": "2026-08-08",
+    "all_crossers": 206,
+    "stock_crossers": 23,
+    "enriched_after_crossing": 11,
+    "of_which_in_kev": 4,
+    "requeues": 34
+   },
+   {
+    "from": "2026-08-09",
+    "to": "2026-09-07",
+    "all_crossers": 589,
+    "stock_crossers": 30,
+    "enriched_after_crossing": 6,
+    "of_which_in_kev": 2,
+    "requeues": 36
+   },
+   {
+    "from": "2026-09-08",
+    "to": "2026-10-07",
+    "all_crossers": 216,
+    "stock_crossers": 8,
+    "enriched_after_crossing": 3,
+    "of_which_in_kev": 3,
+    "requeues": 11
+   },
+   {
+    "from": "2026-10-08",
+    "to": "2026-11-06",
+    "all_crossers": 184,
+    "stock_crossers": 25,
+    "enriched_after_crossing": 7,
+    "of_which_in_kev": 2,
+    "requeues": 32
+   }
+  ]
+ }
+}

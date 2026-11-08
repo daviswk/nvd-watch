@@ -170,16 +170,19 @@ def main():
     rm = json.loads(rm_path.read_text())
     monthly = [w["requeues"] for w in rm["monthly_flow"]["windows"]]
     rq_lo, rq_hi = min(monthly), max(monthly)
-    one_time = rm["one_time_load"]["t_0_10"]
+    t_pct = f"{cm.half_up(100 * rm['threshold'])}%"     # the rule's threshold (EPSS 0.05 since Nov 8)
+    one_time = rm["one_time_load"][rm["threshold_key"]]
     win = rm["monthly_flow"]["windows"]
+    monthly_10 = [w["requeues"] for w in rm["monthly_flow_0_10"]["windows"]]   # shown for comparison
+    old_n, old_of = rm["monthly_flow"]["published_over_90_days_before_crossing"]
     requeue_default = rq_hi
     requeue_source = (
         f"we counted it from the whole NVD stock on {fmt_date(rm['measured_on'])}. Of the "
         f"{fmt_int(rm['stock']['total'])} CVEs without CPE in Not Scheduled, Awaiting Enrichment or Received, none "
-        f"in KEV, {fmt_int(one_time)} already score EPSS 10% or higher: a one-time load. After that, "
-        f"{rq_lo} to {rq_hi} a month crossed 10% before they had CPE, in four 30-day windows from "
-        f"{fmt_date(win[0]['from'])} to {fmt_date(win[-1]['to'])} (NVD change history included). Most had been "
-        f"published more than 90 days earlier, so the flow comes from the set-aside stock, not from new CVEs. "
+        f"in KEV, {fmt_int(one_time)} already score EPSS {t_pct} or higher: a one-time load. After that, "
+        f"{rq_lo} to {rq_hi} a month crossed {t_pct} before they had CPE, in four 30-day windows from "
+        f"{fmt_date(win[0]['from'])} to {fmt_date(win[-1]['to'])} (NVD change history included). {old_n} of the "
+        f"{old_of} that were still without CPE had been published more than 90 days before crossing. "
         f"The default below is the highest month. The count leaves out the LEV, SSVC and third-party triggers, "
         f"which would add to it, and covers five months under one EPSS model (v5, from June 15, 2026)."
     )
@@ -360,7 +363,10 @@ def main():
         "rq_one_time_num": str(one_time),
         "rq_window_rows": rq_window_rows,
         "sim_once": sim["once"],
-        "rq_one_time_05": fmt_int(rm["one_time_load"]["t_0_05"]),
+        "rq_t_pct": t_pct,
+        "rq_one_time_10": fmt_int(rm["one_time_load"]["t_0_10"]),
+        "rq_lo_10": str(min(monthly_10)),
+        "rq_hi_10": str(max(monthly_10)),
         "rq_one_time_01": fmt_int(rm["one_time_load"]["t_0_01"]),
         "fl_share10": f"{fl['share_cross10_day30_pct']:g}%" if fl else "n/a",
         "fl_share50": f"{fl['share_cross50_day30_pct']:g}%" if fl else "n/a",

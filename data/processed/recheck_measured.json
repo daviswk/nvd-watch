@@ -1,26 +1,91 @@
 {
-  "_about": "Re-check rule volume, measured once (not rebuilt weekly). Figures copied from the output of scripts/research/recheck_volume.py (NVD JSON 2.0 yearly feeds of 2026-11-07, EPSS daily files 2026-06-15 to 2026-11-07, all model v2026.06.15, KEV catalog 2026.11.06) plus an NVD change-history check of the 279 crossers that now have CPE or are in KEV. Re-run on Nov 7 and reproduced. Method and caveats: docs/research/notes/open_items_recheck_volume.md.",
-  "measured_on": "2026-11-07",
-  "threshold": 0.10,
-  "stock": {
-    "_def": "NVD status Deferred (Not Scheduled), Awaiting Analysis or Received; no CPE; not in KEV",
-    "total": 76217,
-    "not_scheduled_published_before_mar_1_2026": 29017
-  },
-  "one_time_load": {
-    "_def": "stock CVEs with EPSS >= t on 2026-11-07",
-    "t_0_10": 303,
-    "t_0_05": 443,
-    "t_0_01": 3384
-  },
-  "monthly_flow": {
-    "_def": "stock CVEs whose EPSS first reached 0.10 in each 30-day window, plus CVEs that crossed before getting CPE (NVD change history)",
-    "windows": [
-      {"from": "2026-07-10", "to": "2026-08-08", "stock_crossers": 21, "enriched_after_crossing": 7, "requeues": 28},
-      {"from": "2026-08-09", "to": "2026-09-07", "stock_crossers": 21, "enriched_after_crossing": 2, "requeues": 23},
-      {"from": "2026-09-08", "to": "2026-10-07", "stock_crossers": 9, "enriched_after_crossing": 2, "requeues": 11},
-      {"from": "2026-10-08", "to": "2026-11-06", "stock_crossers": 10, "enriched_after_crossing": 2, "requeues": 12}
-    ],
-    "share_published_over_90_days_before_crossing": "36 of 61 stock crossers"
-  }
+ "_about": "Re-check rule volume, measured once (not rebuilt weekly). Figures copied from the output of scripts/research/recheck_volume.py (NVD JSON 2.0 yearly feeds of 2026-11-07, EPSS daily files 2026-06-15 to 2026-11-07, all model v2026.06.15, KEV catalog 2026.11.06) plus an NVD change-history check of the 279 crossers that now have CPE or are in KEV. Re-run on Nov 7 and reproduced. Method and caveats: docs/research/notes/open_items_recheck_volume.md. Nov 8: the rule's threshold moved to EPSS 0.05 (Will's decision after red-team round 6). The 0.05 monthly flow, with the same change-history correction, is from scripts/research/recheck_flow_corrected.py (NVD feeds of 2026-11-08, same EPSS files), which also reproduced the 0.10 windows exactly; the 0.10 flow is kept as monthly_flow_0_10 for comparison.",
+ "measured_on": "2026-11-07",
+ "threshold": 0.05,
+ "stock": {
+  "_def": "NVD status Deferred (Not Scheduled), Awaiting Analysis or Received; no CPE; not in KEV",
+  "total": 76217,
+  "not_scheduled_published_before_mar_1_2026": 29017
+ },
+ "one_time_load": {
+  "_def": "stock CVEs with EPSS >= t on 2026-11-07",
+  "t_0_10": 303,
+  "t_0_05": 443,
+  "t_0_01": 3384
+ },
+ "monthly_flow": {
+  "_def": "stock CVEs whose EPSS first reached 0.05 in each 30-day window, plus CVEs that crossed before getting CPE (NVD change history)",
+  "windows": [
+   {
+    "from": "2026-07-10",
+    "to": "2026-08-08",
+    "stock_crossers": 23,
+    "enriched_after_crossing": 11,
+    "requeues": 34
+   },
+   {
+    "from": "2026-08-09",
+    "to": "2026-09-07",
+    "stock_crossers": 30,
+    "enriched_after_crossing": 6,
+    "requeues": 36
+   },
+   {
+    "from": "2026-09-08",
+    "to": "2026-10-07",
+    "stock_crossers": 8,
+    "enriched_after_crossing": 3,
+    "requeues": 11
+   },
+   {
+    "from": "2026-10-08",
+    "to": "2026-11-06",
+    "stock_crossers": 25,
+    "enriched_after_crossing": 7,
+    "requeues": 32
+   }
+  ],
+  "published_over_90_days_before_crossing": [
+   28,
+   86
+  ]
+ },
+ "threshold_key": "t_0_05",
+ "monthly_flow_0_10": {
+  "_def": "stock CVEs whose EPSS first reached 0.10 in each 30-day window, plus CVEs that crossed before getting CPE (NVD change history)",
+  "windows": [
+   {
+    "from": "2026-07-10",
+    "to": "2026-08-08",
+    "stock_crossers": 21,
+    "enriched_after_crossing": 7,
+    "requeues": 28
+   },
+   {
+    "from": "2026-08-09",
+    "to": "2026-09-07",
+    "stock_crossers": 21,
+    "enriched_after_crossing": 2,
+    "requeues": 23
+   },
+   {
+    "from": "2026-09-08",
+    "to": "2026-10-07",
+    "stock_crossers": 9,
+    "enriched_after_crossing": 2,
+    "requeues": 11
+   },
+   {
+    "from": "2026-10-08",
+    "to": "2026-11-06",
+    "stock_crossers": 10,
+    "enriched_after_crossing": 2,
+    "requeues": 12
+   }
+  ],
+  "published_over_90_days_before_crossing": [
+   36,
+   61
+  ]
+ }
 }
