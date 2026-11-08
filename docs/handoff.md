@@ -10,7 +10,7 @@ Written Nov 7, 2026 at the end of the first Claude Code session (Claude Fable 5.
 
 | Deliverable | State | What remains |
 |---|---|---|
-| Artifact (scorecard page) | Built, reviewed (Impeccable finish review: ship), live | Weekly rebuild action (proposed, not started). Done: multi-year KEV lag (`scripts/kev_lag.py`), backlog-based re-check volume (`recheck_measured.json`), orphan count (`osv_orphans.json`), legacy share |
+| Artifact (scorecard page) | Built, reviewed (Impeccable finish review: ship), live | First run of the weekly rebuild (`.github/workflows/rebuild.yml`, added Nov 7, not yet run). Done: multi-year KEV lag (`scripts/kev_lag.py`), backlog-based re-check volume (`recheck_measured.json`), orphan count (`osv_orphans.json`), legacy share |
 | Policy brief (≤3 pages) | Outline only: `docs/brief-outline.md` | Write it. Numbers must match the page. Export to PDF, put it in `site/` or `docs/`, and point the band's "Policy brief" button at it (currently links to the outline on GitHub) |
 | AI collaboration log | `docs/ai-collaboration-log.md`, current through deploy | Keep adding a row per session. Final pass: every entry has a verification note |
 
@@ -59,7 +59,7 @@ Beyond the settled decisions in `CLAUDE.md`:
 ## 5. What to do next, in order
 
 1. **Write the brief** from `docs/brief-outline.md`. Three pages. Every number must match `site/index.html` (pull the values from `data/processed/summary.json` and `kev_enrichment.json`, not from memory or from older sections of `data-notes.md`). Cost box uses the measured figures (303 once, 11–28 a month; `recheck_measured.json`). Export PDF; link it from the band button in `site/template.html`; rebuild; push.
-2. **Weekly rebuild action** (a proposal card was left in the previous session; if it expired, the spec is: `.github/workflows/rebuild.yml`, Mondays 13:00 UTC + manual, Python 3.12, run fetch, then kev_enrichment, then build with `NVD_API_KEY` from a repo secret and `SITE_URL` as env, commit `summary.json`, `kev_enrichment.json`, `site/index.html` and `site/data/*.json` only if changed, `permissions: contents: write`, `concurrency` group). Will must add the `NVD_API_KEY` secret in Settings → Secrets and variables → Actions first.
+2. **Weekly rebuild action: added Nov 7, not yet run.** `.github/workflows/rebuild.yml`: Mondays 12:47 UTC + manual. Runs fetch → kev_enrichment → kev_lag → build, commits changed data/page as github-actions[bot], then deploys Pages itself (bot commits don't trigger `pages.yml`). Not run weekly: `osv_orphans.py` (the orphan row drops off after the first new pull), `recheck_volume.py`, `check_cost_model.py`. Trigger it once by hand (Actions → Weekly rebuild → Run workflow) and check the commit and the live page.
 3. ~~Multi-year KEV lag~~: done. `scripts/kev_lag.py` → `kev_lag.json`; the section 2 chart shows our 4 → 7 → 10 → 9, with Barracuda cited for comparison.
 4. ~~Backlog-based re-check estimate~~: done (`recheck_measured.json`, on the page). Still unmeasured: whether EPSS (v5, not v4) ranks unenriched CVEs worse; keep it flagged.
 5. **Final AI log pass:** every row has a verification note; add a closing "models used" line naming Claude Fable 5.1 (Nov 7) and Claude Opus (later sessions).

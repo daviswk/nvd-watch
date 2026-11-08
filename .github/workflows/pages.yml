@@ -1,6 +1,6 @@
 # Deploys site/ to GitHub Pages on every push to main.
 # The rendered site/index.html is committed, so this job only uploads the folder.
-# (The weekly data rebuild is a separate, later workflow; see docs/project-plan.md.)
+# The weekly data rebuild (rebuild.yml) deploys Pages itself, since its bot commits do not trigger this workflow.
 name: Deploy to GitHub Pages
 
 on:
