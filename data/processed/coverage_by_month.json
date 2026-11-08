@@ -1,0 +1,347 @@
+{
+ "about": "coverage_by_month.py \u2014 does CPE coverage fill in as a cohort ages? (S6: a proposed brief figure)",
+ "snapshot": "NVD yearly feeds downloaded 2026-11-08",
+ "triage_start": "2026-04-15",
+ "rows": [
+  {
+   "month": "2024-01",
+   "n": 2594,
+   "cpe": 2594,
+   "deferred": 0,
+   "kev": 15,
+   "kev_cpe": 15,
+   "pct_cpe": 100.0,
+   "pct_not_scheduled": 0.0
+  },
+  {
+   "month": "2024-02",
+   "n": 2778,
+   "cpe": 2751,
+   "deferred": 27,
+   "kev": 11,
+   "kev_cpe": 11,
+   "pct_cpe": 99.0,
+   "pct_not_scheduled": 1.0
+  },
+  {
+   "month": "2024-03",
+   "n": 3309,
+   "cpe": 2743,
+   "deferred": 566,
+   "kev": 8,
+   "kev_cpe": 8,
+   "pct_cpe": 82.9,
+   "pct_not_scheduled": 17.1
+  },
+  {
+   "month": "2024-04",
+   "n": 3621,
+   "cpe": 2657,
+   "deferred": 963,
+   "kev": 10,
+   "kev_cpe": 10,
+   "pct_cpe": 73.4,
+   "pct_not_scheduled": 26.6
+  },
+  {
+   "month": "2024-05",
+   "n": 4999,
+   "cpe": 3979,
+   "deferred": 1019,
+   "kev": 14,
+   "kev_cpe": 14,
+   "pct_cpe": 79.6,
+   "pct_not_scheduled": 20.4
+  },
+  {
+   "month": "2024-06",
+   "n": 3078,
+   "cpe": 2475,
+   "deferred": 602,
+   "kev": 13,
+   "kev_cpe": 13,
+   "pct_cpe": 80.4,
+   "pct_not_scheduled": 19.6
+  },
+  {
+   "month": "2024-07",
+   "n": 3113,
+   "cpe": 2589,
+   "deferred": 524,
+   "kev": 12,
+   "kev_cpe": 12,
+   "pct_cpe": 83.2,
+   "pct_not_scheduled": 16.8
+  },
+  {
+   "month": "2024-08",
+   "n": 2896,
+   "cpe": 2535,
+   "deferred": 361,
+   "kev": 21,
+   "kev_cpe": 21,
+   "pct_cpe": 87.5,
+   "pct_not_scheduled": 12.5
+  },
+  {
+   "month": "2024-09",
+   "n": 2514,
+   "cpe": 2225,
+   "deferred": 289,
+   "kev": 13,
+   "kev_cpe": 13,
+   "pct_cpe": 88.5,
+   "pct_not_scheduled": 11.5
+  },
+  {
+   "month": "2024-10",
+   "n": 3564,
+   "cpe": 2772,
+   "deferred": 791,
+   "kev": 17,
+   "kev_cpe": 17,
+   "pct_cpe": 77.8,
+   "pct_not_scheduled": 22.2
+  },
+  {
+   "month": "2024-11",
+   "n": 4056,
+   "cpe": 2842,
+   "deferred": 1213,
+   "kev": 16,
+   "kev_cpe": 16,
+   "pct_cpe": 70.1,
+   "pct_not_scheduled": 29.9
+  },
+  {
+   "month": "2024-12",
+   "n": 3431,
+   "cpe": 2024,
+   "deferred": 1407,
+   "kev": 11,
+   "kev_cpe": 11,
+   "pct_cpe": 59.0,
+   "pct_not_scheduled": 41.0
+  },
+  {
+   "month": "2025-01",
+   "n": 4275,
+   "cpe": 2534,
+   "deferred": 1740,
+   "kev": 17,
+   "kev_cpe": 17,
+   "pct_cpe": 59.3,
+   "pct_not_scheduled": 40.7
+  },
+  {
+   "month": "2025-02",
+   "n": 3673,
+   "cpe": 2638,
+   "deferred": 1035,
+   "kev": 15,
+   "kev_cpe": 15,
+   "pct_cpe": 71.8,
+   "pct_not_scheduled": 28.2
+  },
+  {
+   "month": "2025-03",
+   "n": 3998,
+   "cpe": 2571,
+   "deferred": 1427,
+   "kev": 26,
+   "kev_cpe": 26,
+   "pct_cpe": 64.3,
+   "pct_not_scheduled": 35.7
+  },
+  {
+   "month": "2025-04",
+   "n": 4034,
+   "cpe": 2308,
+   "deferred": 1726,
+   "kev": 16,
+   "kev_cpe": 16,
+   "pct_cpe": 57.2,
+   "pct_not_scheduled": 42.8
+  },
+  {
+   "month": "2025-05",
+   "n": 3980,
+   "cpe": 2815,
+   "deferred": 1165,
+   "kev": 19,
+   "kev_cpe": 19,
+   "pct_cpe": 70.7,
+   "pct_not_scheduled": 29.3
+  },
+  {
+   "month": "2025-06",
+   "n": 3681,
+   "cpe": 2477,
+   "deferred": 1204,
+   "kev": 18,
+   "kev_cpe": 18,
+   "pct_cpe": 67.3,
+   "pct_not_scheduled": 32.7
+  },
+  {
+   "month": "2025-07",
+   "n": 3776,
+   "cpe": 2698,
+   "deferred": 1078,
+   "kev": 14,
+   "kev_cpe": 14,
+   "pct_cpe": 71.5,
+   "pct_not_scheduled": 28.5
+  },
+  {
+   "month": "2025-08",
+   "n": 3628,
+   "cpe": 2184,
+   "deferred": 1444,
+   "kev": 12,
+   "kev_cpe": 12,
+   "pct_cpe": 60.2,
+   "pct_not_scheduled": 39.8
+  },
+  {
+   "month": "2025-09",
+   "n": 4321,
+   "cpe": 2792,
+   "deferred": 1526,
+   "kev": 16,
+   "kev_cpe": 16,
+   "pct_cpe": 64.6,
+   "pct_not_scheduled": 35.3
+  },
+  {
+   "month": "2025-10",
+   "n": 4273,
+   "cpe": 2638,
+   "deferred": 1634,
+   "kev": 10,
+   "kev_cpe": 10,
+   "pct_cpe": 61.7,
+   "pct_not_scheduled": 38.2
+  },
+  {
+   "month": "2025-11",
+   "n": 3020,
+   "cpe": 1768,
+   "deferred": 1252,
+   "kev": 11,
+   "kev_cpe": 11,
+   "pct_cpe": 58.5,
+   "pct_not_scheduled": 41.5
+  },
+  {
+   "month": "2025-12",
+   "n": 5491,
+   "cpe": 2767,
+   "deferred": 2724,
+   "kev": 23,
+   "kev_cpe": 23,
+   "pct_cpe": 50.4,
+   "pct_not_scheduled": 49.6
+  },
+  {
+   "month": "2026-01",
+   "n": 4302,
+   "cpe": 2570,
+   "deferred": 1732,
+   "kev": 16,
+   "kev_cpe": 16,
+   "pct_cpe": 59.7,
+   "pct_not_scheduled": 40.3
+  },
+  {
+   "month": "2026-02",
+   "n": 4616,
+   "cpe": 3048,
+   "deferred": 1568,
+   "kev": 20,
+   "kev_cpe": 20,
+   "pct_cpe": 66.0,
+   "pct_not_scheduled": 34.0
+  },
+  {
+   "month": "2026-03",
+   "n": 6234,
+   "cpe": 4450,
+   "deferred": 1590,
+   "kev": 10,
+   "kev_cpe": 10,
+   "pct_cpe": 71.4,
+   "pct_not_scheduled": 25.5
+  },
+  {
+   "month": "2026-04",
+   "n": 5810,
+   "cpe": 3955,
+   "deferred": 1610,
+   "kev": 14,
+   "kev_cpe": 14,
+   "pct_cpe": 68.1,
+   "pct_not_scheduled": 27.7
+  },
+  {
+   "month": "2026-05",
+   "n": 6936,
+   "cpe": 3970,
+   "deferred": 2639,
+   "kev": 23,
+   "kev_cpe": 23,
+   "pct_cpe": 57.2,
+   "pct_not_scheduled": 38.0
+  },
+  {
+   "month": "2026-06",
+   "n": 7942,
+   "cpe": 4392,
+   "deferred": 3233,
+   "kev": 26,
+   "kev_cpe": 26,
+   "pct_cpe": 55.3,
+   "pct_not_scheduled": 40.7
+  },
+  {
+   "month": "2026-07",
+   "n": 9770,
+   "cpe": 5424,
+   "deferred": 3745,
+   "kev": 23,
+   "kev_cpe": 23,
+   "pct_cpe": 55.5,
+   "pct_not_scheduled": 38.3
+  },
+  {
+   "month": "2026-08",
+   "n": 12256,
+   "cpe": 4135,
+   "deferred": 5319,
+   "kev": 20,
+   "kev_cpe": 20,
+   "pct_cpe": 33.7,
+   "pct_not_scheduled": 43.4
+  },
+  {
+   "month": "2026-09",
+   "n": 14928,
+   "cpe": 4798,
+   "deferred": 5771,
+   "kev": 32,
+   "kev_cpe": 32,
+   "pct_cpe": 32.1,
+   "pct_not_scheduled": 38.7
+  },
+  {
+   "month": "2026-10",
+   "n": 17052,
+   "cpe": 4421,
+   "deferred": 7329,
+   "kev": 21,
+   "kev_cpe": 21,
+   "pct_cpe": 25.9,
+   "pct_not_scheduled": 43.0
+  }
+ ]
+}

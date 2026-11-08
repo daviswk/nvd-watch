@@ -1,0 +1,151 @@
+{
+ "_about": "trigger_volume.py \u2014 volume of the SSVC and LEV re-check triggers on the current stock (M3, M4).",
+ "stock": 76217,
+ "measured_on": "2026-11-07",
+ "epss_grid_models": [
+  "",
+  "v2022.01.01",
+  "v2023.03.01",
+  "v2025.03.14",
+  "v2026.06.15"
+ ],
+ "ssvc": {
+  "stock_in_cvelist": 76217,
+  "with_ssvc_decision": 70186,
+  "exploitation_counts": {
+   "none": 54316,
+   "poc": 15870,
+   "None": 6031
+  },
+  "one_time_load": 15870,
+  "one_time_by_value": {
+   "poc": 15870,
+   "active": 0
+  },
+  "expected_events_30d": 120.22,
+  "monthly_flow": [
+   {
+    "from": "2026-07-10",
+    "to": "2026-08-08",
+    "requeues": 1515
+   },
+   {
+    "from": "2026-08-09",
+    "to": "2026-09-07",
+    "requeues": 1934
+   },
+   {
+    "from": "2026-09-08",
+    "to": "2026-10-07",
+    "requeues": 2277
+   },
+   {
+    "from": "2026-10-08",
+    "to": "2026-11-07",
+    "requeues": 2307
+   }
+  ],
+  "flow_note": "by SSVC timestamp (latest evaluation); approximate"
+ },
+ "epss": {
+  "0.10": {
+   "one_time_load": 303,
+   "expected_events_30d": 95.22
+  },
+  "0.05": {
+   "one_time_load": 443,
+   "expected_events_30d": 105.26
+  },
+  "0.01": {
+   "one_time_load": 3384,
+   "expected_events_30d": 157.91
+  }
+ },
+ "lev": {
+  "0.10": {
+   "one_time_load": 2972,
+   "not_already_epss_ge_t": 2669,
+   "expected_events_30d": 138.55,
+   "monthly_flow": [
+    {
+     "after": "2026-07-10",
+     "through": "2026-08-09",
+     "requeues": 165
+    },
+    {
+     "after": "2026-08-09",
+     "through": "2026-09-08",
+     "requeues": 215
+    },
+    {
+     "after": "2026-09-08",
+     "through": "2026-10-08",
+     "requeues": 250
+    },
+    {
+     "after": "2026-10-08",
+     "through": "2026-11-07",
+     "requeues": 327
+    }
+   ]
+  },
+  "0.05": {
+   "one_time_load": 6705,
+   "not_already_epss_ge_t": 6262,
+   "expected_events_30d": 169.58,
+   "monthly_flow": [
+    {
+     "after": "2026-07-10",
+     "through": "2026-08-09",
+     "requeues": 531
+    },
+    {
+     "after": "2026-08-09",
+     "through": "2026-09-08",
+     "requeues": 658
+    },
+    {
+     "after": "2026-09-08",
+     "through": "2026-10-08",
+     "requeues": 873
+    },
+    {
+     "after": "2026-10-08",
+     "through": "2026-11-07",
+     "requeues": 1087
+    }
+   ]
+  },
+  "0.01": {
+   "one_time_load": 45978,
+   "not_already_epss_ge_t": 42594,
+   "expected_events_30d": 326.11,
+   "monthly_flow": [
+    {
+     "after": "2026-07-10",
+     "through": "2026-08-09",
+     "requeues": 3594
+    },
+    {
+     "after": "2026-08-09",
+     "through": "2026-09-08",
+     "requeues": 6154
+    },
+    {
+     "after": "2026-09-08",
+     "through": "2026-10-08",
+     "requeues": 9387
+    },
+    {
+     "after": "2026-10-08",
+     "through": "2026-11-07",
+     "requeues": 9004
+    }
+   ]
+  }
+ },
+ "union_0_10": {
+  "one_time_load": 17893,
+  "expected_events_30d": 203.54
+ }
+}

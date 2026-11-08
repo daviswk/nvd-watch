@@ -1,0 +1,612 @@
+{
+ "question": "NVD status of each listed-cohort KEV CVE without CPE before listing, the day before listing",
+ "cohort_window": [
+  "2026-10-09",
+  "2026-11-08"
+ ],
+ "n": 13,
+ "counts": {
+  "Awaiting Enrichment": 5,
+  "None": 1,
+  "Not Scheduled": 5,
+  "Received": 2
+ },
+ "rows": [
+  {
+   "cve_id": "CVE-2026-110447",
+   "published": "2026-10-14",
+   "kev_date_added": "2026-10-23",
+   "kev_event": "2026-10-23T22:00:00.477",
+   "first_cpe_time": "2026-10-26T16:48:12.087",
+   "status_day_before_listing": "Deferred",
+   "status_display": "Not Scheduled",
+   "status_sequence_before_listing": [
+    "Received",
+    "Received",
+    "Deferred",
+    "Deferred"
+   ],
+   "source": "fkie-cad mirror commit 75d4d68576a5 (2026-10-16T20:05:43Z)",
+   "versions": [
+    {
+     "mirror_commit_utc": "2026-10-14T04:04:48",
+     "sha": "f4c5d6fc7dc9",
+     "vulnStatus": "Received",
+     "has_cpe": false,
+     "lastModified": "2026-10-14T03:17:20.683"
+    },
+    {
+     "mirror_commit_utc": "2026-10-14T20:05:44",
+     "sha": "f5aef0665021",
+     "vulnStatus": "Received",
+     "has_cpe": false,
+     "lastModified": "2026-10-14T19:17:10.487"
+    },
+    {
+     "mirror_commit_utc": "2026-10-16T20:05:43",
+     "sha": "75d4d68576a5",
+     "vulnStatus": "Deferred",
+     "has_cpe": false,
+     "lastModified": "2026-10-16T19:56:15.773"
+    },
+    {
+     "mirror_commit_utc": "2026-10-23T20:05:48",
+     "sha": "532857caea2e",
+     "vulnStatus": "Deferred",
+     "has_cpe": false,
+     "lastModified": "2026-10-23T19:17:42.090"
+    }
+   ]
+  },
+  {
+   "cve_id": "CVE-2026-106931",
+   "published": "2026-10-14",
+   "kev_date_added": "2026-10-20",
+   "kev_event": "2026-10-20T22:00:00.367",
+   "first_cpe_time": "2026-10-21T15:42:24.590",
+   "status_day_before_listing": "Deferred",
+   "status_display": "Not Scheduled",
+   "status_sequence_before_listing": [
+    "Received",
+    "Received",
+    "Deferred",
+    "Deferred"
+   ],
+   "source": "fkie-cad mirror commit ae06ef6dbc2a (2026-10-16T18:06:36Z)",
+   "versions": [
+    {
+     "mirror_commit_utc": "2026-10-14T06:04:23",
+     "sha": "67d22d2e681d",
+     "vulnStatus": "Received",
+     "has_cpe": false,
+     "lastModified": "2026-10-14T05:16:42.633"
+    },
+    {
+     "mirror_commit_utc": "2026-10-14T12:05:44",
+     "sha": "910254483ea6",
+     "vulnStatus": "Received",
+     "has_cpe": false,
+     "lastModified": "2026-10-14T10:17:51.403"
+    },
+    {
+     "mirror_commit_utc": "2026-10-15T22:06:05",
+     "sha": "15f737a16cc1",
+     "vulnStatus": "Deferred",
+     "has_cpe": false,
+     "lastModified": "2026-10-15T20:39:32.067"
+    },
+    {
+     "mirror_commit_utc": "2026-10-16T18:06:36",
+     "sha": "ae06ef6dbc2a",
+     "vulnStatus": "Deferred",
+     "has_cpe": false,
+     "lastModified": "2026-10-16T16:16:57.180"
+    }
+   ]
+  },
+  {
+   "cve_id": "CVE-2026-110936",
+   "published": "2026-10-15",
+   "kev_date_added": "2026-10-20",
+   "kev_event": "2026-10-20T22:00:00.367",
+   "first_cpe_time": "2026-10-21T13:10:11.553",
+   "status_day_before_listing": "Awaiting Analysis",
+   "status_display": "Awaiting Enrichment",
+   "status_sequence_before_listing": [
+    "Received",
+    "Awaiting Analysis",
+    "Awaiting Analysis"
+   ],
+   "source": "fkie-cad mirror commit 1a050ffaf89a (2026-10-17T10:05:35Z)",
+   "versions": [
+    {
+     "mirror_commit_utc": "2026-10-15T16:06:38",
+     "sha": "3de639ea9f1d",
+     "vulnStatus": "Received",
+     "has_cpe": false,
+     "lastModified": "2026-10-15T15:17:30.383"
+    },
+    {
+     "mirror_commit_utc": "2026-10-15T22:06:05",
+     "sha": "15f737a16cc1",
+     "vulnStatus": "Awaiting Analysis",
+     "has_cpe": false,
+     "lastModified": "2026-10-15T20:38:04.303"
+    },
+    {
+     "mirror_commit_utc": "2026-10-17T10:05:35",
+     "sha": "1a050ffaf89a",
+     "vulnStatus": "Awaiting Analysis",
+     "has_cpe": false,
+     "lastModified": "2026-10-17T09:16:28.893"
+    }
+   ]
+  },
+  {
+   "cve_id": "CVE-2026-102764",
+   "published": "2026-10-15",
+   "kev_date_added": "2026-10-16",
+   "kev_event": "2026-10-16T19:00:01.290",
+   "first_cpe_time": "2026-10-16T19:10:55.057",
+   "status_day_before_listing": "Received",
+   "status_display": "Received",
+   "status_sequence_before_listing": [
+    "Received",
+    "Awaiting Analysis"
+   ],
+   "source": "fkie-cad mirror commit 15f737a16cc1 (2026-10-15T22:06:05Z)",
+   "versions": [
+    {
+     "mirror_commit_utc": "2026-10-15T22:06:05",
+     "sha": "15f737a16cc1",
+     "vulnStatus": "Received",
+     "has_cpe": false,
+     "lastModified": "2026-10-15T21:17:00.117"
+    },
+    {
+     "mirror_commit_utc": "2026-10-16T18:06:36",
+     "sha": "ae06ef6dbc2a",
+     "vulnStatus": "Awaiting Analysis",
+     "has_cpe": false,
+     "lastModified": "2026-10-16T16:00:33.533"
+    }
+   ]
+  },
+  {
+   "cve_id": "CVE-2026-111357",
+   "published": "2026-10-15",
+   "kev_date_added": "2026-10-30",
+   "kev_event": "2026-10-30T19:00:00.343",
+   "first_cpe_time": "2026-10-30T20:29:25.850",
+   "status_day_before_listing": "Awaiting Analysis",
+   "status_display": "Awaiting Enrichment",
+   "status_sequence_before_listing": [
+    "Received",
+    "Received",
+    "Awaiting Analysis",
+    "Awaiting Analysis"
+   ],
+   "source": "fkie-cad mirror commit 75d4d68576a5 (2026-10-16T20:05:43Z)",
+   "versions": [
+    {
+     "mirror_commit_utc": "2026-10-15T22:06:05",
+     "sha": "15f737a16cc1",
+     "vulnStatus": "Received",
+     "has_cpe": false,
+     "lastModified": "2026-10-15T21:17:13.190"
+    },
+    {
+     "mirror_commit_utc": "2026-10-16T06:05:37",
+     "sha": "230c653441b4",
+     "vulnStatus": "Received",
+     "has_cpe": false,
+     "lastModified": "2026-10-16T04:18:29.633"
+    },
+    {
+     "mirror_commit_utc": "2026-10-16T20:05:43",
+     "sha": "75d4d68576a5",
+     "vulnStatus": "Awaiting Analysis",
+     "has_cpe": false,
+     "lastModified": "2026-10-16T19:55:59.740"
+    },
+    {
+     "mirror_commit_utc": "2026-10-30T12:50:54",
+     "sha": "ee20e7f49780",
+     "vulnStatus": "Awaiting Analysis",
+     "has_cpe": false,
+     "lastModified": "2026-10-30T04:18:10.020"
+    }
+   ]
+  },
+  {
+   "cve_id": "CVE-2026-111497",
+   "published": "2026-10-22",
+   "kev_date_added": "2026-10-27",
+   "kev_event": "2026-10-27T22:00:00.467",
+   "first_cpe_time": "2026-10-28T17:47:31.370",
+   "status_day_before_listing": "Awaiting Analysis",
+   "status_display": "Awaiting Enrichment",
+   "status_sequence_before_listing": [
+    "Received",
+    "Awaiting Analysis",
+    "Awaiting Analysis",
+    "Awaiting Analysis",
+    "Awaiting Analysis",
+    "Awaiting Analysis",
+    "Awaiting Analysis",
+    "Awaiting Analysis",
+    "Awaiting Analysis",
+    "Awaiting Analysis",
+    "Awaiting Analysis",
+    "Awaiting Analysis",
+    "Awaiting Analysis",
+    "Undergoing Analysis"
+   ],
+   "source": "fkie-cad mirror commit baef62bf68b8 (2026-10-26T19:06:20Z)",
+   "versions": [
+    {
+     "mirror_commit_utc": "2026-10-22T16:05:53",
+     "sha": "1c77760fda40",
+     "vulnStatus": "Received",
+     "has_cpe": false,
+     "lastModified": "2026-10-22T14:17:37.190"
+    },
+    {
+     "mirror_commit_utc": "2026-10-22T18:06:24",
+     "sha": "1fdc35e555b5",
+     "vulnStatus": "Awaiting Analysis",
+     "has_cpe": false,
+     "lastModified": "2026-10-22T16:18:19.040"
+    },
+    {
+     "mirror_commit_utc": "2026-10-22T20:06:07",
+     "sha": "75205afc28cb",
+     "vulnStatus": "Awaiting Analysis",
+     "has_cpe": false,
+     "lastModified": "2026-10-22T19:17:35.907"
+    },
+    {
+     "mirror_commit_utc": "2026-10-23T14:05:51",
+     "sha": "b920d4e3c062",
+     "vulnStatus": "Awaiting Analysis",
+     "has_cpe": false,
+     "lastModified": "2026-10-23T13:17:05.023"
+    },
+    {
+     "mirror_commit_utc": "2026-10-23T16:05:36",
+     "sha": "ca6540a56178",
+     "vulnStatus": "Awaiting Analysis",
+     "has_cpe": false,
+     "lastModified": "2026-10-23T14:17:31.247"
+    },
+    {
+     "mirror_commit_utc": "2026-10-24T00:00:42",
+     "sha": "4b0b63c0a312",
+     "vulnStatus": "Awaiting Analysis",
+     "has_cpe": false,
+     "lastModified": "2026-10-23T23:17:42.500"
+    },
+    {
+     "mirror_commit_utc": "2026-10-24T06:05:41",
+     "sha": "76276ccf47a7",
+     "vulnStatus": "Awaiting Analysis",
+     "has_cpe": false,
+     "lastModified": "2026-10-24T04:18:17.357"
+    },
+    {
+     "mirror_commit_utc": "2026-10-24T20:05:42",
+     "sha": "c8bcef36e939",
+     "vulnStatus": "Awaiting Analysis",
+     "has_cpe": false,
+     "lastModified": "2026-10-24T18:16:47.170"
+    },
+    {
+     "mirror_commit_utc": "2026-10-26T05:05:42",
+     "sha": "a7b6312551dc",
+     "vulnStatus": "Awaiting Analysis",
+     "has_cpe": false,
+     "lastModified": "2026-10-26T04:17:45.353"
+    },
+    {
+     "mirror_commit_utc": "2026-10-26T07:05:41",
+     "sha": "83487c97283b",
+     "vulnStatus": "Awaiting Analysis",
+     "has_cpe": false,
+     "lastModified": "2026-10-26T05:17:53.007"
+    },
+    {
+     "mirror_commit_utc": "2026-10-26T15:06:12",
+     "sha": "467cf39931f3",
+     "vulnStatus": "Awaiting Analysis",
+     "has_cpe": false,
+     "lastModified": "2026-10-26T14:16:28.143"
+    },
+    {
+     "mirror_commit_utc": "2026-10-26T19:06:20",
+     "sha": "baef62bf68b8",
+     "vulnStatus": "Awaiting Analysis",
+     "has_cpe": false,
+     "lastModified": "2026-10-26T18:17:36.103"
+    },
+    {
+     "mirror_commit_utc": "2026-10-27T17:05:50",
+     "sha": "b27c2609c05d",
+     "vulnStatus": "Awaiting Analysis",
+     "has_cpe": false,
+     "lastModified": "2026-10-27T15:16:31.287"
+    },
+    {
+     "mirror_commit_utc": "2026-10-27T21:06:00",
+     "sha": "3962a47827c7",
+     "vulnStatus": "Undergoing Analysis",
+     "has_cpe": false,
+     "lastModified": "2026-10-27T20:17:12.527"
+    }
+   ]
+  },
+  {
+   "cve_id": "CVE-2026-114625",
+   "published": "2026-10-22",
+   "kev_date_added": "2026-10-23",
+   "kev_event": "2026-10-23T19:00:00.570",
+   "first_cpe_time": "2026-10-23T19:29:01.287",
+   "status_day_before_listing": "Received",
+   "status_display": "Received",
+   "status_sequence_before_listing": [
+    "Received",
+    "Received",
+    "Received"
+   ],
+   "source": "fkie-cad mirror commit b3ab6c3d91c4 (2026-10-22T22:06:01Z)",
+   "versions": [
+    {
+     "mirror_commit_utc": "2026-10-22T22:06:01",
+     "sha": "b3ab6c3d91c4",
+     "vulnStatus": "Received",
+     "has_cpe": false,
+     "lastModified": "2026-10-22T21:17:16.870"
+    },
+    {
+     "mirror_commit_utc": "2026-10-23T00:00:54",
+     "sha": "5f8cd1c17b41",
+     "vulnStatus": "Received",
+     "has_cpe": false,
+     "lastModified": "2026-10-22T23:18:30.190"
+    },
+    {
+     "mirror_commit_utc": "2026-10-23T06:05:41",
+     "sha": "395429ad844b",
+     "vulnStatus": "Received",
+     "has_cpe": false,
+     "lastModified": "2026-10-23T04:18:13.833"
+    }
+   ]
+  },
+  {
+   "cve_id": "CVE-2026-76418",
+   "published": "2026-10-28",
+   "kev_date_added": "2026-10-29",
+   "kev_event": "2026-10-29T22:00:01.070",
+   "first_cpe_time": "2026-10-30T10:36:01.130",
+   "status_day_before_listing": null,
+   "status_display": null,
+   "status_sequence_before_listing": [],
+   "source": "unknown: no mirror version before listing; NVD change history before listing: New CVE Received, CVE Modified, CVE Modified, CVE Modified (no analysis event, so not enriched)",
+   "versions": []
+  },
+  {
+   "cve_id": "CVE-2026-119977",
+   "published": "2026-10-31",
+   "kev_date_added": "2026-11-03",
+   "kev_event": "2026-11-03T23:00:00.660",
+   "first_cpe_time": "2026-11-04T12:52:38.683",
+   "status_day_before_listing": "Deferred",
+   "status_display": "Not Scheduled",
+   "status_sequence_before_listing": [
+    "Received",
+    "Deferred"
+   ],
+   "source": "fkie-cad mirror commit d332c324daca (2026-11-02T17:05:55Z)",
+   "versions": [
+    {
+     "mirror_commit_utc": "2026-10-31T07:05:58",
+     "sha": "da5a8d9116a5",
+     "vulnStatus": "Received",
+     "has_cpe": false,
+     "lastModified": "2026-10-31T06:16:34.550"
+    },
+    {
+     "mirror_commit_utc": "2026-11-02T17:05:55",
+     "sha": "d332c324daca",
+     "vulnStatus": "Deferred",
+     "has_cpe": false,
+     "lastModified": "2026-11-02T16:19:19.997"
+    }
+   ]
+  },
+  {
+   "cve_id": "CVE-2026-105133",
+   "published": "2026-10-04",
+   "kev_date_added": "2026-10-14",
+   "kev_event": "2026-10-14T22:00:00.410",
+   "first_cpe_time": "2026-10-15T13:47:06.283",
+   "status_day_before_listing": "Deferred",
+   "status_display": "Not Scheduled",
+   "status_sequence_before_listing": [
+    "Received",
+    "Received",
+    "Deferred"
+   ],
+   "source": "fkie-cad mirror commit 6a244cb51094 (2026-10-06T16:04:09Z)",
+   "versions": [
+    {
+     "mirror_commit_utc": "2026-10-04T08:04:07",
+     "sha": "ff36ca110384",
+     "vulnStatus": "Received",
+     "has_cpe": false,
+     "lastModified": "2026-10-04T07:16:33.087"
+    },
+    {
+     "mirror_commit_utc": "2026-10-05T18:04:01",
+     "sha": "fe379d520e05",
+     "vulnStatus": "Received",
+     "has_cpe": false,
+     "lastModified": "2026-10-05T16:17:08.000"
+    },
+    {
+     "mirror_commit_utc": "2026-10-06T16:04:09",
+     "sha": "6a244cb51094",
+     "vulnStatus": "Deferred",
+     "has_cpe": false,
+     "lastModified": "2026-10-06T15:04:52.637"
+    }
+   ]
+  },
+  {
+   "cve_id": "CVE-2026-105134",
+   "published": "2026-10-04",
+   "kev_date_added": "2026-10-14",
+   "kev_event": "2026-10-14T22:00:00.410",
+   "first_cpe_time": "2026-10-15T13:47:12.400",
+   "status_day_before_listing": "Deferred",
+   "status_display": "Not Scheduled",
+   "status_sequence_before_listing": [
+    "Received",
+    "Received",
+    "Deferred"
+   ],
+   "source": "fkie-cad mirror commit 6a244cb51094 (2026-10-06T16:04:09Z)",
+   "versions": [
+    {
+     "mirror_commit_utc": "2026-10-04T08:04:07",
+     "sha": "ff36ca110384",
+     "vulnStatus": "Received",
+     "has_cpe": false,
+     "lastModified": "2026-10-04T07:16:33.480"
+    },
+    {
+     "mirror_commit_utc": "2026-10-05T18:04:01",
+     "sha": "fe379d520e05",
+     "vulnStatus": "Received",
+     "has_cpe": false,
+     "lastModified": "2026-10-05T16:17:08.150"
+    },
+    {
+     "mirror_commit_utc": "2026-10-06T16:04:09",
+     "sha": "6a244cb51094",
+     "vulnStatus": "Deferred",
+     "has_cpe": false,
+     "lastModified": "2026-10-06T15:04:52.637"
+    }
+   ]
+  },
+  {
+   "cve_id": "CVE-2026-21589",
+   "published": "2026-10-05",
+   "kev_date_added": "2026-10-15",
+   "kev_event": "2026-10-15T19:00:00.580",
+   "first_cpe_time": "2026-10-15T19:40:28.740",
+   "status_day_before_listing": "Awaiting Analysis",
+   "status_display": "Awaiting Enrichment",
+   "status_sequence_before_listing": [
+    "Received",
+    "Awaiting Analysis",
+    "Awaiting Analysis",
+    "Awaiting Analysis",
+    "Awaiting Analysis",
+    "Awaiting Analysis",
+    "Awaiting Analysis"
+   ],
+   "source": "fkie-cad mirror commit 7edba39ac23c (2026-10-14T18:05:48Z)",
+   "versions": [
+    {
+     "mirror_commit_utc": "2026-10-05T23:58:57",
+     "sha": "daf9ac0776e5",
+     "vulnStatus": "Received",
+     "has_cpe": false,
+     "lastModified": "2026-10-05T22:16:58.423"
+    },
+    {
+     "mirror_commit_utc": "2026-10-06T16:04:09",
+     "sha": "6a244cb51094",
+     "vulnStatus": "Awaiting Analysis",
+     "has_cpe": false,
+     "lastModified": "2026-10-06T14:49:40.823"
+    },
+    {
+     "mirror_commit_utc": "2026-10-06T18:04:11",
+     "sha": "e10322467675",
+     "vulnStatus": "Awaiting Analysis",
+     "has_cpe": false,
+     "lastModified": "2026-10-06T17:17:25.613"
+    },
+    {
+     "mirror_commit_utc": "2026-10-06T20:04:10",
+     "sha": "1860190e1345",
+     "vulnStatus": "Awaiting Analysis",
+     "has_cpe": false,
+     "lastModified": "2026-10-06T19:18:14.447"
+    },
+    {
+     "mirror_commit_utc": "2026-10-07T14:04:25",
+     "sha": "da8fb039d157",
+     "vulnStatus": "Awaiting Analysis",
+     "has_cpe": false,
+     "lastModified": "2026-10-07T13:17:22.273"
+    },
+    {
+     "mirror_commit_utc": "2026-10-14T18:05:48",
+     "sha": "7edba39ac23c",
+     "vulnStatus": "Awaiting Analysis",
+     "has_cpe": false,
+     "lastModified": "2026-10-14T17:18:26.927"
+    },
+    {
+     "mirror_commit_utc": "2026-10-15T16:06:38",
+     "sha": "3de639ea9f1d",
+     "vulnStatus": "Awaiting Analysis",
+     "has_cpe": false,
+     "lastModified": "2026-10-15T15:17:31.593"
+    }
+   ]
+  },
+  {
+   "cve_id": "CVE-2026-41709",
+   "published": "2026-07-30",
+   "kev_date_added": "2026-10-28",
+   "kev_event": "2026-10-28T22:00:00.383",
+   "first_cpe_time": "2026-10-29T17:20:30.203",
+   "status_day_before_listing": "Awaiting Analysis",
+   "status_display": "Awaiting Enrichment",
+   "status_sequence_before_listing": [
+    "Received",
+    "Received",
+    "Awaiting Analysis"
+   ],
+   "source": "fkie-cad mirror commit d4bff8696227 (2026-07-30T20:05:21Z)",
+   "versions": [
+    {
+     "mirror_commit_utc": "2026-07-30T16:05:29",
+     "sha": "37cc57f09558",
+     "vulnStatus": "Received",
+     "has_cpe": false,
+     "lastModified": "2026-07-30T14:16:57.420"
+    },
+    {
+     "mirror_commit_utc": "2026-07-30T18:05:29",
+     "sha": "66cdb9f83a3b",
+     "vulnStatus": "Received",
+     "has_cpe": false,
+     "lastModified": "2026-07-30T16:17:11.513"
+    },
+    {
+     "mirror_commit_utc": "2026-07-30T20:05:21",
+     "sha": "d4bff8696227",
+     "vulnStatus": "Awaiting Analysis",
+     "has_cpe": false,
+     "lastModified": "2026-07-30T19:07:59.843"
+    }
+   ]
+  }
+ ]
+}

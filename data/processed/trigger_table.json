@@ -1,0 +1,108 @@
+{
+ "minutes": 45,
+ "rate": 120,
+ "rows": [
+  {
+   "trigger": "EPSS >= 0.10",
+   "recall": [
+    "15 of 172",
+    "13 of 98",
+    "2 of 51"
+   ],
+   "one_time": 303,
+   "flow": [
+    11,
+    28
+   ],
+   "benefit_30d": 95.22,
+   "cost_once": "$27K",
+   "cost_year_max_flow": "$30K",
+   "capacity_max_flow": "0.6%"
+  },
+  {
+   "trigger": "EPSS >= 0.05",
+   "recall": [
+    "22 of 172",
+    "18 of 98",
+    "4 of 51"
+   ],
+   "one_time": 443,
+   "flow": [
+    8,
+    30
+   ],
+   "benefit_30d": 105.26,
+   "cost_once": "$40K",
+   "cost_year_max_flow": "$32K",
+   "capacity_max_flow": "0.6%"
+  },
+  {
+   "trigger": "EPSS >= 0.01",
+   "recall": [
+    "36 of 172",
+    "24 of 98",
+    "12 of 51"
+   ],
+   "one_time": 3384,
+   "flow": [
+    183,
+    655
+   ],
+   "benefit_30d": 157.91,
+   "cost_once": "$305K",
+   "cost_year_max_flow": "$707K",
+   "capacity_max_flow": "13.1%"
+  },
+  {
+   "trigger": "LEV >= 0.10 (from EPSS)",
+   "recall": [
+    "17 of 172",
+    "15 of 98",
+    "2 of 51"
+   ],
+   "one_time": 2972,
+   "flow": [
+    165,
+    327
+   ],
+   "benefit_30d": 138.55,
+   "cost_once": "$267K",
+   "cost_year_max_flow": "$353K",
+   "capacity_max_flow": "6.5%"
+  },
+  {
+   "trigger": "SSVC poc/active, >= 24 h before listing",
+   "recall": [
+    "5 of 172",
+    "0 of 98",
+    "5 of 51"
+   ],
+   "one_time": 15870,
+   "flow": [
+    1515,
+    2307
+   ],
+   "benefit_30d": 120.22,
+   "cost_once": "$1.43M",
+   "cost_year_max_flow": "$2.49M",
+   "capacity_max_flow": "46.1%"
+  },
+  {
+   "trigger": "SSVC poc/active, any time before listing",
+   "recall": [
+    "19 of 172",
+    "0 of 98",
+    "19 of 51"
+   ],
+   "one_time": 15870,
+   "flow": [
+    1515,
+    2307
+   ],
+   "benefit_30d": 120.22,
+   "cost_once": "$1.43M",
+   "cost_year_max_flow": "$2.49M",
+   "capacity_max_flow": "46.1%"
+  }
+ ]
+}

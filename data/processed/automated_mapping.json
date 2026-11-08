@@ -1,0 +1,27 @@
+{
+ "rule": "exact vendor:product match after lower-casing and spaces->'_' (CPE dictionary, NVD feed nvdcpe-2.0)",
+ "window_published": [
+  "2026-10-08T19:18:41.280",
+  "2026-11-07T19:17:28.480"
+ ],
+ "without_nvd_cpe": 13207,
+ "found_in_cvelist": 13207,
+ "with_cna_affected": 13207,
+ "a_exact_vendor_product_match": 2846,
+ "a_vendor_name_match_only_context": 6302,
+ "b_cna_affected_cpes": 1430,
+ "b_cna_affected_packageURL": 1908,
+ "dictionary_pairs": 153269,
+ "examples_exact": [
+  "CVE-2010-20125",
+  "CVE-2013-20007",
+  "CVE-2013-20008",
+  "CVE-2013-20009",
+  "CVE-2014-125131",
+  "CVE-2015-20129",
+  "CVE-2015-20130",
+  "CVE-2016-15060",
+  "CVE-2017-20288",
+  "CVE-2017-20290"
+ ]
+}

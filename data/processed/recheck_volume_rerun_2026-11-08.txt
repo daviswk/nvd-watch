@@ -1,0 +1,55 @@
+NVD records: 420,765; non-rejected: 401,624; KEV entries: 1,769
+Status counts (non-rejected): {'Modified': 245638, 'Analyzed': 78695, 'Deferred': 61216, 'Awaiting Analysis': 9853, 'Received': 5148, 'Undergoing Analysis': 1074}
+
+Stock (Deferred/Awaiting/Received, no CPE, not KEV): 76,217  (+0 in KEV)
+  by status: {'Deferred': 61216, 'Awaiting Analysis': 9853, 'Received': 5148}
+  by publication year: {2024: 7764, 2025: 17956, 2026: 50497}
+  all non-rejected without CPE (any status): 77,154; by status: {'Deferred': 61216, 'Awaiting Analysis': 9853, 'Received': 5148, 'Undergoing Analysis': 811, 'Modified': 126}
+
+EPSS files: 146 (2026-06-15 .. 2026-11-07)
+model versions seen: {'#model_version:v2026.06.15': 146}
+
+== One-time load: stock CVEs with EPSS >= t on 2026-11-07 ==
+stock scored by EPSS: 76,217 of 76,217
+  >= 0.10: 303  by status {'Deferred': 293, 'Awaiting Analysis': 10}  pub<2026-03-01: 258
+  >= 0.05: 443  by status {'Deferred': 414, 'Awaiting Analysis': 29}  pub<2026-03-01: 346
+  >= 0.01: 3,384  by status {'Deferred': 2986, 'Received': 6, 'Awaiting Analysis': 392}  pub<2026-03-01: 1,598
+  context: all non-rejected CVEs >= 0.10: 17,524
+  context: all non-rejected CVEs >= 0.05: 31,010
+  context: all non-rejected CVEs >= 0.01: 148,568
+
+== Monthly flow: CVEs whose EPSS first reached t inside each window (first seen >= t after Jun 15) ==
+-- t = 0.10
+  2026-07-10..2026-08-08: all 183 {'>90d': 130, '0-30d': 26, '31-90d': 27} | no CPE now, not KEV 21 {'>90d': 9, '31-90d': 9, '0-30d': 3} | in stock statuses 21 {'>90d': 9, '31-90d': 9, '0-30d': 3}
+  2026-08-09..2026-09-07: all 254 {'>90d': 230, '0-30d': 15, '31-90d': 9} | no CPE now, not KEV 21 {'>90d': 14, '0-30d': 4, '31-90d': 3} | in stock statuses 21 {'>90d': 14, '0-30d': 4, '31-90d': 3}
+  2026-09-08..2026-10-07: all 109 {'>90d': 92, '0-30d': 9, '31-90d': 8} | no CPE now, not KEV 9 {'>90d': 7, '31-90d': 2} | in stock statuses 9 {'>90d': 7, '31-90d': 2}
+  2026-10-08..2026-11-06: all 123 {'>90d': 94, '0-30d': 22, '31-90d': 7} | no CPE now, not KEV 10 {'>90d': 6, '0-30d': 3, '31-90d': 1} | in stock statuses 10 {'>90d': 6, '0-30d': 3, '31-90d': 1}
+-- t = 0.05
+  2026-07-10..2026-08-08: all 206 {'>90d': 138, '0-30d': 34, '31-90d': 34} | no CPE now, not KEV 23 {'>90d': 7, '31-90d': 11, '0-30d': 5} | in stock statuses 23 {'>90d': 7, '31-90d': 11, '0-30d': 5}
+  2026-08-09..2026-09-07: all 589 {'>90d': 538, '0-30d': 32, '31-90d': 19} | no CPE now, not KEV 30 {'0-30d': 10, '31-90d': 10, '>90d': 10} | in stock statuses 30 {'0-30d': 10, '31-90d': 10, '>90d': 10}
+  2026-09-08..2026-10-07: all 216 {'>90d': 192, '0-30d': 19, '31-90d': 5} | no CPE now, not KEV 8 {'31-90d': 1, '0-30d': 5, '>90d': 2} | in stock statuses 8 {'31-90d': 1, '0-30d': 5, '>90d': 2}
+  2026-10-08..2026-11-06: all 184 {'>90d': 136, '31-90d': 13, '0-30d': 35} | no CPE now, not KEV 25 {'>90d': 9, '31-90d': 7, '0-30d': 9} | in stock statuses 25 {'>90d': 9, '31-90d': 7, '0-30d': 9}
+-- t = 0.01
+  2026-07-10..2026-08-08: all 1,117 {'>90d': 775, '0-30d': 287, '31-90d': 55} | no CPE now, not KEV 183 {'>90d': 31, '0-30d': 137, '31-90d': 15} | in stock statuses 183 {'>90d': 31, '0-30d': 137, '31-90d': 15}
+  2026-08-09..2026-09-07: all 3,764 {'>90d': 3255, '31-90d': 173, '0-30d': 336} | no CPE now, not KEV 386 {'0-30d': 220, '>90d': 71, '31-90d': 95} | in stock statuses 384 {'0-30d': 218, '>90d': 71, '31-90d': 95}
+  2026-09-08..2026-10-07: all 2,163 {'>90d': 1408, '0-30d': 533, '31-90d': 222} | no CPE now, not KEV 656 {'>90d': 160, '0-30d': 338, '31-90d': 158} | in stock statuses 655 {'>90d': 159, '0-30d': 338, '31-90d': 158}
+  2026-10-08..2026-11-06: all 1,598 {'>90d': 1001, '0-30d': 514, '31-90d': 83} | no CPE now, not KEV 474 {'0-30d': 317, '>90d': 87, '31-90d': 70} | in stock statuses 449 {'0-30d': 293, '>90d': 86, '31-90d': 70}
+
+== Day-90 cohort: non-rejected CVEs NVD-published 2026-06-15..2026-07-14 ==
+cohort size: 8,376; with CPE now: 4,319; in KEV: 22; status now: {'Analyzed': 3647, 'Modified': 650, 'Deferred': 3748, 'Awaiting Analysis': 308, 'Undergoing Analysis': 23}
+  t=0.10 ever reached -> by d0: 0 (0.000%); by d7: 7 (0.084%); by d30: 22 (0.263%); by d90: 37 (0.442%)
+     on day 30 (point-in-time): 19 of 8376 eligible
+     on day 90 (point-in-time): 13 of 8376 eligible
+     first reached in day 31-90: 15; of those no CPE now & not KEV: 4; list: ['CVE-2026-12569', 'CVE-2026-20262', 'CVE-2026-28496', 'CVE-2026-3576', 'CVE-2026-43825', 'CVE-2026-48908', 'CVE-2026-48939', 'CVE-2026-50160', 'CVE-2026-50656', 'CVE-2026-55040', 'CVE-2026-55255', 'CVE-2026-55450', 'CVE-2026-58138', 'CVE-2026-58644', 'CVE-2026-59726']
+     by d30 detail: no CPE now & not KEV 3, KEV 8, has CPE 19
+  t=0.05 ever reached -> by d0: 0 (0.000%); by d7: 14 (0.167%); by d30: 29 (0.346%); by d90: 51 (0.609%)
+     on day 30 (point-in-time): 27 of 8376 eligible
+     on day 90 (point-in-time): 25 of 8376 eligible
+     first reached in day 31-90: 22; of those no CPE now & not KEV: 9; list: ['CVE-2026-12569', 'CVE-2026-13545', 'CVE-2026-13773', 'CVE-2026-14894', 'CVE-2026-20181', 'CVE-2026-28496', 'CVE-2026-3576', 'CVE-2026-42055', 'CVE-2026-48908', 'CVE-2026-48909', 'CVE-2026-48939', 'CVE-2026-50656', 'CVE-2026-52806', 'CVE-2026-55040', 'CVE-2026-55255', 'CVE-2026-55450', 'CVE-2026-56274', 'CVE-2026-58138', 'CVE-2026-58455', 'CVE-2026-59726']
+     by d30 detail: no CPE now & not KEV 3, KEV 10, has CPE 26
+  t=0.01 ever reached -> by d0: 29 (0.346%); by d7: 186 (2.221%); by d30: 248 (2.961%); by d90: 414 (4.943%)
+     on day 30 (point-in-time): 230 of 8376 eligible
+     on day 90 (point-in-time): 357 of 8376 eligible
+     first reached in day 31-90: 166; of those no CPE now & not KEV: 69; list: ['CVE-2022-50972', 'CVE-2022-50973', 'CVE-2024-14037', 'CVE-2025-15661', 'CVE-2025-27511', 'CVE-2025-62821', 'CVE-2025-66389', 'CVE-2025-71324', 'CVE-2025-71338', 'CVE-2026-10561', 'CVE-2026-10768', 'CVE-2026-11387', 'CVE-2026-11834', 'CVE-2026-11911', 'CVE-2026-12046', 'CVE-2026-12773', 'CVE-2026-13080', 'CVE-2026-13353', 'CVE-2026-13368', 'CVE-2026-13430']
+     by d30 detail: no CPE now & not KEV 95, KEV 15, has CPE 153
+  scored at all: 8,376; median days pub->first EPSS file: 1
