@@ -73,7 +73,7 @@
       </div>
       <ul class="findings">
         <li><b>{{ke_headline}}</b> Of the {{ke_l_n}} CVEs CISA added to KEV in this window, {{ke_l_1bd}} had CPE within one business day of the listing, NIST's goal.{{ke_pending_note}} But of the {{ke_l_pub}} that were already public, and not enriched before the April triage, only {{ke_l_ready}} had CPE before the listing. Among CVEs not in KEV, {{pct_cpe_if_not_in_kev}} have CPE. By our count, the median lag from CVE publication to a KEV listing rose from 4 days in 2023 to 10 in 2025, and stands at 9 so far in 2026.</li>
-        <li><b>The fix is small next to NIST's capacity.</b> By day 30, about {{fl_share10}} of new CVEs have crossed EPSS 10% (CVE Floodline). A published rule to re-check Not Scheduled CVEs when that happens would re-queue on the order of {{requeue_default}} CVEs a month, {{sim_capacity}} of the roughly 5,000 CVEs a month NIST has processed at its peak. For scale: that is a fraction of the routine re-scoring NIST stopped in April 2026, which the Commerce Inspector General valued at about $400,000 a year.</li>
+        <li><b>The fix is small next to NIST's capacity.</b> A published rule to re-check CVEs without CPE when their EPSS score crosses 10% would re-queue {{rq_one_time}} set-aside CVEs once, then {{rq_lo}} to {{rq_hi}} a month (our count, {{rq_measured_on}}): at most {{sim_capacity}} of the roughly 5,000 CVEs a month NIST has processed at its peak. For scale: that is a fraction of the routine re-scoring NIST stopped in April 2026, which the Commerce Inspector General valued at about $400,000 a year.</li>
       </ul>
       <h2 id="h-rec" style="margin-top:30px">What we recommend</h2>
       <table class="recs">
@@ -172,14 +172,15 @@
         <p>Move any CVE without CPE (Not Scheduled, Awaiting Enrichment, or still Received) into the KEV queue, under NIST's existing one-business-day goal, when the maximum of its EPSS score, its KEV status, and its LEV estimate (NIST's own composite, CSWP 41) crosses a published threshold, when CISA's SSVC decision marks exploitation as proof-of-concept or active, or when credible third-party exploitation evidence arrives. Publish the threshold. Publish every re-queue and its time to enrichment. Moving a CVE from Not Scheduled to the back of the Awaiting queue would not be enough: {{awaiting_pct}} of new CVEs already wait there with no CPE.</p>
         <p>NIST already designed the composite; FedRAMP's 2026 rules already use KEV. The rule adds nothing that does not exist, except the commitment to apply it and to say so.</p>
         <h3>What it would cost</h3>
-        <p>No per-CVE enrichment cost has been published, so the estimate below is arithmetic on stated inputs. The volume input is measured, not assumed: {{requeue_source}} At an EPSS 10% threshold the rule fires rarely; a lower threshold catches more and costs more, and the input lets you try either. Change any input; the result updates and prints as shown.</p>      </div>
+        <p>No per-CVE enrichment cost has been published, so the estimate below is arithmetic on stated inputs. The volume input is measured, not assumed: {{requeue_source}}</p>
+        <p>The one-time load of {{rq_one_time}} CVEs is about {{rq_one_time_share}} of one peak month and costs {{rq_one_time_cost}} once, on the same minutes and rate. At an EPSS 10% threshold the rule fires rarely after that. A lower threshold catches more and costs more: at 5%, {{rq_one_time_05}} CVEs once; at 1%, {{rq_one_time_01}} once and a few hundred a month. Enter any volume in the estimate; the result updates and prints as shown.</p>      </div>
       <div>
         <form class="sim" id="sim-form" aria-labelledby="h-sim" data-default-cves="{{requeue_default_num}}">
           <h3 id="h-sim" style="margin-top:0">Re-check cost estimate</h3>
           <div class="controls">
             <label for="sim-cves"><span>CVEs re-queued per month</span>
               <input type="number" id="sim-cves" name="cves" min="0" max="100000" step="1" value="{{requeue_default_num}}" inputmode="numeric">
-              <span class="note">Measured: CVE Floodline's day-30 crossing rate ({{fl_share10}}) times our 30-day volume. A rough estimate: biases run both ways (see below).</span>
+              <span class="note">Measured: highest month (range {{rq_lo}}–{{rq_hi}}). One-time load not included.</span>
             </label>
             <fieldset>
               <legend>Analyst-minutes per CVE</legend>

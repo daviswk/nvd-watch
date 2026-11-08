@@ -73,7 +73,7 @@
       </div>
       <ul class="findings">
         <li><b>Once CISA confirms an attack, NIST moves fast. Before that, it mostly waits.</b> Of the 35 CVEs CISA added to KEV in this window, 34 had CPE within one business day of the listing, NIST's goal. CVE-2026-19868 (listed November 6, 2026) has no CPE yet. But of the 23 that were already public, and not enriched before the April triage, only 10 had CPE before the listing. Among CVEs not in KEV, 22.6% have CPE. By our count, the median lag from CVE publication to a KEV listing rose from 4 days in 2023 to 10 in 2025, and stands at 9 so far in 2026.</li>
-        <li><b>The fix is small next to NIST's capacity.</b> By day 30, about 0.094% of new CVEs have crossed EPSS 10% (CVE Floodline). A published rule to re-check Not Scheduled CVEs when that happens would re-queue on the order of 16 CVEs a month, 0.3% of the roughly 5,000 CVEs a month NIST has processed at its peak. For scale: that is a fraction of the routine re-scoring NIST stopped in April 2026, which the Commerce Inspector General valued at about $400,000 a year.</li>
+        <li><b>The fix is small next to NIST's capacity.</b> A published rule to re-check CVEs without CPE when their EPSS score crosses 10% would re-queue 303 set-aside CVEs once, then 11 to 28 a month (our count, November 7, 2026): at most 0.6% of the roughly 5,000 CVEs a month NIST has processed at its peak. For scale: that is a fraction of the routine re-scoring NIST stopped in April 2026, which the Commerce Inspector General valued at about $400,000 a year.</li>
       </ul>
       <h2 id="h-rec" style="margin-top:30px">What we recommend</h2>
       <table class="recs">
@@ -177,14 +177,15 @@
         <p>Move any CVE without CPE (Not Scheduled, Awaiting Enrichment, or still Received) into the KEV queue, under NIST's existing one-business-day goal, when the maximum of its EPSS score, its KEV status, and its LEV estimate (NIST's own composite, CSWP 41) crosses a published threshold, when CISA's SSVC decision marks exploitation as proof-of-concept or active, or when credible third-party exploitation evidence arrives. Publish the threshold. Publish every re-queue and its time to enrichment. Moving a CVE from Not Scheduled to the back of the Awaiting queue would not be enough: 24.5% of new CVEs already wait there with no CPE.</p>
         <p>NIST already designed the composite; FedRAMP's 2026 rules already use KEV. The rule adds nothing that does not exist, except the commitment to apply it and to say so.</p>
         <h3>What it would cost</h3>
-        <p>No per-CVE enrichment cost has been published, so the estimate below is arithmetic on stated inputs. The volume input is measured, not assumed: CVE Floodline: 27 of 28,618 CVEs published August 7, 2026 to November 4, 2026 crossed EPSS 10% by day 30 (0.094%), applied to our 17,070 CVEs per 30 days. It is a rough estimate, and its biases run both ways. Floodline counts every CVE that crosses, including ones CISA has already listed: in our window, 7 of the 10 CVEs at EPSS 10% or higher are in KEV, and EPSS tends to rise after a KEV listing (Nucleus Security), so those need no re-check. That pushes the count down. Of the 3 outside KEV, 2 have no CPE. The estimate also misses crossings after day 30, the older Not Scheduled stock, and SSVC or third-party triggers, which push it up. At an EPSS 10% threshold the rule fires rarely; a lower threshold catches more and costs more, and the input lets you try either. Change any input; the result updates and prints as shown.</p>      </div>
+        <p>No per-CVE enrichment cost has been published, so the estimate below is arithmetic on stated inputs. The volume input is measured, not assumed: we counted it from the whole NVD stock on November 7, 2026. Of the 76,217 CVEs without CPE in Not Scheduled, Awaiting Enrichment or Received, none in KEV, 303 already score EPSS 10% or higher: a one-time load. After that, 11 to 28 a month crossed 10% before they had CPE, in four 30-day windows from July 10, 2026 to November 6, 2026 (NVD change history included). Most had been published more than 90 days earlier, so the flow comes from the set-aside stock, not from new CVEs. The default below is the highest month. The count leaves out the LEV, SSVC and third-party triggers, which would add to it, and covers five months under one EPSS model (v5, from June 15, 2026).</p>
+        <p>The one-time load of 303 CVEs is about 6% of one peak month and costs $12K to $36K once, on the same minutes and rate. At an EPSS 10% threshold the rule fires rarely after that. A lower threshold catches more and costs more: at 5%, 443 CVEs once; at 1%, 3,384 once and a few hundred a month. Enter any volume in the estimate; the result updates and prints as shown.</p>      </div>
       <div>
-        <form class="sim" id="sim-form" aria-labelledby="h-sim" data-default-cves="16">
+        <form class="sim" id="sim-form" aria-labelledby="h-sim" data-default-cves="28">
           <h3 id="h-sim" style="margin-top:0">Re-check cost estimate</h3>
           <div class="controls">
             <label for="sim-cves"><span>CVEs re-queued per month</span>
-              <input type="number" id="sim-cves" name="cves" min="0" max="100000" step="1" value="16" inputmode="numeric">
-              <span class="note">Measured: CVE Floodline's day-30 crossing rate (0.094%) times our 30-day volume. A rough estimate: biases run both ways (see below).</span>
+              <input type="number" id="sim-cves" name="cves" min="0" max="100000" step="1" value="28" inputmode="numeric">
+              <span class="note">Measured: highest month (range 11–28). One-time load not included.</span>
             </label>
             <fieldset>
               <legend>Analyst-minutes per CVE</legend>
@@ -202,14 +203,14 @@
           </div>
           <table class="data" aria-live="polite">
             <tbody>
-              <tr><th scope="row">Analyst-hours per year</th><td class="num" id="sim-hours">144</td></tr>
-              <tr><th scope="row">Share of NIST's peak monthly output (~5,000 CVEs, per the OIG)</th><td class="num" id="sim-capacity">0.3%</td></tr>
-              <tr><th scope="row">Yearly cost at the selected minutes</th><td class="num" id="sim-cost">$17K</td></tr>
-              <tr><th scope="row">Range across 20 to 60 minutes</th><td class="num" id="sim-low-high">$8K to $23K</td></tr>
-              <tr><th scope="row">Compared with the re-scoring NIST stopped in April 2026 (OIG: ~$400K a year; scale only, not spare money)</th><td class="num" id="sim-offset">4%</td></tr>
+              <tr><th scope="row">Analyst-hours per year</th><td class="num" id="sim-hours">252</td></tr>
+              <tr><th scope="row">Share of NIST's peak monthly output (~5,000 CVEs, per the OIG)</th><td class="num" id="sim-capacity">0.6%</td></tr>
+              <tr><th scope="row">Yearly cost at the selected minutes</th><td class="num" id="sim-cost">$30K</td></tr>
+              <tr><th scope="row">Range across 20 to 60 minutes</th><td class="num" id="sim-low-high">$13K to $40K</td></tr>
+              <tr><th scope="row">Compared with the re-scoring NIST stopped in April 2026 (OIG: ~$400K a year; scale only, not spare money)</th><td class="num" id="sim-offset">8%</td></tr>
             </tbody>
           </table>
-          <p class="result" id="sim-sentence">Re-checking <b>16 CVEs a month</b> at 45 analyst-minutes each takes about <b>144 analyst-hours a year</b>, 0.3% of NIST's peak monthly output, and costs about <b>$17K a year</b> at $120 an hour: about 4% of the value of the routine re-scoring NIST stopped in April 2026 (the Commerce OIG put it at roughly $400K a year; NIST disputes the figure). That capacity already went to triage, so this compares scale; it is not spare money.</p>
+          <p class="result" id="sim-sentence">Re-checking <b>28 CVEs a month</b> at 45 analyst-minutes each takes about <b>252 analyst-hours a year</b>, 0.6% of NIST's peak monthly output, and costs about <b>$30K a year</b> at $120 an hour: about 8% of the value of the routine re-scoring NIST stopped in April 2026 (the Commerce OIG put it at roughly $400K a year; NIST disputes the figure). That capacity already went to triage, so this compares scale; it is not spare money.</p>
           <button type="button" class="reset" id="sim-reset">Reset to defaults</button>
         </form>
       </div>

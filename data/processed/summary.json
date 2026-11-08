@@ -108,7 +108,7 @@
     "share_cross50_day30_pct": 0.028,
     "mean_net_cves_per_day": 482.7,
     "kev_in_window": 70,
-    "note": "Crossings count EPSS strictly above the threshold on the dated file at day+30; the +90 horizon is not yet observable for most cohorts, so this is a lower bound."
+    "note": "Crossings count EPSS strictly above the threshold on the dated file at day+30; a point-in-time count that includes CVEs already with CPE and excludes the older unenriched stock, so it is rough and biased both ways, not a lower bound (see docs/research/notes/open_items_recheck_volume.md)."
   },
   "window_utc": [
     "2026-10-08T19:18:41.280000+00:00",

@@ -129,7 +129,7 @@ def fetch_floodline():
         "share_cross50_day30_pct": round(100 * cross("30", 50) / total, 3),
         "mean_net_cves_per_day": round(sum(x["net_total"] for x in days) / len(days), 1),
         "kev_in_window": sum(x.get("kev", 0) for x in days),
-        "note": "Crossings count EPSS strictly above the threshold on the dated file at day+30; the +90 horizon is not yet observable for most cohorts, so this is a lower bound.",
+        "note": "Crossings count EPSS strictly above the threshold on the dated file at day+30; a point-in-time count that includes CVEs already with CPE and excludes the older unenriched stock, so it is rough and biased both ways, not a lower bound (see docs/research/notes/open_items_recheck_volume.md).",
     }
 
 

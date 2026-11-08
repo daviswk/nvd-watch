@@ -5,6 +5,8 @@ Research date: 2026-11-06. Roughly 25 sources were searched or fetched. Some pri
 ## Q1. Current EPSS model version, its inputs, and its dependence on NVD enrichment
 
 ### Takeaway
+**Superseded (Nov 7):** EPSS v5 (`v2026.06.15`) has published since Jun 15, 2026 (FIRST data page; archive file headers). See `open_items_recheck_volume.md`. The rest of this note describes v4 and earlier.
+
 EPSS v4, released March 17, 2025, is the current model. No v5 was found as of Nov 6, 2026. EPSS v3 drew most of its roughly 1,477 features from NVD enrichment fields: CVSS vectors, CWE, and CPE-derived vendor labels. v4 explicitly falls back to CNA and ADP data on cve.org when NVD enrichment is missing. The student's concern is therefore partly mitigated: the dependency is real, but the model is not left without inputs. Threat-activity signals (exploit code, chatter, scanners, telemetry), which do not depend on NVD, drive the daily score changes.
 
 ### Cited Findings

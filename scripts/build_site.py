@@ -108,31 +108,29 @@ def main():
     site_url = os.environ.get("SITE_URL", "").strip()
     site_url_line = f' Available at <a href="{escape(site_url)}">{escape(site_url)}</a>.' if site_url else ""
 
-    # Re-check volume. Rate from CVE Floodline (RogoLabs): share of a day's CVEs that have crossed
-    # EPSS 10% by day 30. Volume is our own 30-day live count. Falls back to a flagged assumption.
-    hi = live[live["epss"] >= 0.10]
-    hi_n = int(len(hi))
-    hi_kev = int(hi["in_kev"].sum())
-    hi_out = hi[~hi["in_kev"]]
-    hi_out_n, hi_out_nocpe = int(len(hi_out)), int((~hi_out["has_cpe"]).sum())
-    fl = summary.get("floodline")
-    if fl:
-        share10 = fl["share_cross10_day30_pct"] / 100
-        requeue_default = max(1, int(round(summary["cves_live"] * share10)))
-        requeue_source = (
-            f"CVE Floodline: {fmt_int(fl['cross10_day30'])} of {fmt_int(fl['cves_with_30d_score'])} CVEs "
-            f"published {fmt_date(fl['window'][0])} to {fmt_date(fl['window'][1])} crossed EPSS 10% by day 30 "
-            f"({fl['share_cross10_day30_pct']:g}%), applied to our {fmt_int(summary['cves_live'])} CVEs per 30 days. "
-            f"It is a rough estimate, and its biases run both ways. Floodline counts every CVE that crosses, "
-            f"including ones CISA has already listed: in our window, {hi_kev} of the {hi_n} CVEs at EPSS 10% or higher "
-            f"are in KEV, and EPSS tends to rise after a KEV listing (Nucleus Security), so those need no re-check. "
-            f"That pushes the count down. Of the {hi_out_n} outside KEV, {hi_out_nocpe} have no CPE. The estimate also "
-            f"misses crossings after day 30, the older Not Scheduled stock, and SSVC or third-party triggers, which "
-            f"push it up."
-        )
-    else:
-        requeue_default = 40
-        requeue_source = "CVE Floodline data was unavailable at build time; 40 per month is a placeholder assumption."
+    # Re-check volume, measured once from the whole NVD stock (scripts/research/recheck_volume.py plus an
+    # NVD change-history check; see docs/research/notes/open_items_recheck_volume.md). Not rebuilt weekly,
+    # so the page dates it. The simulator default is the highest month observed.
+    fl = summary.get("floodline")   # still used for the score-maturation paragraph in section 2
+    rm_path = PROCESSED / "recheck_measured.json"
+    if not rm_path.exists():
+        sys.exit("data/processed/recheck_measured.json missing; see docs/research/notes/open_items_recheck_volume.md")
+    rm = json.loads(rm_path.read_text())
+    monthly = [w["requeues"] for w in rm["monthly_flow"]["windows"]]
+    rq_lo, rq_hi = min(monthly), max(monthly)
+    one_time = rm["one_time_load"]["t_0_10"]
+    win = rm["monthly_flow"]["windows"]
+    requeue_default = rq_hi
+    requeue_source = (
+        f"we counted it from the whole NVD stock on {fmt_date(rm['measured_on'])}. Of the "
+        f"{fmt_int(rm['stock']['total'])} CVEs without CPE in Not Scheduled, Awaiting Enrichment or Received, none "
+        f"in KEV, {fmt_int(one_time)} already score EPSS 10% or higher: a one-time load. After that, "
+        f"{rq_lo} to {rq_hi} a month crossed 10% before they had CPE, in four 30-day windows from "
+        f"{fmt_date(win[0]['from'])} to {fmt_date(win[-1]['to'])} (NVD change history included). Most had been "
+        f"published more than 90 days earlier, so the flow comes from the set-aside stock, not from new CVEs. "
+        f"The default below is the highest month. The count leaves out the LEV, SSVC and third-party triggers, "
+        f"which would add to it, and covers five months under one EPSS model (v5, from June 15, 2026)."
+    )
 
     def sim(cves, minutes, rate=120):
         hours = cves * 12 * minutes / 60
@@ -144,6 +142,8 @@ def main():
     h_mid, c_mid, cap = sim(requeue_default, 45)
     _, c_lo, _ = sim(requeue_default, 20)
     _, c_hi, _ = sim(requeue_default, 60)
+    # The one-time load is done once, not every month: hours = CVEs × minutes / 60.
+    once_lo, once_hi = one_time * 20 / 60 * 120, one_time * 60 / 60 * 120
     ratio = c_mid / 400000
     # Scale comparison only (same wording as app.js): NIST already stopped routine re-scoring in
     # April 2026 and moved that capacity to triage, so the OIG figure is not unspent money.
@@ -228,6 +228,14 @@ def main():
         "requeue_default": fmt_int(requeue_default),
         "requeue_default_num": str(requeue_default),
         "requeue_source": requeue_source,
+        "rq_lo": str(rq_lo),
+        "rq_hi": str(rq_hi),
+        "rq_one_time": fmt_int(one_time),
+        "rq_one_time_share": f"{round(100 * one_time / 5000)}%",
+        "rq_one_time_cost": f"{money(once_lo)} to {money(once_hi)}",
+        "rq_measured_on": fmt_date(rm["measured_on"]),
+        "rq_one_time_05": fmt_int(rm["one_time_load"]["t_0_05"]),
+        "rq_one_time_01": fmt_int(rm["one_time_load"]["t_0_01"]),
         "fl_share10": f"{fl['share_cross10_day30_pct']:g}%" if fl else "n/a",
         "fl_share50": f"{fl['share_cross50_day30_pct']:g}%" if fl else "n/a",
         "fl_cross10_day0": fmt_int(fl["cross10_day0"]) if fl else "n/a",
@@ -267,6 +275,7 @@ def main():
     if (PROCESSED / "kev_lag.json").exists():          # read by the 3D figures and the story page
         shutil.copy(PROCESSED / "kev_lag.json", SITE / "data" / "kev_lag.json")
     shutil.copy(ke_path, SITE / "data" / "kev_enrichment.json")   # the per-CVE evidence behind metric 3
+    shutil.copy(rm_path, SITE / "data" / "recheck_measured.json")  # read by the story page
     print(f"wrote site/index.html from data pulled {values['pulled_at']} ({values['n_total']} CVEs)")
 
 

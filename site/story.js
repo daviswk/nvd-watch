@@ -13,14 +13,17 @@ const PEAK_MONTH = 5000;                       // OIG: NIST has never processed 
 const fmt = n => Math.round(n).toLocaleString("en-US");
 const fmtDate = s => new Date(s).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
 
-const [data, lag] = await Promise.all([
+const [data, lag, rm] = await Promise.all([
   fetch("data/summary.json").then(r => r.json()),
   fetch("data/kev_lag.json").then(r => (r.ok ? r.json() : null)).catch(() => null),
+  fetch("data/recheck_measured.json").then(r => r.json()),
 ]);
 
 /* ---------- numbers into the copy ---------- */
 const live = data.cves_live;
-const requeue = Math.round(data.floodline.share_cross10_day30_pct / 100 * live);
+// Re-check volume measured once from the whole NVD stock (data/recheck_measured.json); highest month shown.
+const monthly = rm.monthly_flow.windows.map(w => w.requeues);
+const requeue = Math.max(...monthly);
 const cost = requeue * 12 * (45 / 60) * 120;
 const years = lag ? Object.keys(lag.by_year).sort() : [];
 const lagText = y => `${lag.by_year[y].median_days} days (${y})`;
@@ -36,7 +39,9 @@ const fills = {
   requeue: fmt(requeue),
   share_peak: `${(100 * requeue / PEAK_MONTH).toFixed(1)}%`,
   cost: `$${fmt(cost / 1000)}K`,
-  floodline: `${data.floodline.share_cross10_day30_pct}%`,
+  one_time: fmt(rm.one_time_load.t_0_10),
+  requeue_range: `${Math.min(...monthly)} to ${requeue}`,
+  rq_measured: fmtDate(rm.measured_on),
   pulled: fmtDate(data.pulled_at_utc),
 };
 document.querySelectorAll("[data-fill]").forEach(el => { el.textContent = fills[el.dataset.fill] ?? ""; });
