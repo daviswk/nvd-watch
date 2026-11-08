@@ -42,6 +42,11 @@ def fmt_date(iso):
     return datetime.fromisoformat(iso).strftime("%B %d, %Y").replace(" 0", " ")
 
 
+def short_date(iso):
+    d = datetime.fromisoformat(iso)
+    return f"{d:%b} {d.day}"
+
+
 def load_dotenv(path=ROOT / ".env"):
     """Read KEY=value lines from .env into the environment without overriding what is already set."""
     if not path.exists():
@@ -144,6 +149,16 @@ def main():
     _, c_hi, _ = sim(requeue_default, 60)
     # The one-time load is done once, not every month: hours = CVEs × minutes / 60.
     once_lo, once_hi = one_time * 20 / 60 * 120, one_time * 60 / 60 * 120
+    once_mid = one_time * 45 / 60 * 120
+    rq_window_rows = "\n".join(
+        "<tr>"
+        f"<th scope=\"row\">{short_date(w['from'])} to {short_date(w['to'])}</th>"
+        f"<td class=\"num\" data-label=\"Still no CPE\">{w['stock_crossers']}</td>"
+        f"<td class=\"num\" data-label=\"Got CPE later\">{w['enriched_after_crossing']}</td>"
+        f"<td class=\"num\" data-label=\"Re-queues\"><b>{w['requeues']}</b></td>"
+        "</tr>"
+        for w in win
+    )
     ratio = c_mid / 400000
     # Scale comparison only (same wording as app.js): NIST already stopped routine re-scoring in
     # April 2026 and moved that capacity to triage, so the OIG figure is not unspent money.
@@ -234,6 +249,9 @@ def main():
         "rq_one_time_share": f"{round(100 * one_time / 5000)}%",
         "rq_one_time_cost": f"{money(once_lo)} to {money(once_hi)}",
         "rq_measured_on": fmt_date(rm["measured_on"]),
+        "rq_one_time_num": str(one_time),
+        "rq_window_rows": rq_window_rows,
+        "sim_once": money(once_mid),
         "rq_one_time_05": fmt_int(rm["one_time_load"]["t_0_05"]),
         "rq_one_time_01": fmt_int(rm["one_time_load"]["t_0_01"]),
         "fl_share10": f"{fl['share_cross10_day30_pct']:g}%" if fl else "n/a",

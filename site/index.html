@@ -72,7 +72,15 @@
         </p>
       </div>
       <ul class="findings">
-        <li><b>Once CISA confirms an attack, NIST moves fast. Before that, it mostly waits.</b> Of the 35 CVEs CISA added to KEV in this window, 34 had CPE within one business day of the listing, NIST's goal. CVE-2026-19868 (listed November 6, 2026) has no CPE yet. But of the 23 that were already public, and not enriched before the April triage, only 10 had CPE before the listing. Among CVEs not in KEV, 22.6% have CPE. By our count, the median lag from CVE publication to a KEV listing rose from 4 days in 2023 to 10 in 2025, and stands at 9 so far in 2026.</li>
+        <li><b>Once CISA confirms an attack, NIST moves fast. Before that, it mostly waits.</b>
+          <table class="data kev-pair">
+            <caption class="sr-only">CVEs CISA added to KEV, October 8, 2026 to November 7, 2026</caption>
+            <tbody>
+              <tr><th scope="row">Had CPE before the KEV listing (readiness)</th><td class="num"><b>10 of 23</b></td></tr>
+              <tr><th scope="row">Had CPE within one business day after it (NIST's goal)</th><td class="num"><b>34 of 35</b></td></tr>
+            </tbody>
+          </table>
+          The groups differ: readiness counts only CVEs that were already public, and not enriched before the April triage, when CISA listed them. CVE-2026-19868 (listed November 6, 2026) has no CPE yet. Among CVEs not in KEV, 22.6% have CPE. By our count, the median lag from CVE publication to a KEV listing rose from 4 days in 2023 to 10 in 2025, and stands at 9 so far in 2026.</li>
         <li><b>The fix is small next to NIST's capacity.</b> A published rule to re-check CVEs without CPE when their EPSS score crosses 10% would re-queue 303 set-aside CVEs once, then 11 to 28 a month (our count, November 7, 2026): at most 0.6% of the roughly 5,000 CVEs a month NIST has processed at its peak. For scale: that is a fraction of the routine re-scoring NIST stopped in April 2026, which the Commerce Inspector General valued at about $400,000 a year.</li>
       </ul>
       <h2 id="h-rec" style="margin-top:30px">What we recommend</h2>
@@ -178,14 +186,26 @@
         <p>NIST already designed the composite; FedRAMP's 2026 rules already use KEV. The rule adds nothing that does not exist, except the commitment to apply it and to say so.</p>
         <h3>What it would cost</h3>
         <p>No per-CVE enrichment cost has been published, so the estimate below is arithmetic on stated inputs. The volume input is measured, not assumed: we counted it from the whole NVD stock on November 7, 2026. Of the 76,217 CVEs without CPE in Not Scheduled, Awaiting Enrichment or Received, none in KEV, 303 already score EPSS 10% or higher: a one-time load. After that, 11 to 28 a month crossed 10% before they had CPE, in four 30-day windows from July 10, 2026 to November 6, 2026 (NVD change history included). Most had been published more than 90 days earlier, so the flow comes from the set-aside stock, not from new CVEs. The default below is the highest month. The count leaves out the LEV, SSVC and third-party triggers, which would add to it, and covers five months under one EPSS model (v5, from June 15, 2026).</p>
-        <p>The one-time load of 303 CVEs is about 6% of one peak month and costs $12K to $36K once, on the same minutes and rate. At an EPSS 10% threshold the rule fires rarely after that. A lower threshold catches more and costs more: at 5%, 443 CVEs once; at 1%, 3,384 once and a few hundred a month. Enter any volume in the estimate; the result updates and prints as shown.</p>      </div>
+        <p>The one-time load of 303 CVEs is about 6% of one peak month and costs $12K to $36K once, on the same minutes and rate. At an EPSS 10% threshold the rule fires rarely after that. A lower threshold catches more and costs more: at 5%, 443 CVEs once; at 1%, 3,384 once and a few hundred a month. Enter any volume in the estimate; the result updates and prints as shown.</p>
+        <table class="data stack" id="t-requeues">
+          <caption>Re-queues at EPSS 10%, by 30-day window (measured November 7, 2026)</caption>
+          <thead><tr><th scope="col">Window</th><th scope="col" class="num">Still no CPE</th><th scope="col" class="num">Got CPE later</th><th scope="col" class="num">Re-queues</th></tr></thead>
+          <tbody>
+<tr><th scope="row">Jul 10 to Aug 8</th><td class="num" data-label="Still no CPE">21</td><td class="num" data-label="Got CPE later">7</td><td class="num" data-label="Re-queues"><b>28</b></td></tr>
+<tr><th scope="row">Aug 9 to Sep 7</th><td class="num" data-label="Still no CPE">21</td><td class="num" data-label="Got CPE later">2</td><td class="num" data-label="Re-queues"><b>23</b></td></tr>
+<tr><th scope="row">Sep 8 to Oct 7</th><td class="num" data-label="Still no CPE">9</td><td class="num" data-label="Got CPE later">2</td><td class="num" data-label="Re-queues"><b>11</b></td></tr>
+<tr><th scope="row">Oct 8 to Nov 6</th><td class="num" data-label="Still no CPE">10</td><td class="num" data-label="Got CPE later">2</td><td class="num" data-label="Re-queues"><b>12</b></td></tr>
+          </tbody>
+          <tfoot><tr><td colspan="4">"Still no CPE": CVEs in the stock (no CPE, not in KEV) whose EPSS first reached 10% in the window. "Got CPE later": CVEs that crossed 10% while they had no CPE and were enriched afterward, found in the NVD change history; the rule would have re-queued them too. Data: <a href="data/recheck_measured.json">recheck_measured.json</a>.</td></tr></tfoot>
+        </table>
+      </div>
       <div>
-        <form class="sim" id="sim-form" aria-labelledby="h-sim" data-default-cves="28">
+        <form class="sim" id="sim-form" aria-labelledby="h-sim" data-default-cves="28" data-one-time="303">
           <h3 id="h-sim" style="margin-top:0">Re-check cost estimate</h3>
           <div class="controls">
             <label for="sim-cves"><span>CVEs re-queued per month</span>
               <input type="number" id="sim-cves" name="cves" min="0" max="100000" step="1" value="28" inputmode="numeric">
-              <span class="note">Measured: highest month (range 11–28). One-time load not included.</span>
+              <span class="note">Measured: highest month (range 11–28). The one-time load is costed separately below.</span>
             </label>
             <fieldset>
               <legend>Analyst-minutes per CVE</legend>
@@ -207,6 +227,7 @@
               <tr><th scope="row">Share of NIST's peak monthly output (~5,000 CVEs, per the OIG)</th><td class="num" id="sim-capacity">0.6%</td></tr>
               <tr><th scope="row">Yearly cost at the selected minutes</th><td class="num" id="sim-cost">$30K</td></tr>
               <tr><th scope="row">Range across 20 to 60 minutes</th><td class="num" id="sim-low-high">$13K to $40K</td></tr>
+              <tr><th scope="row">One-time load (303 CVEs already at EPSS 10%), paid once at the selected minutes</th><td class="num" id="sim-once">$27K</td></tr>
               <tr><th scope="row">Compared with the re-scoring NIST stopped in April 2026 (OIG: ~$400K a year; scale only, not spare money)</th><td class="num" id="sim-offset">8%</td></tr>
             </tbody>
           </table>
@@ -284,7 +305,7 @@
       <li>Volerion via Dark Reading, <a href="https://darkreading.com/vulnerabilities-threats/nist-enrichment-reductions-cve-coverage-accuracy">NIST enrichment reductions and CVE coverage</a>, 2026.<span class="v">Vendor</span></li>
       <li>Cyber Strategy Institute, <a href="https://cyberstrategyinstitute.com/cve-state-of-risk-october-2026/">The Count Broke First</a>, October 23, 2026.<span class="v">Disputed</span></li>
       <li>Recorded Future, <a href="https://www.recordedfuture.com/blog/php2shell-vulnerability-exploitation">PHP2Shell exploitation</a>; BleepingComputer, <a href="https://bleepingcomputer.com/news/security/cisa-confirms-php2shell-vulnerabilities-now-exploited-in-attacks">CISA confirms PHP2Shell vulnerabilities now exploited in attacks</a>; The Register, <a href="https://www.theregister.com/cyber-crime/2026/10/27/cisa-confirms-php2shell-under-attack-as-researchers-clock-successful-exploits/5305681">CISA confirms PHP2Shell under attack</a>, October 27, 2026.</li>
-      <li>RogoLabs (Jerry Gamblin), <a href="https://cvefloodline.org">CVE Floodline</a> (<a href="https://github.com/RogoLabs/cvefloodline.org">source</a>, Apache-2.0): EPSS re-scored at day 0, 7, 30, and 90 from the dated EPSS archive. The re-check volume above is derived from its published <code>data/floodline.json</code>.</li>
+      <li>RogoLabs (Jerry Gamblin), <a href="https://cvefloodline.org">CVE Floodline</a> (<a href="https://github.com/RogoLabs/cvefloodline.org">source</a>, Apache-2.0): EPSS re-scored at day 0, 7, 30, and 90 from the dated EPSS archive. The score-maturation figures in section 2 are derived from its published <code>data/floodline.json</code>. The re-check volume in section 3 is our own count from the NVD stock (<a href="data/recheck_measured.json">recheck_measured.json</a>).</li>
       <li>RogoLabs, <a href="https://cve.icu">CVE.ICU</a> (CVE counts), <a href="https://cnascorecard.org">CNA Scorecard</a> (CNA record completeness), and <a href="https://rogolabs.github.io/SADP-Tracker/index.html">SADP Tracker</a> (the CVE Program's Supplier ADP pilot: 3,349 CVEs with supplier-added affected-product data as of November 7, 2026). These measure the CVE ecosystem; this page measures NIST.</li>
     </ol>
     <div class="cite" id="cite">

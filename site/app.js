@@ -18,11 +18,13 @@
       cost: document.getElementById("sim-cost"),
       lowHigh: document.getElementById("sim-low-high"),
       offset: document.getElementById("sim-offset"),
+      once: document.getElementById("sim-once"),
       sentence: document.getElementById("sim-sentence")
     };
     // Defaults are rendered into the form at build time (data-default-cves), so the script never
     // carries a number the page does not.
     var defaults = { cves: Number(form.getAttribute("data-default-cves")) || 40, minutes: 45, rate: 120 };
+    var oneTime = Number(form.getAttribute("data-one-time")) || 0;
 
     function money(n) {
       if (n >= 1e6) return "$" + (n / 1e6).toFixed(2).replace(/\.?0+$/, "") + "M";
@@ -55,6 +57,8 @@
       out.cost.textContent = money(r.cost);
       out.lowHigh.textContent = money(lo) + " to " + money(hi);
       out.offset.textContent = Math.round(100 * ratio) + "%";
+      // The one-time load is paid once, not every month: CVEs × minutes / 60 × rate.
+      if (out.once) out.once.textContent = money(oneTime * minutes / 60 * rate);
 
       // Scale comparison only: NIST already stopped routine re-scoring in April 2026 and moved that
       // capacity to triage, so the OIG figure is not unspent money the rule can draw on.

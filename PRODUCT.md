@@ -54,7 +54,7 @@ Settled positions future work must preserve:
 - The gap is product data (CPE), not severity scores. Do not attack the "stop re-scoring" half of NIST's policy.
 - KEV is the gate: for software outside NIST's federal and critical-software priorities, CPE comes only after a KEV listing. Median CVE-to-KEV lag rose 4 → 7 → 10 days (2023–2025) and is 9 in 2026 to date (our count, `scripts/kev_lag.py`; Barracuda reports 6 → 14).
 - EPSS is a re-check trigger, not an intake screen.
-- The ask is a rule change, not new money: about 16–46 CVEs/month, under 1% of NIST's ~5,000/month peak output (OIG), ~$8K–$66K/yr vs. the OIG's ~$800K over two years (~$400K/yr) from minimizing re-scoring.
+- The ask is a rule change, not new money: a one-time load of 303 CVEs ($12K–$36K once), then 11–28 CVEs/month (measured Nov 7, 2026), under 1% of NIST's ~5,000/month peak output (OIG), ~$5K–$40K/yr vs. the OIG's ~$800K over two years (~$400K/yr) from minimizing re-scoring.
 
 Hard rules:
 - Never invent data. Anything illustrative is labeled "illustrative" on the page. Every number traces to a query or a cited source.
