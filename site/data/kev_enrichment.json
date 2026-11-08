@@ -1,8 +1,8 @@
 {
   "rule": "First NVD change-history event adding a 'CPE Configuration' vs the history event recording the KEV listing (timestamps, UTC; falls back to KEV dateAdded). Metric 3 clock starts at the later of KEV dateAdded and NVD publication; weekdays only, no holiday calendar. first_cpe_source is the change's sourceIdentifier (nvd@nist.gov = NIST).",
   "window": [
-    "2026-10-08",
-    "2026-11-07"
+    "2026-10-09",
+    "2026-11-08"
   ],
   "triage_public_before_kev": 12,
   "triage_cpe_before_kev": 3,
@@ -29,18 +29,18 @@
     "triage_cpe_only_after_kev": 13,
     "triage_cpe_within_2h_of_kev": 4,
     "max_days_public_without_cpe_until_kev": 90,
-    "kev_cves": 35,
-    "with_cpe_now": 34,
-    "within_one_business_day": 34,
-    "first_cpe_by_nist": 34,
-    "public_before_kev": 29,
-    "cpe_before_kev_given_public": 16,
-    "cpe_before_triage": 6,
+    "kev_cves": 30,
+    "with_cpe_now": 29,
+    "within_one_business_day": 29,
+    "first_cpe_by_nist": 29,
+    "public_before_kev": 24,
+    "cpe_before_kev_given_public": 11,
+    "cpe_before_triage": 1,
     "still_without_cpe": [
       "CVE-2026-19868"
     ],
     "status_counts": {
-      "Analyzed": 34,
+      "Analyzed": 29,
       "Undergoing Analysis": 1
     }
   },
@@ -331,86 +331,6 @@
       "public_before_kev": false
     },
     {
-      "cve_id": "CVE-2015-3306",
-      "in_sample": false,
-      "published": "2015-05-18",
-      "nvd_status": "Analyzed",
-      "kev_date_added": "2026-10-08",
-      "kev_event": "2026-10-08T19:00:00.600",
-      "first_cpe": "2015-05-19",
-      "first_cpe_time": "2015-05-19T16:44:58.807",
-      "first_cpe_source": "nvd@nist.gov",
-      "history_events": 19,
-      "public_before_kev": true,
-      "cpe_before_kev": true,
-      "cpe_before_triage": true,
-      "business_days_kev_to_cpe": 0
-    },
-    {
-      "cve_id": "CVE-2015-5477",
-      "in_sample": false,
-      "published": "2015-07-29",
-      "nvd_status": "Analyzed",
-      "kev_date_added": "2026-10-08",
-      "kev_event": "2026-10-08T19:00:00.600",
-      "first_cpe": "2015-07-29",
-      "first_cpe_time": "2015-07-29T17:13:05.767",
-      "first_cpe_source": "nvd@nist.gov",
-      "history_events": 30,
-      "public_before_kev": true,
-      "cpe_before_kev": true,
-      "cpe_before_triage": true,
-      "business_days_kev_to_cpe": 0
-    },
-    {
-      "cve_id": "CVE-2016-3081",
-      "in_sample": false,
-      "published": "2016-04-26",
-      "nvd_status": "Analyzed",
-      "kev_date_added": "2026-10-08",
-      "kev_event": "2026-10-08T19:00:00.600",
-      "first_cpe": "2016-05-04",
-      "first_cpe_time": "2016-05-04T22:35:04.730",
-      "first_cpe_source": "nvd@nist.gov",
-      "history_events": 22,
-      "public_before_kev": true,
-      "cpe_before_kev": true,
-      "cpe_before_triage": true,
-      "business_days_kev_to_cpe": 0
-    },
-    {
-      "cve_id": "CVE-2021-3199",
-      "in_sample": false,
-      "published": "2021-01-26",
-      "nvd_status": "Analyzed",
-      "kev_date_added": "2026-10-08",
-      "kev_event": "2026-10-08T19:00:00.600",
-      "first_cpe": "2021-02-03",
-      "first_cpe_time": "2021-02-03T21:54:20.170",
-      "first_cpe_source": "nvd@nist.gov",
-      "history_events": 12,
-      "public_before_kev": true,
-      "cpe_before_kev": true,
-      "cpe_before_triage": true,
-      "business_days_kev_to_cpe": 0
-    },
-    {
-      "cve_id": "CVE-2023-22894",
-      "in_sample": false,
-      "published": "2023-04-19",
-      "nvd_status": "Analyzed",
-      "kev_date_added": "2026-10-08",
-      "kev_event": "2026-10-08T19:00:00.600",
-      "first_cpe": "2023-05-01",
-      "first_cpe_time": "2023-05-01T18:10:48.280",
-      "first_cpe_source": "nvd@nist.gov",
-      "history_events": 16,
-      "public_before_kev": true,
-      "cpe_before_kev": true,
-      "cpe_before_triage": true,
-      "business_days_kev_to_cpe": 0
-    },
-    {
       "cve_id": "CVE-2024-27834",
       "in_sample": false,
       "published": "2024-05-14",
@@ -603,5 +523,5 @@
       "business_days_kev_to_cpe": 0
     }
   ],
-  "pulled_at_utc": "2026-11-07T23:12:51+00:00"
+  "pulled_at_utc": "2026-11-08T05:23:42+00:00"
 }

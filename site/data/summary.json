@@ -1,82 +1,83 @@
 {
-  "cves_in_window": 17729,
-  "rejected": 659,
-  "cves_live": 17070,
-  "pct_with_cpe": 21.8,
-  "with_cpe_live": 3863,
-  "pct_with_cpe_live": 22.6,
-  "pct_with_nist_cvss": 2.7,
-  "pct_with_nist_cvss_live": 2.8,
+  "cves_in_window": 17691,
+  "rejected": 656,
+  "cves_live": 17035,
+  "pct_with_cpe": 21.5,
+  "with_cpe_live": 3795,
+  "pct_with_cpe_live": 22.3,
+  "pct_with_nist_cvss": 2.5,
+  "pct_with_nist_cvss_live": 2.6,
   "pct_with_any_cvss": 91.0,
   "pct_with_any_cvss_live": 94.5,
+  "pct_with_cna_cvss_live": 77.8,
   "pct_with_cwe": 90.5,
   "pct_cna_names_product_live": 94.0,
-  "pct_cna_product_but_no_cpe_live": 71.3,
+  "pct_cna_product_but_no_cpe_live": 71.7,
   "in_kev": 18,
   "in_kev_with_cpe": 17,
   "pct_cpe_if_in_kev": 94.4,
-  "pct_cpe_if_not_in_kev": 22.6,
+  "pct_cpe_if_not_in_kev": 22.2,
   "epss_ge_0_10_without_cpe": 2,
   "epss_ge_0_50_without_cpe": 0,
   "epss_without_cpe_not_kev": {
-    "ge_0.01": 288,
+    "ge_0.01": 285,
     "ge_0.05": 7,
     "ge_0.10": 2,
     "ge_0.50": 0
   },
-  "epss_missing_or_zero": 787,
+  "epss_missing_or_zero": 914,
   "time_to_enrichment": {
-    "n": 3170,
-    "median_days": 7.2,
+    "n": 3103,
+    "median_days": 7.6,
     "p90_days": 16.0,
     "caveat": "lastModified minus published for Enriched CVEs only; right-censored by the window and inflated by later edits."
   },
   "status_counts": {
-    "Deferred": 6967,
-    "Awaiting Analysis": 4187,
-    "Analyzed": 3170,
-    "Received": 1346,
-    "Undergoing Analysis": 709,
-    "Modified": 691,
-    "Rejected": 659
+    "Deferred": 6962,
+    "Awaiting Analysis": 4149,
+    "Analyzed": 3103,
+    "Received": 1423,
+    "Undergoing Analysis": 708,
+    "Modified": 690,
+    "Rejected": 656
   },
   "statuses": [
     {
       "api_status": "Deferred",
       "label": "Not Scheduled",
-      "count": 6967,
-      "pct_of_live": 40.8,
+      "count": 6962,
+      "pct_of_live": 40.9,
       "pct_with_cpe": 0.0,
       "pct_cna_names_product": 87.5
     },
     {
       "api_status": "Awaiting Analysis",
       "label": "Awaiting Enrichment",
-      "count": 4187,
-      "pct_of_live": 24.5,
+      "count": 4149,
+      "pct_of_live": 24.4,
       "pct_with_cpe": 0.0,
-      "pct_cna_names_product": 97.1
+      "pct_cna_names_product": 97.2
     },
     {
       "api_status": "Analyzed",
       "label": "Enriched",
-      "count": 3170,
-      "pct_of_live": 18.6,
+      "count": 3103,
+      "pct_of_live": 18.2,
       "pct_with_cpe": 100.0,
       "pct_cna_names_product": 100.0
     },
     {
       "api_status": "Received",
       "label": "Received",
-      "count": 1346,
-      "pct_of_live": 7.9,
+      "count": 1423,
+      "pct_of_live": 8.4,
       "pct_with_cpe": 0.0,
-      "pct_cna_names_product": 97.0
+      "pct_cna_names_product": 97.1
     },
     {
       "api_status": "Undergoing Analysis",
       "label": "Undergoing Enrichment",
-      "count": 709,
+      "count": 708,
       "pct_of_live": 4.2,
       "pct_with_cpe": 0.3,
       "pct_cna_names_product": 100.0
@@ -84,8 +85,8 @@
     {
       "api_status": "Modified",
       "label": "Modified After Enrichment",
-      "count": 691,
-      "pct_of_live": 4.0,
+      "count": 690,
+      "pct_of_live": 4.1,
       "pct_with_cpe": 100.0,
       "pct_cna_names_product": 100.0
     }
@@ -111,9 +112,8 @@
     "note": "Crossings count EPSS strictly above the threshold on the dated file at day+30; a point-in-time count that includes CVEs already with CPE and excludes the older unenriched stock, so it is rough and biased both ways, not a lower bound (see docs/research/notes/open_items_recheck_volume.md)."
   },
   "window_utc": [
-    "2026-10-08T19:18:41.280000+00:00",
-    "2026-11-07T19:17:28.480000+00:00"
+    "2026-10-09T05:21:34.666003+00:00",
+    "2026-11-08T05:21:34.666003+00:00"
   ],
-  "pulled_at_utc": "2026-11-07T20:22:36.952622+00:00",
-  "pct_with_cna_cvss_live": 77.8
+  "pulled_at_utc": "2026-11-08T05:23:28.007259+00:00"
 }
