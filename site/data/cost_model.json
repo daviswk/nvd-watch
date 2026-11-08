@@ -1,0 +1,15 @@
+{
+  "capacity_per_month": 5000,
+  "oig_per_year": 400000,
+  "rate": 120,
+  "minutes": [
+    20,
+    45,
+    60
+  ],
+  "default_minutes": 45,
+  "verdict": "{share} the value of the routine re-scoring NIST stopped in April 2026 (the Commerce OIG put it at roughly {oig} a year; NIST disputes the figure). That capacity already went to triage, so this compares scale; it is not spare money",
+  "share_under": "about {pct}% of",
+  "share_over": "about {times} times",
+  "sentence": "Re-checking <b>{cves} CVEs a month</b> at {minutes} analyst-minutes each takes about <b>{hours} analyst-hours a year</b>, {capacity} of NIST's peak monthly output, and costs about <b>{cost} a year</b> at ${rate} an hour: {verdict}."
+}

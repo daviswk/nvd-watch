@@ -9,14 +9,14 @@
 import * as THREE from "three";
 
 const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
-const PEAK_MONTH = 5000;                       // OIG: NIST has never processed more than 5,000 CVEs in a month
 const fmt = n => Math.round(n).toLocaleString("en-US");
 const fmtDate = s => new Date(s).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
 
-const [data, lag, rm] = await Promise.all([
+const [data, lag, rm, model] = await Promise.all([
   fetch("data/summary.json").then(r => r.json()),
   fetch("data/kev_lag.json").then(r => (r.ok ? r.json() : null)).catch(() => null),
   fetch("data/recheck_measured.json").then(r => r.json()),
+  fetch("data/cost_model.json").then(r => r.json()),   // the re-check cost rule (scripts/cost_model.py)
 ]);
 
 /* ---------- numbers into the copy ---------- */
@@ -24,7 +24,8 @@ const live = data.cves_live;
 // Re-check volume measured once from the whole NVD stock (data/recheck_measured.json); highest month shown.
 const monthly = rm.monthly_flow.windows.map(w => w.requeues);
 const requeue = Math.max(...monthly);
-const cost = requeue * 12 * (45 / 60) * 120;
+// Same strings as the scorecard: cost.js (loaded by story.html) applies the shared model.
+const est = NVDCost.outputs(model, requeue, model.default_minutes, model.rate, 0);
 const years = lag ? Object.keys(lag.by_year).sort() : [];
 const lagText = y => `${lag.by_year[y].median_days} days (${y})`;
 const peakYear = years.reduce((a, y) => (!a || lag.by_year[y].median_days > lag.by_year[a].median_days ? y : a), null);
@@ -37,8 +38,8 @@ const fills = {
   lag_first: years.length ? lagText(years[0]) : "—",
   lag_peak: years.length ? lagText(peakYear) : "—",
   requeue: fmt(requeue),
-  share_peak: `${(100 * requeue / PEAK_MONTH).toFixed(1)}%`,
-  cost: `$${fmt(cost / 1000)}K`,
+  share_peak: est.capacity,
+  cost: est.cost,
   one_time: fmt(rm.one_time_load.t_0_10),
   requeue_range: `${Math.min(...monthly)} to ${requeue}`,
   rq_measured: fmtDate(rm.measured_on),

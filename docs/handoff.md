@@ -46,8 +46,9 @@ Beyond the settled decisions in `CLAUDE.md`:
 | Path | What |
 |---|---|
 | `scripts/fetch_sample.py` | Pipeline: NVD + KEV + EPSS + Floodline → `data/processed/summary.json` and `cves_sample.csv`. Retries with backoff. |
-| `scripts/build_site.py` | Render step. Computes the simulator defaults (so the page is right with JS off), the stacked-table `data-label`s, the citation permalink from `SITE_URL`. |
-| `site/template.html`, `styles.css`, `app.js` | The page. `app.js` is progressive enhancement only (simulator, copy citation). |
+| `scripts/build_site.py` | Render step. Draws the KEV-lag chart from `kev_lag.json`, renders the simulator defaults through `cost_model.py` (so the page is right with JS off), the stacked-table `data-label`s, the citation permalink from `SITE_URL`. |
+| `scripts/cost_model.py`, `site/cost.js`, `scripts/check_cost_model.py` | The re-check cost rule: Python owns constants and wording; `cost.js` repeats the arithmetic in the browser; the check runs both (Node) and compares. |
+| `site/template.html`, `styles.css`, `app.js` | The page. `app.js` is progressive enhancement only (simulator wiring, copy citation). |
 | `data/processed/summary.json` | The one source of every number on the page. Committed. The CSV and raw file are git-ignored. |
 | `docs/data-notes.md` | What each pull showed, caveats, the Floodline derivation, the status mapping. Append a section per pull. **When a new section changes an earlier conclusion, mark the earlier passage Superseded in place, with a pointer, and update the Current conclusions list at the top in the same edit.** |
 | `docs/ai-collaboration-log.md` | Log. Add a row under "Entries from Claude Code" for each session. |
@@ -57,7 +58,7 @@ Beyond the settled decisions in `CLAUDE.md`:
 
 ## 5. What to do next, in order
 
-1. **Write the brief** from `docs/brief-outline.md`. Three pages. Every number must match `site/index.html` (pull the values from `data/processed/summary.json` and `kev_enrichment.json`, not from memory or from older sections of `data-notes.md`). Cost box uses the Floodline-based figures. Export PDF; link it from the band button in `site/template.html`; rebuild; push.
+1. **Write the brief** from `docs/brief-outline.md`. Three pages. Every number must match `site/index.html` (pull the values from `data/processed/summary.json` and `kev_enrichment.json`, not from memory or from older sections of `data-notes.md`). Cost box uses the measured figures (303 once, 11–28 a month; `recheck_measured.json`). Export PDF; link it from the band button in `site/template.html`; rebuild; push.
 2. **Weekly rebuild action** (a proposal card was left in the previous session; if it expired, the spec is: `.github/workflows/rebuild.yml`, Mondays 13:00 UTC + manual, Python 3.12, run fetch, then kev_enrichment, then build with `NVD_API_KEY` from a repo secret and `SITE_URL` as env, commit `summary.json`, `kev_enrichment.json`, `site/index.html` and `site/data/*.json` only if changed, `permissions: contents: write`, `concurrency` group). Will must add the `NVD_API_KEY` secret in Settings → Secrets and variables → Actions first.
 3. ~~Multi-year KEV lag~~: done. `scripts/kev_lag.py` → `kev_lag.json`; the section 2 chart shows our 4 → 7 → 10 → 9, with Barracuda cited for comparison.
 4. **Optional, if time:** a backlog-based re-check estimate (pull Deferred/Awaiting CVEs over a longer window, count threshold crossings per month) to firm up the estimate; the EPSS v4-on-unenriched-CVEs question remains unmeasured and should stay flagged.

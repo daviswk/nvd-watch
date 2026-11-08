@@ -81,7 +81,7 @@
               <tr><th scope="row">Had CPE within one business day after it (NIST's goal)</th><td class="num"><b>34 of 35</b></td></tr>
             </tbody>
           </table>
-          The groups differ: readiness counts only CVEs that were already public, and not enriched before the April triage, when CISA listed them. CVE-2026-19868 (listed November 6, 2026) has no CPE yet. Among CVEs not in KEV, 22.6% have CPE. By our count, the median lag from CVE publication to a KEV listing rose from 4 days in 2023 to 10 in 2025, and stands at 9 so far in 2026.</li>
+          The groups differ: readiness counts only CVEs that were already public, and not enriched before the April triage, when CISA listed them. CVE-2026-19868 (listed November 6, 2026) has no CPE yet. Among CVEs not in KEV, 22.6% have CPE. By our count, the median lag from CVE publication to a KEV listing was 4 days in 2023, 7 in 2024, 10 in 2025, and 9 so far in 2026.</li>
         <li><b>The fix is small next to NIST's capacity.</b> A published rule to re-check CVEs without CPE when their EPSS score crosses 10% would re-queue 303 set-aside CVEs once, then 11 to 28 a month (our count, November 7, 2026): at most 0.6% of the roughly 5,000 CVEs a month NIST has processed at its peak. For scale: that is a fraction of the routine re-scoring NIST stopped in April 2026, which the Commerce Inspector General valued at about $400,000 a year.</li>
       </ul>
       <h2 id="h-rec" style="margin-top:30px">What we recommend</h2>
@@ -327,6 +327,8 @@
   </div>
 </footer>
 
+<script type="application/json" id="cost-model">{"capacity_per_month": 5000, "oig_per_year": 400000, "rate": 120, "minutes": [20, 45, 60], "default_minutes": 45, "verdict": "{share} the value of the routine re-scoring NIST stopped in April 2026 (the Commerce OIG put it at roughly {oig} a year; NIST disputes the figure). That capacity already went to triage, so this compares scale; it is not spare money", "share_under": "about {pct}% of", "share_over": "about {times} times", "sentence": "Re-checking <b>{cves} CVEs a month<\/b> at {minutes} analyst-minutes each takes about <b>{hours} analyst-hours a year<\/b>, {capacity} of NIST's peak monthly output, and costs about <b>{cost} a year<\/b> at ${rate} an hour: {verdict}."}</script>
+<script src="cost.js" defer></script>
 <script src="app.js" defer></script>
 </body>
 </html>

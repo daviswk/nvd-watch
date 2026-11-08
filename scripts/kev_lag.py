@@ -6,8 +6,9 @@ Grouped by the year CISA added the CVE to KEV.
 
     python scripts/kev_lag.py        # writes data/processed/kev_lag.json
 
-The chart values in site/template.html are copied from this output; rerun and update
-them by hand when refreshing. Reads NVD_API_KEY from .env if present.
+build_site.py draws the section 2 chart and the lag sentence from this file, so rerun it
+before building to refresh them. `through` is the latest KEV dateAdded in the catalog.
+Reads NVD_API_KEY from .env if present.
 """
 import json
 import os
@@ -57,6 +58,7 @@ def main():
         "kev_total": len(added),
         "missing_from_nvd": len(set(added) - set(published)),
         "rule": "KEV dateAdded minus NVD published (calendar days); CVEs published 2022+; by year added",
+        "through": max(added.values()).isoformat(),
         "by_year": {str(y): {"median_days": statistics.median(v), "n": len(v)} for y, v in sorted(lags.items())},
     }
     path = ROOT / "data" / "processed" / "kev_lag.json"

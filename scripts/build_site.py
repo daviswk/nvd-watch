@@ -24,6 +24,8 @@ from pathlib import Path
 
 import pandas as pd
 
+import cost_model as cm   # the re-check cost rule; site/cost.js mirrors it
+
 ROOT = Path(__file__).resolve().parent.parent
 PROCESSED = ROOT / "data" / "processed"
 SITE = ROOT / "site"
@@ -74,6 +76,51 @@ def status_rows(statuses):
             "</tr>"
         )
     return "\n".join(rows)
+
+
+def kev_lag_figure(lag):
+    """Section 2 chart, its text alternative, the caption's date note, and the highlight sentence,
+    all from data/processed/kev_lag.json (scripts/kev_lag.py). Nothing here is typed by hand.
+
+    The longest bar is always 300 px, so a rise can't run off the chart. The sentence lists the
+    medians without a trend verb, so a rebuild can't make it claim a rise the data no longer shows."""
+    years = sorted(lag["by_year"])
+    through = datetime.fromisoformat(lag["through"])
+    partial = years[-1] == str(through.year)            # the current year is incomplete
+    med = {y: lag["by_year"][y]["median_days"] for y in years}
+    days = lambda d: f"{d:g} day" + ("" if d == 1 else "s")
+    through_md = f"{through:%B} {through.day}"
+    label = lambda y: f"{y} to {through_md}" if (partial and y == years[-1]) else y
+
+    step, top, bar_h, x0, longest = 38, 20, 24, 60, 300
+    scale = longest / max(max(med.values()), 1)
+    axis_end = 12 + step * len(years) + 2
+    labels, bars = [], []
+    for i, y in enumerate(years):
+        w = round(med[y] * scale)
+        labels.append(f'<text x="0" y="{top + 16 + step * i}">{y}</text>')
+        bars.append(f'            <rect class="bar" x="{x0}" y="{top + step * i}" width="{w}" height="{bar_h}"/>'
+                    f'<text class="val" x="{x0 + w + 8}" y="{top + 17 + step * i}">{days(med[y])}</text>')
+    desc = " ".join(f"{label(y)}: {days(med[y])}." for y in years)
+    svg = "\n".join([
+        f'          <svg viewBox="0 0 560 {axis_end + 24}" role="img" aria-labelledby="chart-title chart-desc">',
+        '            <title id="chart-title">Median CVE-to-KEV lag by year</title>',
+        f'            <desc id="chart-desc">{desc} Computed by NVD Watch from the CISA KEV feed and NVD publication dates.</desc>',
+        '            <g class="lbl">',
+        "              " + "".join(labels),
+        "            </g>",
+        f'            <line class="axis" x1="{x0}" y1="12" x2="{x0}" y2="{axis_end}"/>',
+        *bars,
+        "          </svg>",
+    ])
+
+    parts = [f"{days(med[years[0]])} in {years[0]}"] + [f"{med[y]:g} in {y}" for y in years[1:]]
+    if partial:
+        parts[-1] = f"{med[years[-1]]:g} so far in {years[-1]}"
+    listed = parts[0] if len(parts) == 1 else ", ".join(parts[:-1]) + ", and " + parts[-1]
+    sentence = f"By our count, the median lag from CVE publication to a KEV listing was {listed}."
+    note = f"{years[-1]} is through {through_md}." if partial else ""
+    return svg, sentence, note
 
 
 def kev_lag_in_window(df):
@@ -137,19 +184,11 @@ def main():
         f"which would add to it, and covers five months under one EPSS model (v5, from June 15, 2026)."
     )
 
-    def sim(cves, minutes, rate=120):
-        hours = cves * 12 * minutes / 60
-        return hours, hours * rate, 100 * cves / 5000
-
-    def money(n):
-        return f"${n / 1e6:.2f}".rstrip("0").rstrip(".") + "M" if n >= 1e6 else f"${round(n / 1000):,}K"
-
-    h_mid, c_mid, cap = sim(requeue_default, 45)
-    _, c_lo, _ = sim(requeue_default, 20)
-    _, c_hi, _ = sim(requeue_default, 60)
-    # The one-time load is done once, not every month: hours = CVEs × minutes / 60.
-    once_lo, once_hi = one_time * 20 / 60 * 120, one_time * 60 / 60 * 120
-    once_mid = one_time * 45 / 60 * 120
+    # Every figure and sentence of the estimate comes from cost_model; site/cost.js recomputes the
+    # same strings in the browser from the model written into the page.
+    sim = cm.outputs(requeue_default, one_time=one_time)
+    once_lo = cm.outputs(0, minutes=min(cm.MINUTES), one_time=one_time)["once"]
+    once_hi = cm.outputs(0, minutes=max(cm.MINUTES), one_time=one_time)["once"]
     rq_window_rows = "\n".join(
         "<tr>"
         f"<th scope=\"row\">{short_date(w['from'])} to {short_date(w['to'])}</th>"
@@ -159,18 +198,12 @@ def main():
         "</tr>"
         for w in win
     )
-    ratio = c_mid / 400000
-    # Scale comparison only (same wording as app.js): NIST already stopped routine re-scoring in
-    # April 2026 and moved that capacity to triage, so the OIG figure is not unspent money.
-    share = f"about {round(100 * ratio)}% of" if ratio <= 1 else f"about {round(ratio, 1):g} times"
-    verdict = (f"{share} the value of the routine re-scoring NIST stopped in April 2026 (the Commerce OIG put it at "
-               "roughly $400K a year; NIST disputes the figure). That capacity already went to triage, so this "
-               "compares scale; it is not spare money")
-    sim_sentence = (
-        f"Re-checking <b>{fmt_int(requeue_default)} CVEs a month</b> at 45 analyst-minutes each takes about "
-        f"<b>{fmt_int(h_mid)} analyst-hours a year</b>, {cap:.1f}% of NIST's peak monthly output, and costs about "
-        f"<b>{money(c_mid)} a year</b> at $120 an hour: {verdict}."
-    )
+
+    # Section 2 chart and the highlight's lag sentence (scripts/kev_lag.py).
+    lag_path = PROCESSED / "kev_lag.json"
+    if not lag_path.exists():
+        sys.exit("data/processed/kev_lag.json missing; run scripts/kev_lag.py before build_site.py")
+    kev_lag_svg, kev_lag_sentence, kev_lag_through_note = kev_lag_figure(json.loads(lag_path.read_text()))
 
     # Harm metric and metric 3, from NVD change history (scripts/kev_enrichment.py).
     # "When defenders need it" = by the day CISA confirms exploitation (KEV listing).
@@ -246,12 +279,12 @@ def main():
         "rq_lo": str(rq_lo),
         "rq_hi": str(rq_hi),
         "rq_one_time": fmt_int(one_time),
-        "rq_one_time_share": f"{round(100 * one_time / 5000)}%",
-        "rq_one_time_cost": f"{money(once_lo)} to {money(once_hi)}",
+        "rq_one_time_share": f"{cm.half_up(100 * one_time / cm.CAPACITY_PER_MONTH)}%",
+        "rq_one_time_cost": f"{once_lo} to {once_hi}",
         "rq_measured_on": fmt_date(rm["measured_on"]),
         "rq_one_time_num": str(one_time),
         "rq_window_rows": rq_window_rows,
-        "sim_once": money(once_mid),
+        "sim_once": sim["once"],
         "rq_one_time_05": fmt_int(rm["one_time_load"]["t_0_05"]),
         "rq_one_time_01": fmt_int(rm["one_time_load"]["t_0_01"]),
         "fl_share10": f"{fl['share_cross10_day30_pct']:g}%" if fl else "n/a",
@@ -261,12 +294,22 @@ def main():
         "fl_cross10_day30": fmt_int(fl["cross10_day30"]) if fl else "n/a",
         "fl_n": fmt_int(fl["cves_with_30d_score"]) if fl else "n/a",
         "fl_generated": fmt_date(fl["generated"]) if fl else "n/a",
-        "sim_hours": fmt_int(h_mid),
-        "sim_capacity": f"{cap:.1f}%",
-        "sim_cost": money(c_mid),
-        "sim_low_high": f"{money(c_lo)} to {money(c_hi)}",
-        "sim_offset": f"{round(100 * ratio)}%",
-        "sim_sentence": sim_sentence,
+        "sim_hours": sim["hours"],
+        "sim_capacity": sim["capacity"],
+        "sim_cost": sim["cost"],
+        "sim_low_high": sim["low_high"],
+        "sim_offset": sim["offset"],
+        "sim_sentence": sim["sentence"],
+        "cost_model_json": cm.page_json(),
+        "cm_capacity": cm.num(cm.CAPACITY_PER_MONTH),
+        "cm_oig_short": cm.money(cm.OIG_PER_YEAR),
+        "cm_oig_full": f"${cm.num(cm.OIG_PER_YEAR)}",
+        "cm_rate": str(cm.RATE),
+        "cm_minutes_lo": str(min(cm.MINUTES)),
+        "cm_minutes_hi": str(max(cm.MINUTES)),
+        "cm_minutes_radios": "\n".join(
+            f'                <label><input type="radio" name="minutes" value="{m}"'
+            f'{" checked" if m == cm.DEFAULT_MINUTES else ""}><span>{m}</span></label>' for m in cm.MINUTES),
         "ke_l_n": fmt_int(kl["kev_cves"]),
         "ke_l_1bd": fmt_int(kl["within_one_business_day"]),
         "ke_l_pub": fmt_int(kl["triage_public_before_kev"]),
@@ -279,6 +322,9 @@ def main():
         "ke_pending_note": kev_pending_note,
         "ke_headline": ke_headline,
         "ke_verdict": ke_verdict,
+        "kev_lag_svg": kev_lag_svg,
+        "kev_lag_sentence": kev_lag_sentence,
+        "kev_lag_through_note": kev_lag_through_note,
     }
 
     template = (SITE / "template.html").read_text(encoding="utf-8")
@@ -290,8 +336,8 @@ def main():
 
     (SITE / "data").mkdir(exist_ok=True)
     shutil.copy(PROCESSED / "summary.json", SITE / "data" / "summary.json")
-    if (PROCESSED / "kev_lag.json").exists():          # read by the 3D figures and the story page
-        shutil.copy(PROCESSED / "kev_lag.json", SITE / "data" / "kev_lag.json")
+    shutil.copy(lag_path, SITE / "data" / "kev_lag.json")   # also read by the story page
+    (SITE / "data" / "cost_model.json").write_text(json.dumps(cm.MODEL, indent=2))   # read by story.js
     shutil.copy(ke_path, SITE / "data" / "kev_enrichment.json")   # the per-CVE evidence behind metric 3
     shutil.copy(rm_path, SITE / "data" / "recheck_measured.json")  # read by the story page
 
