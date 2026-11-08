@@ -184,6 +184,42 @@ def main():
         f"which would add to it, and covers five months under one EPSS model (v5, from June 15, 2026)."
     )
 
+    # Orphaned CVEs (scripts/research/osv_orphans.py): no CPE and no open package advisory in OSV.
+    # A research run over ~3 GB of OSV exports, not part of the weekly pull, so it is shown only while it
+    # describes the same window as summary.json; after a new pull the row and its paragraph drop out.
+    orphan_row = orphan_para = ""
+    op_path = PROCESSED / "osv_orphans.json"
+    if op_path.exists():
+        op = json.loads(op_path.read_text())
+        if op["window"] == f"{window_start[:10]} to {window_end[:10]}":
+            o, nc = op["orphans"], op["without_cpe"]
+            orphan_row = (
+                "<tr class=\"sub\">"
+                "<th scope=\"row\">No CPE and no open package advisory <span class=\"api\">All statuses; "
+                f"OSV, {short_date(op['run_date'])}</span></th>"
+                f"<td class=\"num\" data-label=\"CVEs\">{fmt_int(o['n'])}</td>"
+                f"<td class=\"num\" data-label=\"Share\">{fmt_pct(o['pct_of_live'])}</td>"
+                "<td class=\"num\" data-label=\"With CPE\">0%</td>"
+                f"<td class=\"num\" data-label=\"CNA names a product\">{fmt_pct(o['pct_cna_names_product'])}</td>"
+                "</tr>"
+            )
+            ns = op["without_cpe_by_status"].get("Deferred")
+            orphan_para = (
+                "<p><b>Package advisories fill only part of the gap.</b> Of the "
+                f"{fmt_int(nc['n'])} CVEs without CPE, {fmt_int(nc['language'])} appear in an open-source package "
+                f"advisory (npm, PyPI, Go and others) and {fmt_int(nc['distro'])} only in Linux distribution "
+                f"advisories, as OSV aggregates them. The other {fmt_int(nc['none'])} ({fmt_pct(nc['pct_none'])}) "
+                "have neither, so a scanner has no CPE and no package name to match on"
+                + (f"; among Not Scheduled CVEs the share is {fmt_pct(ns['pct_none'])}" if ns else "")
+                + ". They are mostly enterprise products, WordPress components and small open-source projects. "
+                "<span class=\"note\">Open advisories only; vendor bulletins are not counted, and the share falls "
+                "as late advisories arrive. Data: <a href=\"data/osv_orphans.json\">osv_orphans.json</a>.</span></p>"
+            )
+            (SITE / "data").mkdir(exist_ok=True)
+            shutil.copy(op_path, SITE / "data" / "osv_orphans.json")
+        else:
+            print(f"note: osv_orphans.json is for {op['window']}, not this pull; orphan row left out", file=sys.stderr)
+
     # Every figure and sentence of the estimate comes from cost_model; site/cost.js recomputes the
     # same strings in the browser from the model written into the page.
     sim = cm.outputs(requeue_default, one_time=one_time)
@@ -271,6 +307,8 @@ def main():
         "awaiting_pct": fmt_pct(awaiting["pct_of_live"]),
         "enriched_n": fmt_int(enriched["count"]),
         "status_rows": status_rows(summary["statuses"]),
+        "orphan_row": orphan_row,
+        "orphan_para": orphan_para,
         "stale_notice": stale_notice,
         "site_url_line": site_url_line,
         "requeue_default": fmt_int(requeue_default),

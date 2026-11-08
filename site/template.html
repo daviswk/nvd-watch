@@ -108,14 +108,16 @@
           <tbody>
 {{status_rows}}
             <tr class="total"><th scope="row">All, excluding Rejected</th><td class="num" data-label="CVEs">{{n_live}}</td><td class="num" data-label="Share">100%</td><td class="num" data-label="With CPE">{{pct_cpe_live}}</td><td class="num" data-label="CNA names a product">{{pct_cna_live}}</td></tr>
+{{orphan_row}}
           </tbody>
-          <tfoot><tr><td colspan="5">Status labels are NIST's display names; the API value is shown beneath each. "CNA names a product" means the CNA's own record gives a real vendor and product name in free text, which is not a CPE identifier.</td></tr></tfoot>
+          <tfoot><tr><td colspan="5">Status labels are NIST's display names; the API value is shown beneath each. "CNA names a product" means the CNA's own record gives a real vendor and product name in free text, which is not a CPE identifier. "No open package advisory": no advisory in any package ecosystem that OSV aggregates (GitHub, PyPI, npm, Go, Debian, Ubuntu, Red Hat and others) lists the CVE, so neither CPE nor a package name lets a scanner match it.</td></tr></tfoot>
         </table>
       </div>
       <div>
         <h3>What the status table says</h3>
         <p><b>{{not_scheduled_pct}} of new CVEs are Not Scheduled</b> ({{not_scheduled_n}} this window): NIST does not plan to enrich them. Another {{awaiting_pct}} are Awaiting Enrichment. None of these has CPE.</p>
         <p><b>The gap is standardized identifiers, not product information.</b> CNAs name a real vendor and product for {{pct_cna_live}} of new CVEs. {{pct_cna_no_cpe_live}} of CVEs have that free-text product data and no CPE, so scanners that match on CPE still miss them.</p>
+        {{orphan_para}}
         <p><b>Time to enrichment, when it happens:</b> for the {{tte_n}} CVEs enriched in this window, the median was {{tte_median}} days after publication and the 90th percentile {{tte_p90}} days. <span class="note">Crude measure: last-modified minus published, counted only for CVEs already enriched, so slow cases are under-counted.</span></p>
         <h3>How this differs from the figures in circulation</h3>
         <p>Published coverage estimates range from about 50% (Volerion, April to June 2026) to 8.4% (Cyber Strategy Institute, Q3 2026) because each uses a different definition and window. Ours counts the share of non-rejected CVEs published in the last 30 days whose NVD record has a CPE configuration, and the definition does not change.</p>
@@ -288,6 +290,7 @@
       <li>RogoLabs (Jerry Gamblin), <a href="https://cvefloodline.org">CVE Floodline</a> (<a href="https://github.com/RogoLabs/cvefloodline.org">source</a>, Apache-2.0): EPSS re-scored at day 0, 7, 30, and 90 from the dated EPSS archive. The score-maturation figures in section 2 are derived from its published <code>data/floodline.json</code>. The re-check volume in section 3 is our own count from the NVD stock (<a href="data/recheck_measured.json">recheck_measured.json</a>).</li>
       <li>Google Threat Intelligence Group, <a href="https://cloud.google.com/blog/topics/threat-intelligence/vulnerability-discovery-and-exploitation-trends-in-the-ai-era">Vulnerability discovery and exploitation trends in the AI era</a>, September 30, 2026. Monthly CVE counts above are our own, from the NVD API.<span class="v">Vendor</span></li>
       <li>RogoLabs, <a href="https://cve.icu">CVE.ICU</a> (CVE counts), <a href="https://cnascorecard.org">CNA Scorecard</a> (CNA record completeness), and <a href="https://rogolabs.github.io/SADP-Tracker/index.html">SADP Tracker</a> (the CVE Program's Supplier ADP pilot: 3,349 CVEs with supplier-added affected-product data as of November 7, 2026). These measure the CVE ecosystem; this page measures NIST.</li>
+      <li>OSV.dev (Google), <a href="https://google.github.io/osv.dev/data/">open-source vulnerability database exports</a>, all package ecosystems except GIT, downloaded November 7, 2026. The section 1 orphan count is ours (<a href="data/osv_orphans.json">osv_orphans.json</a>).</li>
     </ol>
     <div class="cite" id="cite">
       <h3>How to cite this page</h3>

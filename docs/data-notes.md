@@ -11,6 +11,7 @@ Sections are appended in order, so later sections can revise earlier ones. When 
 - **KEV result:** of the 35 CVEs added to KEV in the window (any publication year), 34 met the goal (1 pending), every first CPE record from NIST. Readiness: of 23 public before listing and not enriched pre-triage (35 − 6 listed on or before NVD publication − 6 with pre-triage CPE), 10 had CPE beforehand; several got it within minutes of NVD logging the listing. Claim the defender's view (no CPE visible until CISA listed them), not that NIST starts work at the listing. See *Fourth red-team round*.
 - **Re-check volume:** Floodline day-30 rate × our volume = 16–46 a month (simulator default 16), $8K–$66K a year (default $8K–$23K). **Rough, biased both ways, not a lower bound:** 7 of the 10 CVEs at EPSS ≥ 0.10 are in KEV, whose listing tends to raise EPSS (pushes it down); of the 3 outside KEV, 2 lack CPE; later crossings, the older stock and SSVC triggers are uncounted (push it up). The OIG's ~$400K a year is a scale comparison, not spare money. See the last section, which revises *Re-check volume from CVE Floodline*.
 - **Re-check load, measured (Nov 7):** two parts. One-time: 303 stock CVEs (Not Scheduled, Awaiting or Received; no CPE; not KEV) already at EPSS ≥ 0.10. Monthly: ~11–28 re-queues at 0.10, mostly CVEs over 90 days old. The stock is 76,217 CVEs. Day-90 cohort (Jun 15 – Jul 14): 0.442% ever ≥ 0.10 vs 0.263% by day 30, but only 7 of 8,376 need a re-queue. The 16–46 total is in range, but its composition was wrong (new CVEs, mostly with CPE). Source: `docs/research/notes/open_items_recheck_volume.md`, `scripts/research/recheck_volume.py`. On the page since Nov 7 (`data/processed/recheck_measured.json`; simulator default 28, the highest month).
+- **Orphaned CVEs (Nov 7):** of 13,207 CVEs without CPE, 72.1% (9,528) are in no package advisory OSV aggregates; 8.8% are in a language-package advisory and 19.0% only in distro advisories (including all 901 Linux kernel CVEs). Not Scheduled: 85.2% orphaned. Orphans are WordPress components and small projects as much as enterprise vendors (Oracle, IBM, HPE, Juniper); not "mostly appliances". One young window; see *Orphaned CVEs*. On the page as a row under the section 1 status table, plus a paragraph; `build_site.py` shows both only while `osv_orphans.json` covers the same window as `summary.json`, so a new pull drops them until the script is re-run.
 - **EPSS model:** v5 (`v2026.06.15`) since Jun 15, 2026, not v4.
 - **Vendor split:** Microsoft 92.4% with CPE; Linux, Mozilla and Red Hat 0%, in three different statuses. The cause is not observable from outside. See *CPE coverage by vendor*.
 - **Retired figures:** 250–470 re-queues a month, $270K–$510K a year, $7K–$58K a year, 21.7% non-KEV coverage, "lower bound".
@@ -225,3 +226,32 @@ No new data; these restate existing results so they can't be misread.
 **What the timestamps show.** NVD's "CVE CISA KEV Update" events land on the hour (19:00, 22:00, 23:00 UTC), so they record NVD's KEV sync, not when CISA published. CPE following within 10–89 minutes is consistent with NIST starting at the listing, but also with NIST releasing prepared work or acting on earlier notice from CISA. We can't tell these apart. The claim we can make is the defender's view: NVD users did not see CPE for these 13 CVEs until CISA listed them.
 
 **Tier publishing and OPSEC.** Per-CVE "federal software" tags could reveal agency inventories. The fallback is quarterly counts by tier, which is enough for metrics 1 and 2. A single combined "federal or EO 14028" flag does not fully solve it: a flagged CVE in software outside the public EO 14028 categories still implies federal use.
+
+## Orphaned CVEs: no CPE and no package advisory — Nov 7, 2026
+
+**Question:** the objection "CPE is a dying standard; purl and OSV advisories will cover it." Of the CVEs in Pull 1 without CPE, how many does no package advisory cover either?
+
+**Script:** `scripts/research/osv_orphans.py OSV_DIR` → `data/processed/osv_orphans.json` (per-CVE ecosystems in `data/raw/osv_orphans_per_cve.json`, git-ignored). Input: all 45 OSV ecosystem exports downloaded Nov 7 (about 3.1 GB; the GIT export is skipped because its ranges are commits, not package names). A CVE counts as covered if any non-withdrawn OSV advisory that names a package ecosystem lists it as its ID, alias, upstream or related.
+
+**Method note:** a first version queried `api.osv.dev/v1/vulns/<CVE>` per CVE. It found GHSA aliases for 273 of 277 PyPI CVEs, but linked only 784 of the 3,351 window CVEs that Debian's export covers, so it called most Linux kernel CVEs orphans. Replaced by the bulk exports, which recover all 3,351 Debian, 277 PyPI and 155 Go CVEs.
+
+| Non-rejected CVEs, Oct 8 – Nov 7 | n | Language-package advisory | Distro / kernel / container only | **No package advisory (orphaned)** |
+|---|---|---|---|---|
+| Without CPE | 13,207 | 1,167 (8.8%) | 2,512 (19.0%) | **9,528 (72.1%)** |
+| · Not Scheduled (Deferred) | 6,967 | 394 | 640 | **5,933 (85.2%)** |
+| · Awaiting Enrichment | 4,187 | 579 | 832 | 2,776 (66.3%) |
+| · Received | 1,346 | 38 | 961 | 347 (25.8%) |
+| · Undergoing Analysis | 707 | 156 | 79 | 472 (66.8%) |
+| With CPE | 3,863 | 233 | 925 | 2,705 (70.0%) |
+
+**What it shows**
+- **Package advisories cover about 28% of the CVEs without CPE; 72% have neither.** Most of the covered ones are in Linux-distribution advisories, not language ecosystems (8.8%). So "OSV will cover it" holds for open-source packages and the kernel, not for the gap as a whole. The gap narrows from 13,207 to 9,528 CVEs; it does not go away.
+- **The vendor split is mostly absorbed by distros.** All 901 Linux kernel CVEs and 264 of 268 Mozilla CVEs (0% CPE in *CPE coverage by vendor*) are in distro advisories. A Linux-package scanner sees them; an NVD-CPE scanner does not.
+- **Not Scheduled is the worst-covered status (85.2% orphaned).** Received is mostly kernel CVEs, so mostly covered.
+- **Who the orphans are (by assigning CNA, top 15):** VulnCheck 1,819; Patchstack 903, Wordfence 676 and WPScan 574 (WordPress plugins and themes, 2,153 together, 23%); VulDB 725; GitHub 705 (repository advisories not yet in GitHub's reviewed database: two sampled GHSA IDs return 404 from both OSV and `api.github.com/advisories`); Oracle 538; IBM 308; Apache 214; MITRE 204; HPE 174; Juniper 169; JetBrains 96; Dell (EMC) 91; Red Hat 89. Enterprise and appliance vendors are a real block (Oracle, IBM, HPE, Juniper, Dell, Cisco, Siemens, Tanium all appear) but **not the majority**: WordPress components and small open-source or PHP projects are larger. Do not write that the orphans are "mostly commercial appliances and industrial software."
+- **Exploitation signal is thin in this window:** 1 orphan is in KEV, 2 at EPSS ≥ 0.10, 6 at ≥ 0.05, 250 at ≥ 0.01. As with the re-check volume, the risk sits in the older stock, not in one month of new CVEs.
+- **Package coverage is not a CPE substitute even where CPE exists:** 70% of CVEs *with* CPE also have no package advisory. CPE and package advisories serve different software (commercial and appliance products vs. packaged open source).
+
+**Checks:** spot-checked 10 orphans against the live OSV API (4 Gitea, 1 Zebra and 1 Eclipse ThreadX CVE carry GHSA aliases whose IDs OSV and GitHub's global database do not have; 4 WordPress plugin CVEs are 404 in OSV). The Debian, PyPI and Go sets above were built by a separate script over the same exports, so they test the code, not the method.
+
+**Caveats:** OSV aggregates open advisories only; vendor bulletins and commercial scanner feeds are invisible here, so "orphaned" means "no open package advisory", not "no advisory anywhere". A 30-day window is young; package advisories (especially reviewed GHSA) arrive later, so the orphan share will fall as the window ages. Re-run against an older cohort before quoting it as a steady state. Scanner exposure by tool is still one analyst's rating (Lilting, see `source-verification.md` §6), not measured here.

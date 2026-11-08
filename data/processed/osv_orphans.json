@@ -1,0 +1,446 @@
+{
+  "run_date": "2026-11-07",
+  "source": "OSV ecosystem exports (osv-vulnerabilities.storage.googleapis.com), GIT excluded; scripts/research/osv_orphans.py",
+  "exports_read": [
+    "AlmaLinux",
+    "Alpaquita",
+    "Alpine",
+    "Android",
+    "Azure_Linux",
+    "BellSoft_Hardened_Containers",
+    "Bitnami",
+    "Chainguard",
+    "CleanStart",
+    "CRAN",
+    "crates.io",
+    "Debian",
+    "Echo",
+    "GHC",
+    "GitHub_Actions",
+    "Go",
+    "GSD",
+    "Hackage",
+    "Hex",
+    "Julia",
+    "Linux",
+    "Mageia",
+    "Maven",
+    "MinimOS",
+    "npm",
+    "NuGet",
+    "opam",
+    "openEuler",
+    "openSUSE",
+    "OSS-Fuzz",
+    "Packagist",
+    "Pub",
+    "PyPI",
+    "Red_Hat",
+    "Red_Hat_Lightwell",
+    "Rocky_Linux",
+    "Root",
+    "RubyGems",
+    "SUSE",
+    "SwiftURL",
+    "TuxCare",
+    "Ubuntu",
+    "UVI",
+    "VSCode",
+    "Wolfi"
+  ],
+  "window": "2026-10-08 to 2026-11-07",
+  "definitions": {
+    "language": "named in an application-package advisory",
+    "distro": "only in Linux distribution, container-OS or kernel advisories",
+    "none": "in no package advisory OSV aggregates (orphaned)"
+  },
+  "all_non_rejected": {
+    "n": 17070,
+    "language": 1400,
+    "distro": 3437,
+    "none": 12233,
+    "pct_none": 71.7
+  },
+  "with_cpe": {
+    "n": 3863,
+    "language": 233,
+    "distro": 925,
+    "none": 2705,
+    "pct_none": 70.0
+  },
+  "without_cpe": {
+    "n": 13207,
+    "language": 1167,
+    "distro": 2512,
+    "none": 9528,
+    "pct_none": 72.1
+  },
+  "without_cpe_by_status": {
+    "Awaiting Analysis": {
+      "n": 4187,
+      "language": 579,
+      "distro": 832,
+      "none": 2776,
+      "pct_none": 66.3
+    },
+    "Deferred": {
+      "n": 6967,
+      "language": 394,
+      "distro": 640,
+      "none": 5933,
+      "pct_none": 85.2
+    },
+    "Received": {
+      "n": 1346,
+      "language": 38,
+      "distro": 961,
+      "none": 347,
+      "pct_none": 25.8
+    },
+    "Undergoing Analysis": {
+      "n": 707,
+      "language": 156,
+      "distro": 79,
+      "none": 472,
+      "pct_none": 66.8
+    }
+  },
+  "without_cpe_cna_names_product": {
+    "n": 12178,
+    "language": 1161,
+    "distro": 2351,
+    "none": 8666,
+    "pct_none": 71.2
+  },
+  "orphans": {
+    "n": 9528,
+    "pct_of_live": 55.8,
+    "pct_cna_names_product": 91.0,
+    "in_kev": 1,
+    "epss_ge_0.10": 2,
+    "epss_ge_0.05": 6,
+    "epss_ge_0.01": 250
+  },
+  "top_orphan_vendors": [
+    [
+      "(none named)",
+      860
+    ],
+    [
+      "Oracle Corporation",
+      538
+    ],
+    [
+      "IBM",
+      310
+    ],
+    [
+      "Apache Software Foundation",
+      214
+    ],
+    [
+      "Juniper Networks",
+      169
+    ],
+    [
+      "Hewlett Packard Enterprise (HPE)",
+      127
+    ],
+    [
+      "frappe",
+      114
+    ],
+    [
+      "jeecgboot",
+      101
+    ],
+    [
+      "JetBrains",
+      96
+    ],
+    [
+      "Dell",
+      91
+    ],
+    [
+      "Red Hat",
+      82
+    ],
+    [
+      "Microsoft",
+      72
+    ],
+    [
+      "Gitea",
+      66
+    ],
+    [
+      "Eclipse Foundation",
+      66
+    ],
+    [
+      "Adobe",
+      54
+    ],
+    [
+      "zephyrproject",
+      52
+    ],
+    [
+      "Hewlett Packard Enterprise",
+      47
+    ],
+    [
+      "ThemeREX",
+      45
+    ],
+    [
+      "Tanium",
+      43
+    ],
+    [
+      "Progress Software",
+      37
+    ],
+    [
+      "Cisco",
+      37
+    ],
+    [
+      "MediaTek, Inc.",
+      37
+    ],
+    [
+      "WSO2",
+      35
+    ],
+    [
+      "Samsung Semiconductor",
+      35
+    ],
+    [
+      "SuiteCRM",
+      33
+    ],
+    [
+      "Siemens",
+      33
+    ],
+    [
+      "thorsten",
+      32
+    ],
+    [
+      "AWS",
+      31
+    ],
+    [
+      "Progress Software Corporation",
+      31
+    ],
+    [
+      "n8n-io",
+      31
+    ]
+  ],
+  "top_covered_no_cpe_vendors": [
+    [
+      "Linux",
+      901
+    ],
+    [
+      "Mozilla",
+      264
+    ],
+    [
+      "Drupal",
+      174
+    ],
+    [
+      "(none named)",
+      160
+    ],
+    [
+      "Google",
+      144
+    ],
+    [
+      "Red Hat",
+      121
+    ],
+    [
+      "Oracle Corporation",
+      115
+    ],
+    [
+      "Apache Software Foundation",
+      72
+    ],
+    [
+      "Microsoft",
+      40
+    ],
+    [
+      "bytecodealliance",
+      36
+    ],
+    [
+      "apostrophecms",
+      33
+    ],
+    [
+      "curl",
+      24
+    ],
+    [
+      "asterisk",
+      20
+    ],
+    [
+      "MediaTek, Inc.",
+      19
+    ],
+    [
+      "MervinPraison",
+      18
+    ]
+  ],
+  "ecosystems_covering_no_cpe": [
+    [
+      "Ubuntu",
+      2677
+    ],
+    [
+      "Debian",
+      2389
+    ],
+    [
+      "Azure Linux",
+      988
+    ],
+    [
+      "Alpaquita",
+      964
+    ],
+    [
+      "Linux",
+      886
+    ],
+    [
+      "openSUSE",
+      795
+    ],
+    [
+      "SUSE",
+      527
+    ],
+    [
+      "Echo",
+      406
+    ],
+    [
+      "TuxCare",
+      393
+    ],
+    [
+      "Chainguard",
+      382
+    ],
+    [
+      "openEuler",
+      308
+    ],
+    [
+      "npm",
+      251
+    ],
+    [
+      "Wolfi",
+      220
+    ],
+    [
+      "Mageia",
+      217
+    ],
+    [
+      "Alpine",
+      209
+    ],
+    [
+      "Packagist",
+      205
+    ],
+    [
+      "AlmaLinux",
+      202
+    ],
+    [
+      "Rocky Linux",
+      187
+    ],
+    [
+      "PyPI",
+      186
+    ],
+    [
+      "MinimOS",
+      184
+    ],
+    [
+      "Go",
+      144
+    ],
+    [
+      "CleanStart",
+      127
+    ],
+    [
+      "BellSoft Hardened Containers",
+      116
+    ],
+    [
+      "Android",
+      115
+    ],
+    [
+      "Bitnami",
+      112
+    ],
+    [
+      "Root",
+      105
+    ],
+    [
+      "Red Hat",
+      95
+    ],
+    [
+      "crates.io",
+      61
+    ],
+    [
+      "Hex",
+      59
+    ],
+    [
+      "NuGet",
+      37
+    ],
+    [
+      "Maven",
+      36
+    ],
+    [
+      "RubyGems",
+      8
+    ],
+    [
+      "Red Hat Lightwell",
+      3
+    ],
+    [
+      "Pub",
+      1
+    ]
+  ]
+}

@@ -42,7 +42,15 @@ These measure the CVE ecosystem; NVD Watch measures NIST. Link or cite, don't re
 - SADP Tracker, the CVE Program's Supplier ADP pilot (Siemens from Apr 14, 2026; Red Hat from Jun 30, 2026; 3,349 unique CVEs / 3,391 records with supplier-added affected-product data as of Nov 7, 2026): https://rogolabs.github.io/SADP-Tracker/index.html (repo: https://github.com/RogoLabs/SADP-Tracker; records from https://github.com/CVEProject/sadp-pilot)
 
 ## Policy writing
-- Toomey, NIST can't keep up, Just Security (Apr 27, 2026): https://www.justsecurity.org/136914/nist-cant-keep-up/
+- Toomey, NIST Can't Keep Up. The Whole Digital Ecosystem Will Soon Feel It., Just Security (Apr 27, 2026): https://www.justsecurity.org/136914/nist-cant-keep-up/ — argument, no new data; asks Congress for appropriations scaled to CVE volume
+- Schwartz & Shen, CCPL Report: Ensuring the Longevity of the CVE Program, Center for Cybersecurity Policy and Law (Jul 17, 2025): https://centerforcybersecuritypolicy.org/insights-and-research/ccpl-report-ensuring-the-longevity-of-the-cve-program (PDF: https://cdn.prod.website-files.com/660ab0cd271a25abeb800460/6878fd092e452b1737e1c394_CCPL_CVE-Whitepaper_2025.07_FINAL.pdf) — CVE funding and governance questions; NVD only as background
+- Ma & Hatangadi, The Global Cyber Vulnerability Database Cannot Run on Unstable Funding, FDD policy brief (Jul 29, 2025): https://www.fdd.org/analysis/2025/07/29/the-global-cyber-vulnerability-database-cannot-run-on-unstable-funding/ — joint, stable CVE funding with international partners and industry
+- Health-ISAC, Hacking Healthcare weekly blog (Aug 13, 2026), TLP:WHITE: https://www.aha.org/system/files/media/file/2026/08/h-isac-tlp-white-hacking-healthcare-8-13-2026.pdf — summarizes NIST's NVD RFI for the health sector
+- House Energy and Commerce (Walden, Harper, Blackburn, Latta), letters to DHS and MITRE on the CVE program (Aug 27, **2018**), via HSToday: https://www.hstoday.us/federal-pages/dhs/house-energy-committee-leaders-urge-dhs-to-reform-critical-cybersecurity-database/ — history, not current oversight
+
+## Data quality and tool exposure
+- Anwar, Abusnaina, Chen, Li & Mohaisen, Cleaning the NVD: Comprehensive Quality Assessment, Improvements, and Analyses, IEEE TDSC 19(6):4255–4269 (2022), doi:10.1109/TDSC.2021.3125270: https://faculty.cc.gatech.edu/~frankli/papers/nvd_tdsc2022.pdf — peer-reviewed; NVD snapshot of May 21, 2018
+- "Ikesan", NIST NVD goes risk-based: which SCA tools still miss Deferred CVEs, Lilting Channel (May 12, 2026) (V, single analyst, untested): https://lilting.ch/en/articles/nist-nvd-risk-based-cve-enrichment
 
 ## Cases
 - PHP2Shell: Recorded Future https://www.recordedfuture.com/blog/php2shell-vulnerability-exploitation ; The Register (Oct 27, 2026) https://www.theregister.com/cyber-crime/2026/10/27/cisa-confirms-php2shell-under-attack-as-researchers-clock-successful-exploits/5305681
