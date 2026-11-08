@@ -2,7 +2,7 @@
 
 Two cohorts, both from the NVD CVE Change History API:
   - sample: KEV CVEs *published* in our 30-day window (the page's headline
-    and metric 3; must match summary.json's in_kev count).
+    and metric 4; must match summary.json's in_kev count).
   - listed: every CVE CISA *added to KEV* in the same window, whatever its
     publication date. This catches older CVEs (some parked as Not Scheduled)
     that only reach KEV later.
@@ -12,7 +12,7 @@ and the history event that recorded the KEV listing, and compare the two by
 timestamp. That separates two questions the page used to blur:
   - Pre-KEV readiness (the "when defenders need it" test): did CPE exist
     before the KEV listing, for CVEs that were public before they were listed?
-  - Post-KEV goal (metric 3): was CPE added within one business day of the
+  - Post-KEV goal (metric 4): was CPE added within one business day of the
     later of KEV listing and NVD publication?
 
 Reads:  data/processed/cves_sample.csv, data/processed/summary.json, CISA KEV feed
@@ -175,11 +175,11 @@ def main():
     s = stats(sample_rows)
     out = {
         "rule": ("First NVD change-history event adding a 'CPE Configuration' vs the history event recording the "
-                 "KEV listing (timestamps, UTC; falls back to KEV dateAdded). Metric 3 clock starts at the later of "
+                 "KEV listing (timestamps, UTC; falls back to KEV dateAdded). Metric 4 clock starts at the later of "
                  "KEV dateAdded and NVD publication; weekdays only, no holiday calendar. first_cpe_source is the "
                  "change's sourceIdentifier (nvd@nist.gov = NIST)."),
         "window": [start, end],
-        # Sample cohort at top level: the page's headline and metric 3 read these.
+        # Sample cohort at top level: the page's headline and metric 4 read these.
         **s,
         "listed_in_window": stats(listed_rows),
         "rows": list(rows.values()),

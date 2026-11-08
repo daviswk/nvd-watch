@@ -45,7 +45,7 @@ Full reasoning: `docs/red-team-nov7-response.md` §7; brief structure: `docs/bri
 3. Median and 90th-percentile time to enrichment, by the same observable tiers.
 4. Compliance with NIST's one-business-day KEV enrichment goal (NVD change history; clock starts at the later of KEV listing and NVD publication).
 5. Re-queue counts, time-to-enrichment after re-queue, and hit rate (re-queued CVEs later in KEV or exploited).
-Reporting rules (not metrics): a change log of NVD status-category definitions (changed Apr 15, 2026); counts by priority tier (NIST does not publish its tier assignments); nvd@nist.gov request volume and turnaround. The site's section 4 still shows the Nov 7 set below until the template is updated.
+Reporting rules (not metrics): a change log of NVD status-category definitions (changed Apr 15, 2026); counts by priority tier (NIST does not publish its tier assignments); nvd@nist.gov request volume and turnaround. The site's section 4 shows this set (Nov 8).
 
 ### Nov 7 set (superseded)
 1. Share of new CVEs with CPE (any source; NIST-sourced), by observable tier: KEV status and NVD status. NIST does not publish its tier assignments; publishing them is a recommendation.
@@ -95,7 +95,7 @@ RogoLabs (Jerry Gamblin, https://rogolabs.net) publishes free, open-source CVE t
 - `PRODUCT.md` — product truth for design work (Impeccable); `DESIGN.md` — the visual system as built
 - `.github/workflows/rebuild.yml` — weekly pull, build, commit (github-actions[bot]) and Pages deploy; `pages.yml` deploys on ordinary pushes. Run `git pull` before local work after a Monday
 - `scripts/fetch_sample.py` — data pull (reads `NVD_API_KEY` from `.env`; `--from-raw` reprocesses without fetching)
-- `scripts/kev_enrichment.py` — NVD change history for each KEV CVE in the sample: first CPE date vs KEV listing (harm metric, metric 3). Run after `fetch_sample.py`, before `build_site.py`; the build exits without its output
+- `scripts/kev_enrichment.py` — NVD change history for each KEV CVE in the sample: first CPE date vs KEV listing (readiness, metric 1; KEV goal, metric 4). Run after `fetch_sample.py`, before `build_site.py`; the build exits without its output
 - `data/history/YYYY-MM-DD/` — each pull's `summary.json` and `kev_enrichment.json`, written by `build_site.py`; `scripts/stability.py` prints readiness and KEV-goal x of n per pull, with min/max (decides point vs range in the brief)
 - `scripts/kev_lag.py` — median CVE-to-KEV lag by year for the section 2 chart (writes `data/processed/kev_lag.json`; `build_site.py` draws the chart, its caption date and the highlight's lag sentence from it, and stops if it is missing; run it before the build to refresh them)
 - `scripts/cost_model.py` — the re-check cost rule in one place: constants (5,000 peak, OIG $400K, $120/h, 20/45/60 min), money format, verdict wording. `build_site.py` renders from it and writes it into the page and `site/data/cost_model.json`; `site/cost.js` repeats only the arithmetic for the browser (`app.js` simulator, `story.js`). After changing either, run `python scripts/check_cost_model.py` (Node) to confirm both print the same strings

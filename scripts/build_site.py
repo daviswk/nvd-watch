@@ -267,7 +267,7 @@ def main():
         "<a href=\"data/kev_lag.json\">kev_lag.json</a>.</span>"
     )
 
-    # Harm metric and metric 3, from NVD change history (scripts/kev_enrichment.py).
+    # Readiness (metric 1) and the KEV goal (metric 4), from NVD change history (scripts/kev_enrichment.py).
     # "When defenders need it" = by the day CISA confirms exploitation (KEV listing).
     ke_path = PROCESSED / "kev_enrichment.json"
     if not ke_path.exists():
@@ -416,7 +416,7 @@ def main():
     shutil.copy(PROCESSED / "summary.json", SITE / "data" / "summary.json")
     shutil.copy(lag_path, SITE / "data" / "kev_lag.json")   # also read by the story page
     (SITE / "data" / "cost_model.json").write_text(json.dumps(cm.MODEL, indent=2))   # read by story.js
-    shutil.copy(ke_path, SITE / "data" / "kev_enrichment.json")   # the per-CVE evidence behind metric 3
+    shutil.copy(ke_path, SITE / "data" / "kev_enrichment.json")   # the per-CVE evidence behind metrics 1 and 4
     shutil.copy(rm_path, SITE / "data" / "recheck_measured.json")  # read by the story page
 
     # Keep each pull's figures, keyed by pull date, so week-to-week stability can be checked
