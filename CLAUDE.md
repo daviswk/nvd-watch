@@ -30,7 +30,24 @@ One scorecard page with four sections:
 
 **Out of scope (cut on purpose):** wildfire/hero map, funnel chart, separate lifecycle tracker, Siemens S7 case (one sentence in the brief), CNA-vs-NIST score disagreement view, GitLab, cve.now, formal verification, forum monitoring.
 
-## The five quarterly metrics (freeze these definitions)
+## Decided Nov 8 after red-team round 6 (supersedes conflicting lines above and below)
+Full reasoning: `docs/red-team-nov7-response.md` §7; brief structure: `docs/brief-outline.md`.
+- **NIST ask has three parts.** 1A automated day-0 CPE: pass through CNA-supplied `cpes` and assign provisional, product-level CPE on exact vendor:product dictionary matches (29.1% of window CVEs without CPE, 3,849 of 13,207, Nov 7 pull; `automated_mapping.json`). 1B daily **EPSS ≥ 0.05** re-check backstop (443 once, 8–30 a month, ~$32K/yr; show 0.10 beside it). 1C quarterly reporting.
+- **The 25%-recall stopping rule is rejected.** EPSS is a weak pre-KEV warning (22 of 172; 4 of 51 under v5); its job is the non-KEV stock. The ~105 / ~95 "expected exploitation" figures are EPSS's own summed probabilities, not validation; metric 5's hit rate is the test.
+- **Gap framing:** "The backlog began Feb 2024. Readiness was about half before the April triage and about half after; the triage turned a backlog into standing policy." Never "the triage caused the gap". Cohorts "plateau"; never "permanent" or "abandonment".
+- **PHP2Shell is a contrast case** (federal tier, CPE 2 h 44 min after publication; KEV 1–2 days after the first exploitation report). Exploitation was not reported Oct 21.
+- **Congress vehicle:** CJS appropriations report language plus the Thompson–Lofgren GAO request (June 6, 2025). RFI comments closed Oct 13, 2026; no NIST response as of Nov 8.
+- **EPSS v5 feature loss** stays an open hypothesis; the 12 unscored v5 KEV CVEs were one day old (timing).
+
+## The five quarterly metrics (revised Nov 8; freeze these definitions)
+1. Pre-KEV readiness: share of KEV additions public before listing that had CPE before listing, at ≥ 1 and ≥ 7 days public.
+2. CPE coverage by publication-month cohort (any source; NIST-sourced), by observable tier: KEV status and NVD status.
+3. Median and 90th-percentile time to enrichment, by the same observable tiers.
+4. Compliance with NIST's one-business-day KEV enrichment goal (NVD change history; clock starts at the later of KEV listing and NVD publication).
+5. Re-queue counts, time-to-enrichment after re-queue, and hit rate (re-queued CVEs later in KEV or exploited).
+Reporting rules (not metrics): a change log of NVD status-category definitions (changed Apr 15, 2026); counts by priority tier (NIST does not publish its tier assignments); nvd@nist.gov request volume and turnaround. The site's section 4 still shows the Nov 7 set below until the template is updated.
+
+### Nov 7 set (superseded)
 1. Share of new CVEs with CPE (any source; NIST-sourced), by observable tier: KEV status and NVD status. NIST does not publish its tier assignments; publishing them is a recommendation.
 2. Median and 90th-percentile time to enrichment, by the same observable tiers.
 3. Compliance with NIST's one-business-day KEV enrichment goal (NVD change history; clock starts at the later of KEV listing and NVD publication).

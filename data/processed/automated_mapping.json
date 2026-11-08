@@ -11,6 +11,8 @@
  "a_vendor_name_match_only_context": 6302,
  "b_cna_affected_cpes": 1430,
  "b_cna_affected_packageURL": 1908,
+ "a_or_b_cpes_union": 3849,
+ "a_and_b_cpes_overlap": 427,
  "dictionary_pairs": 153269,
  "examples_exact": [
   "CVE-2010-20125",

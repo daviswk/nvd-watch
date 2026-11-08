@@ -234,3 +234,25 @@ Two new rows, dated Nov 7–8, at the end of *Entries from Claude Code* in `docs
 
 1. The red-team critique (claude.ai chat).
 2. This overnight session.
+
+## 7. Will's decisions and follow-up (Nov 8)
+
+Will answered §2 in two rounds; Claude checked each answer against the data and sources and pushed back where it didn't hold. The settled versions are in `docs/brief-outline.md` and `CLAUDE.md` ("Decided Nov 8").
+
+| § | Decision | Changed in review |
+|---|---|---|
+| 2a | Reject the 25%-recall stopping rule; EPSS's job is the non-KEV stock. Backstop at **EPSS ≥ 0.05** (0.10 shown beside it). Metric 5 hit rate is the test | The 95 / 105 "expected" figures are EPSS's own summed probabilities, labelled as such. "~1 in 11 future KEVs" was the 2025–26 mix; under v5 it is 2 of 51 at 0.10, 4 of 51 at 0.05. **"KEV misses 22–39%" (attributed to CSWP 41) dropped:** not in CSWP 41 or our sources; replaced by CSWP 41's own figures (KEV 1,228 entries, Dec 2024; ~1,006 of 66,125 likely exploited; several hundred LEV ≈ 1.0 not in KEV) and VulnCheck 884 vs 245 |
+| 2b | "The backlog began Feb 2024. Readiness was about half before the April triage and about half after; the triage turned a backlog into standing policy." | Not "April locked it in": Not Scheduled was already 28–50% of the Nov 2024 – Feb 2026 cohorts, and status definitions changed Apr 15. Readiness was measured only from Oct 2025 |
+| 2c | "Half parked, half queued" | The 5 Not Scheduled were moved there 1–2 days after publication (fkie mirror); they got CPE as the triage is designed, not as a correction |
+| 2d | S1 becomes NIST Recommendation 1A; CISA keeps the structured-data ask for the rest | **Measured the deduplicated union: 3,849 of 13,207 (29.1%), overlap 427** (`automated_mapping.py` re-run, counts reproduced). "Unvalidated CNA-supplied cpes"; "provisional, product-level CPE without version ranges"; "no per-CVE analyst time, plus a QA sample" |
+| 2e | Cohort maturation bar replaces the status figure; readiness becomes metric 1; status change log becomes a reporting rule | Aug–Oct 2026 cohorts are at 26–34% CPE (22.3% is the rolling window). "Plateau", not "abandonment" |
+| #9 | Scanner claim scoped to vendor products without package advisories | 2 of the 7 "none" are npm and Rust packages with only unreviewed GitHub advisories, so package scanners miss them too. Checked in three sources only |
+| #12 | PHP2Shell as a contrast case | **Corrected Will's date:** exploitation was first reported Oct 24–25, not Oct 21 (Oct 21 is publication and CPE). Median 6 days is publication to listing |
+| #13 | Two-force why-now, 2–3 sentences, GTIG and RAND first | Dropped "59,000 a year", "N-days in minutes", AIxCC as offense, "CYA" |
+| #15 | Polley as analogy (RGSD-A1954-1) | — |
+| #16 | CJS report language; Thompson–Lofgren GAO request (June 6, 2025) | Dropped "bipartisan May 2024 letter" (not found; the 2025 letter is from two Democratic ranking members) and "2027 operational roadmap" (no source) |
+| #17 | v4 → v5 drop reported, feature loss an open hypothesis | The 12 unscored v5 CVEs were each one day old at listing: timing, not lost features. Scored recall 2 of 39 vs 13 of 88 |
+
+**`kev_enrichment.py` legacy fix applied (approved by Will).** `is_cpe_event()` now counts an "Initial Analysis" event with no details as the first CPE. No year cutoff: the empty-details condition already identifies these CVEs. Checked against the cached change history of the 180 research cases: it flips exactly the 8 known legacy CVEs (CVE-2007-0671 … CVE-2014-6278), all listed before the current window, so the page's 10 of 23 is unchanged. Takes effect at the next weekly pull.
+
+**Not done:** the site's section 4 still shows the Nov 7 metric set (template change, left for Will); the brief draft itself is unwritten.

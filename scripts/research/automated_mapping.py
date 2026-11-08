@@ -78,6 +78,8 @@ def main(cpe_targz, cves_zip):
         "a_vendor_name_match_only_context": len(vendor_only),
         "b_cna_affected_cpes": len(cpes),
         "b_cna_affected_packageURL": len(purl),
+        "a_or_b_cpes_union": len(set(exact) | set(cpes)),       # deduplicated: exact match OR CNA cpes
+        "a_and_b_cpes_overlap": len(set(exact) & set(cpes)),
         "dictionary_pairs": len(pairs),
         "examples_exact": examples,
     }

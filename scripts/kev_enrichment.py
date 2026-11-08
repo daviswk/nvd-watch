@@ -40,13 +40,22 @@ HISTORY_URL = "https://services.nvd.nist.gov/rest/json/cvehistory/2.0"
 TRIAGE_START = "2026-04-15"   # NIST's priority triage took effect
 
 
+def is_cpe_event(e):
+    """A change that added CPE. Legacy case: CVEs NIST analysed before the change history logged details
+    (e.g. CVE-2010-3765) have an 'Initial Analysis' event with no details, and their original CPE never
+    appears as a 'CPE Configuration' detail. Without this rule their first CPE is dated to a later
+    re-analysis (8 such CVEs among 2025-26 KEV adds; docs/red-team-nov7-response.md, 4b)."""
+    if e.get("eventName") == "Initial Analysis" and not e.get("details"):
+        return True
+    return any(d.get("type") == "CPE Configuration" and d.get("action") in ("Added", "Changed")
+               for d in e.get("details", []))
+
+
 def history(cve_id, headers):
     """(first CPE event time, its source, KEV-listing event time, event count)."""
     r = get_with_retry(HISTORY_URL, params={"cveId": cve_id}, headers=headers)
     events = [c["change"] for c in r.json().get("cveChanges", [])]
-    cpe = sorted((e["created"], e.get("sourceIdentifier")) for e in events
-                 if any(d.get("type") == "CPE Configuration" and d.get("action") in ("Added", "Changed")
-                        for d in e.get("details", [])))
+    cpe = sorted((e["created"], e.get("sourceIdentifier")) for e in events if is_cpe_event(e))
     kev = sorted(e["created"] for e in events if "KEV" in e.get("eventName", ""))
     return (cpe[0] if cpe else (None, None)) + (kev[0] if kev else None, len(events))
 
