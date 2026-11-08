@@ -16,7 +16,9 @@
 **Lead with measurement, not failure.** No one publishes how quickly NIST attaches product data to CVEs; here are the numbers. Once CISA lists a CVE as exploited, NIST meets its own goal. The gap is before and outside KEV. The brief must stand alone without the site (#17) and work whatever the weekly data shows.
 
 ## Page 1 — Background (~400 words)
-- **Why now** — *emerging-tech hook (assignment requirement).* New CVEs in the NVD rose from 5,143 in January 2026 to 17,481 in October [stable] (our count, NVD API; `data-notes.md`, Verification pulls). Google's threat intelligence team (GTIG, Sep 30, 2026) sees "emerging signals" that AI is contributing to vulnerability discovery, but does **not** attribute the rise to AI: it names other drivers, such as about 5,000 Linux kernel CVEs Jan–Aug and vendor disclosure cycles. OpenAI officials told CyberScoop (Nov 5) its new model found 81+ novel Firefox bugs (press-reported). Frame: AI is one force raising volume and likely to raise it further; the capacity gap began earlier (February 2024 contract lapse, OIG). Do not say "AI-driven surge."
+- **Why now** — *emerging-tech hook (assignment requirement).* **Settled framing (Nov 7):** AI accelerates a capacity problem that already existed; it did not cause it. AI appears in four roles only: why now, why waiting is costly, pressure on the pipeline, the future test. Do not say "AI-driven surge." Drop the CyberScoop/OpenAI line (press-reported, adds nothing the metrics use).
+  > **DRAFT (~150 words; page 1 is already at budget, cut while writing):** NIST's capacity problem predates AI. Its backlog began in early 2024, when a support contract lapsed (OIG), and its April 2026 notice blames a 263% rise in submissions from 2020 to 2025, without mentioning AI. AI is now speeding it up. New CVEs in the NVD rose from 5,143 in January 2026 to 17,481 in October [stable] (our count); Google's threat intelligence team reports monthly disclosures doubled from January to August, and, like FIRST, credits much of the growth to other causes such as bulk Linux kernel CVEs and advisory backfills. FIRST also finds the actionable share (in KEV or above EPSS 10%) flat. Waiting is getting costlier: RAND found an off-the-shelf AI agent, prompted by people with no cyber expertise, solved each of its hacking challenges in under an hour for under $20 in total. Maintainers of curl and the Linux kernel report a flood of real, AI-found bugs. NIST asked how to modernize the NVD in the age of AI. Our answer: whatever AI changes, measure it publicly.
+  Sources: OIG-26-020-I; NIST Apr 15, 2026 notice ("increased 263% between 2020 and 2025"); GTIG Sep 30, 2026 (5,045 → 10,740, Jan–Aug); FIRST Jun 15, 2026 (GHSA +449%, VulnCheck +3,119%, actionable burden "completely flat"); RAND RR-A3892-2 (CTF challenges, "less than US$20" over all of them; the agent was Claude Code, disclose); Stenberg Oct 22, 2026 ("high volume, high quality"); Torvalds via Tom's Hardware, May 18, 2026 ("almost entirely unmanageable"). **Not** "about $16" (earlier drill figure; RAND's summary says under $20 and the PDF was not readable this pass).
 - What the NVD does, and why CPE is what lets scanners tell an organization it is affected.
 - NIST's April 15, 2026 triage: KEV, federal, and EO 14028 critical software first; everything else waits.
 - Definition (#21): CPE arrives "when defenders need it" if it is there **before** CISA confirms exploitation (the KEV listing). Readiness is scored apart from NIST's one-business-day goal after listing; never let one number stand for both.
@@ -35,6 +37,10 @@
 - Who bears it: state and local governments, hospitals, small businesses — those that can't buy commercial product data.
 - Limits: counts are CVEs, not risk (#22); some threats never get a matchable CVE (one sentence: Aug 2026 Siemens S7 advisory listed no CVE IDs).
 
+**Won't AI make this obsolete?** (durability; one paragraph, here or before the recommendations)
+  > **DRAFT (~170 words; over budget):** AI may cut certain bugs in new code sharply, but not to zero. Anthropic used Claude to prove 239 fuzzing entry points in 123 open-source libraries free of crashes, and its own limits section says "formally verified" does not mean "bug-free": the proofs cover specific properties (no crashes on inputs under 64 MB) under specific assumptions (single-threaded, static RISC-V binaries). AI systems also bring new flaw classes; RAND counts 31, many only partly patchable. Meanwhile old code stays in service. Zero-days in RAND's sample went undiscovered for 6.9 years on average, and industrial control systems get vendor minor updates only every 178 days on average. AI is finding new flaws in that old code (GitLab CVE-2026-110264 reaches back to version 7.0, released June 2014), and old CVEs are still being exploited: 30 of 285 KEV additions in 2026 [stable] were published four or more years earlier. The bottleneck moves from writing patches to deploying them, which depends on knowing what you run. That is the job of a public, scanner-matchable product record, whoever keeps it.
+  Sources: Anthropic, "LLMs are making formal software verification feasible at a much larger scale," Oct 22, 2026 (vendor; the project uses Claude, disclose); RAND RR-A4983-1 (Jul 30, 2026); RR-1751 (6.9 years is zero-day *undisclosed* lifespan, ~200 cases); RR-A1888-2 (178 days = average interval between ICS vendor minor updates, not deployment); NVD CVE-2026-110264 and GitLab v7.0.0 tag (Jun 20, 2014); `kev_lag.json` legacy_by_year. **Dropped:** PHP2Shell "back to PHP 5.4" (CNA lists 8.2+, NVD CPE 7.3+). **Softened:** point (c) "the CVEs least likely to be enriched" has no data behind it; not claimed.
+
 **Opportunities**
 - EPSS leads KEV by ~201 days when it leads at all [stable, vendor: Barracuda], so it is a re-check trigger, not an intake screen. Its precision on unenriched CVEs is unmeasured; say so.
 - NIST already designed the trigger (CSWP 41) and answers to its own RFI question on metrics (7(e)); NVD Watch is a working answer.
@@ -42,6 +48,8 @@
 ## Page 3 — Recommendations (~400 words)
 **One headline ask per stakeholder**
 1. **NIST:** adopt and publish a re-check rule — any CVE without CPE moves into the KEV queue when its EPSS crosses a published threshold — and report five quarterly metrics on both doors, including quarterly counts by tier.
+   - Inside the metrics ask: **label which enrichments were AI-assisted** (provenance in the record), so every metric can be split by source. Why, one sentence: a tool can't grade itself, and speed isn't accuracy. Ties to RFI questions 1(b) (human review, "over-reliance on AI") and 3(b) ("transparency and auditability in AI-driven prioritization"). Don't name NIST's tool; nothing is released to measure.
+   - Falsifiable line: "If AI-assisted enrichment scales, coverage should rise and time to enrichment should fall. These metrics will show whether it does."
 2. **CISA:** as CVE Program sponsor, phase in machine-matchable product data in CVE records, largest vendor CNAs first.
 3. **Congress:** make the five metrics the yardstick for oversight, in the GAO review House members requested and in any bill that codifies the CVE program; no new money.
 
@@ -60,6 +68,7 @@
 **RAND (#10), one sentence:** RAND has not studied the NVD directly; this applies RAND frameworks (incentives, accountability, continuous measurement), and EPSS's lineage includes RAND-affiliated authors.
 
 ## Footnote / site only
+- Future work (one sentence): estimating installed-base lifetimes and code age from the affected-version ranges in CVE records. The site's legacy share counts CVE age, not code age.
 Not in the brief body. Footnote where a reader needs it; otherwise link to the site.
 
 *Sub-asks moved off Page 3*

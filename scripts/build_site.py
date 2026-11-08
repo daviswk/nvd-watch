@@ -239,7 +239,24 @@ def main():
     lag_path = PROCESSED / "kev_lag.json"
     if not lag_path.exists():
         sys.exit("data/processed/kev_lag.json missing; run scripts/kev_lag.py before build_site.py")
-    kev_lag_svg, kev_lag_sentence, kev_lag_through_note = kev_lag_figure(json.loads(lag_path.read_text()))
+    lag = json.loads(lag_path.read_text())
+    kev_lag_svg, kev_lag_sentence, kev_lag_through_note = kev_lag_figure(lag)
+
+    # Legacy share (scripts/kev_lag.py): of each year's KEV additions, the share NVD published 4+ years
+    # before the listing. Latest year in full, earlier years for comparison, no trend verb.
+    ly = lag.get("legacy_by_year")
+    if not ly:
+        sys.exit("kev_lag.json has no legacy_by_year; re-run scripts/kev_lag.py")
+    ly_years = sorted(ly)
+    last = ly[ly_years[-1]]
+    legacy_sentence = (
+        f"<b>Old flaws are still being exploited.</b> Of the {fmt_int(last['n'])} CVEs CISA added to KEV in "
+        f"{ly_years[-1]} through {fmt_date(lag['through'])}, {last['published_4y_before']} "
+        f"({fmt_pct(last['pct'])}) had been published four or more years before the listing ("
+        + "; ".join(f"{y}: {fmt_pct(ly[y]['pct'])}" for y in ly_years[:-1])
+        + "). <span class=\"note\">CVE age, not code age: see Definitions. Data: "
+        "<a href=\"data/kev_lag.json\">kev_lag.json</a>.</span>"
+    )
 
     # Harm metric and metric 3, from NVD change history (scripts/kev_enrichment.py).
     # "When defenders need it" = by the day CISA confirms exploitation (KEV listing).
@@ -362,6 +379,7 @@ def main():
         "ke_verdict": ke_verdict,
         "kev_lag_svg": kev_lag_svg,
         "kev_lag_sentence": kev_lag_sentence,
+        "legacy_sentence": legacy_sentence,
         "kev_lag_through_note": kev_lag_through_note,
     }
 

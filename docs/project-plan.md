@@ -30,5 +30,8 @@ A public scorecard that measures whether the U.S. vulnerability warning system s
 | 7. AI log | `docs/ai-collaboration-log.md` | Final pass: every entry has a verification note |
 | 8. (Stretch) weekly rebuild | GitHub Action | Runs fetch + build on a schedule |
 
+## AI sources: when to add one
+AI accelerates a capacity problem that already existed; it did not cause it (settled Nov 7). The brief uses AI only as why-now, the cost of waiting, pressure on the pipeline, and the future test. **Add a new AI source only if it changes a metric or a recommendation**, for example published accuracy of AI-assisted enrichment, or a credible estimate of the share of new CVEs that are AI-found. Another report that AI finds many bugs does not qualify.
+
 ## Presentation
 Use `docs/learning/primer.html` (three-minute talk track and likely audience questions are inside).

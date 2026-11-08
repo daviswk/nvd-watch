@@ -12,6 +12,7 @@ Sections are appended in order, so later sections can revise earlier ones. When 
 - **Re-check volume:** Floodline day-30 rate × our volume = 16–46 a month (simulator default 16), $8K–$66K a year (default $8K–$23K). **Rough, biased both ways, not a lower bound:** 7 of the 10 CVEs at EPSS ≥ 0.10 are in KEV, whose listing tends to raise EPSS (pushes it down); of the 3 outside KEV, 2 lack CPE; later crossings, the older stock and SSVC triggers are uncounted (push it up). The OIG's ~$400K a year is a scale comparison, not spare money. See the last section, which revises *Re-check volume from CVE Floodline*.
 - **Re-check load, measured (Nov 7):** two parts. One-time: 303 stock CVEs (Not Scheduled, Awaiting or Received; no CPE; not KEV) already at EPSS ≥ 0.10. Monthly: ~11–28 re-queues at 0.10, mostly CVEs over 90 days old. The stock is 76,217 CVEs. Day-90 cohort (Jun 15 – Jul 14): 0.442% ever ≥ 0.10 vs 0.263% by day 30, but only 7 of 8,376 need a re-queue. The 16–46 total is in range, but its composition was wrong (new CVEs, mostly with CPE). Source: `docs/research/notes/open_items_recheck_volume.md`, `scripts/research/recheck_volume.py`. On the page since Nov 7 (`data/processed/recheck_measured.json`; simulator default 28, the highest month).
 - **Orphaned CVEs (Nov 7):** of 13,207 CVEs without CPE, 72.1% (9,528) are in no package advisory OSV aggregates; 8.8% are in a language-package advisory and 19.0% only in distro advisories (including all 901 Linux kernel CVEs). Not Scheduled: 85.2% orphaned. Orphans are WordPress components and small projects as much as enterprise vendors (Oracle, IBM, HPE, Juniper); not "mostly appliances". One young window; see *Orphaned CVEs*. On the page as a row under the section 1 status table, plus a paragraph; `build_site.py` shows both only while `osv_orphans.json` covers the same window as `summary.json`, so a new pull drops them until the script is re-run.
+- **Legacy share (Nov 7):** 30 of 285 KEV additions in 2026 (10.5%) were published 4+ years before listing; 9.6 / 11.3 / 14.3% in 2023–25, no trend (`kev_lag.json`, on the page in section 2). CVE age, not code age. The re-check stock is not "legacy" (most of it is from 2026). A CPE-revision proxy (20 of 34 KEV CVEs revised after first CPE) is too blunt to show. See *Legacy share and a CPE-revision proxy*.
 - **EPSS model:** v5 (`v2026.06.15`) since Jun 15, 2026, not v4.
 - **Vendor split:** Microsoft 92.4% with CPE; Linux, Mozilla and Red Hat 0%, in three different statuses. The cause is not observable from outside. See *CPE coverage by vendor*.
 - **Retired figures:** 250–470 re-queues a month, $270K–$510K a year, $7K–$58K a year, 21.7% non-KEV coverage, "lower bound".
@@ -255,3 +256,20 @@ No new data; these restate existing results so they can't be misread.
 **Checks:** spot-checked 10 orphans against the live OSV API (4 Gitea, 1 Zebra and 1 Eclipse ThreadX CVE carry GHSA aliases whose IDs OSV and GitHub's global database do not have; 4 WordPress plugin CVEs are 404 in OSV). The Debian, PyPI and Go sets above were built by a separate script over the same exports, so they test the code, not the method.
 
 **Caveats:** OSV aggregates open advisories only; vendor bulletins and commercial scanner feeds are invisible here, so "orphaned" means "no open package advisory", not "no advisory anywhere". A 30-day window is young; package advisories (especially reviewed GHSA) arrive later, so the orphan share will fall as the window ages. Re-run against an older cohort before quoting it as a steady state. Scanner exposure by tool is still one analyst's rating (Lilting, see `source-verification.md` §6), not measured here.
+
+## Legacy share and a CPE-revision proxy — Nov 7, 2026
+
+**Legacy share (on the page, section 2; defined in Definitions).** `scripts/kev_lag.py` now also writes `legacy_by_year` to `kev_lag.json`: of the CVEs CISA added to KEV in each year (any publication year), the share NVD published four or more years (1,461 days) before `dateAdded`. Catalog 2026.11.06, 1,769 entries, none missing from NVD.
+
+| Year added | KEV additions | Published 4+ years earlier | Share |
+|---|---|---|---|
+| 2023 | 187 | 18 | 9.6% |
+| 2024 | 186 | 21 | 11.3% |
+| 2025 | 245 | 35 | 14.3% |
+| 2026 (to Nov 6) | 285 | 30 | 10.5% |
+
+No trend; the page lists the years without a trend verb. **CVE age, not code age:** a CVE published this year can sit in code from 2014 (GitLab CVE-2026-110264 reaches back to version 7.0), so this understates how old exploited code is. Cross-check: the earlier recount (133 of 787 KEV additions from Jan 1, 2023 to Jul 24, 2026 published before 2022) reproduces exactly. Re-running `kev_lag.py` left the lag medians unchanged (same catalog).
+
+**Not "legacy backlog."** The re-check stock (76,217 CVEs; 303 at EPSS ≥ 0.10) is not relabeled: about 45,000 of the 76,217 were published after Apr 15, 2026 (`open_items_recheck_volume.md`). 29,017 were published before Mar 1, 2026.
+
+**CPE-revision proxy (not on the page; too blunt).** For the 34 KEV CVEs in `kev_enrichment.json` that have CPE, the NVD change history shows a later "CPE Configuration" event after the first one for **20**. Of those, 5 only *added* configurations (new affected products, e.g. downstream vendors), 15 include a Changed or Removed action, one of them a routine "CPE Deprecation Remap". Most later events are "Modified Analysis" after the CVE record itself changed. A revision is not an error, so this does not measure enrichment quality; it would need a diff-level review of what changed and why. Small n, KEV only (16 of the 20 were first enriched in 2026). Scratch script; input `kev_enrichment.json`, NVD CVE Change History API.

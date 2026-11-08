@@ -2,7 +2,8 @@
 
 Lag = KEV dateAdded minus NVD published date, in calendar days, for KEV listings of CVEs
 published 2022 or later (Barracuda's population, so the two can be compared).
-Grouped by the year CISA added the CVE to KEV.
+Grouped by the year CISA added the CVE to KEV. Also writes the "legacy share": of each year's
+KEV additions (any publication year), the share NVD published four or more years earlier.
 
     python scripts/kev_lag.py        # writes data/processed/kev_lag.json
 
@@ -53,6 +54,19 @@ def main():
         if d_pub and d_pub.year >= 2022 and d_added.year >= 2023:
             lags.setdefault(d_added.year, []).append((d_added - d_pub).days)
 
+    # Legacy share: of the CVEs CISA added in each year, how many NVD had published four or more
+    # years (4 x 365.25 days) before the listing. CVE age, not code age: a CVE published in 2026 can
+    # sit in code written in 2014. All publication years count here, unlike the lag above.
+    legacy = {}
+    for cve, d_added in added.items():
+        d_pub = published.get(cve)
+        if d_pub and d_added.year >= 2023:
+            y = legacy.setdefault(d_added.year, {"n": 0, "published_4y_before": 0})
+            y["n"] += 1
+            y["published_4y_before"] += (d_added - d_pub).days >= 4 * 365.25
+    for y in legacy.values():
+        y["pct"] = round(100 * y["published_4y_before"] / y["n"], 1)
+
     out = {
         "kev_catalog_version": kev.get("catalogVersion"),
         "kev_total": len(added),
@@ -60,6 +74,8 @@ def main():
         "rule": "KEV dateAdded minus NVD published (calendar days); CVEs published 2022+; by year added",
         "through": max(added.values()).isoformat(),
         "by_year": {str(y): {"median_days": statistics.median(v), "n": len(v)} for y, v in sorted(lags.items())},
+        "legacy_rule": "KEV additions per year (any publication year) whose NVD publication came 4+ years (1,461 days) before dateAdded",
+        "legacy_by_year": {str(y): legacy[y] for y in sorted(legacy)},
     }
     path = ROOT / "data" / "processed" / "kev_lag.json"
     path.write_text(json.dumps(out, indent=2))

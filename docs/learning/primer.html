@@ -235,7 +235,7 @@ footer{font-size:.85rem;color:var(--muted);border-top:1px solid var(--rule);padd
     <li><span class="when">Feb 2024</span><span class="what">The NVD backlog starts after an enrichment contract lapses. This is before the AI surge.</span></li>
     <li><span class="when">Dec 10, 2024</span><span class="what">CISA's Vulnrichment program stops adding product data (CPE). NIST becomes the only free federal source.</span></li>
     <li><span class="when">Apr 15, 2026</span><span class="what">NIST prioritizes KEV, federal, and EO 14028 critical software. It no longer routinely re-scores CVEs that a CNA already scored. The goal for KEV flaws is one business day.</span></li>
-    <li><span class="when">May 26, 2026</span><span class="what">The Commerce Inspector General cites poor planning. NIST's re-scores matched independent scores in only 8 of 69 samples.</span></li>
+    <li><span class="when">May 26, 2026</span><span class="what">The Commerce Inspector General cites poor planning. Its own specialists, scoring the same CVEs twice, produced the same severity vector in only 8 of 69 cases.</span></li>
     <li><span class="when">Apr–Jun 2026</span><span class="what">Volerion counts about 50% of new CVEs enriched, but NIST scored only about 20% itself.</span></li>
     <li><span class="when">Jul 4, 2026</span><span class="what">FedRAMP's 2026 rules (optional) set deadlines using KEV, EPSS, and reachability.</span></li>
     <li><span class="when">Jul 24, 2026</span><span class="what">Barracuda: the median time from CVE to KEV listing grew from 6 days (2023) to 14 days (2026).</span></li>
@@ -295,7 +295,7 @@ footer{font-size:.85rem;color:var(--muted);border-top:1px solid var(--rule);padd
         <div class="src"><div class="cite">Volerion analysis<span>via Dark Reading · Apr 15–Jun 15, 2026</span></div><div class="said">Of 13,441 new CVEs, NIST prioritized 62% and enriched about 50%. NIST gave its own score to only about 20%. Median time to analysis was about 4 days. <em>Proves:</em> NIST still processes many CVEs, but scores itself far fewer.</div></div>
         <div class="src"><div class="cite">"The Count Broke First"<span class="badge c">Disputed</span><span>Cyber Strategy Institute · Oct 23, 2026</span></div><div class="said">Estimates 8.4% enriched in Q3 2026. Its 87% figure for 2025 likely divides NIST's yearly output by yearly volume, which is not a coverage rate. <strong>Disputed:</strong> it conflicts with Volerion. Show both, with definitions.</div></div>
         <div class="src"><div class="cite">CPE coverage and Vulnrichment<span>VulnCheck via CSA · CISA GitHub</span></div><div class="said">NVD had product data for 41% of 2024 CVEs, against 77% from a commercial service. CISA stopped adding product data in December 2024. Vendor records do not include it. <em>Proves:</em> product data has no free substitute.</div></div>
-        <div class="src"><div class="cite">Evaluation of NVD management<span>Commerce OIG · OIG-26-020-I · May 26, 2026</span></div><div class="said">80% of CVEs already arrive with a vendor score. NIST's re-scores matched independent scores in only 8 of 69 samples. Re-scoring wasted about $200,000. <em>Proves:</em> dropping NIST re-scores is defensible. Don't attack that half of the policy.</div></div>
+        <div class="src"><div class="cite">Evaluation of NVD management<span>Commerce OIG · OIG-26-020-I · May 26, 2026</span></div><div class="said">Nearly 80% of CVE Program participants include severity scores (our pull: 91% of CVEs carry one). The OIG's own specialists produced the same vector in only 8 of 69 double-scored CVEs, so scoring is inconsistent even among experts. The OIG puts re-scoring at about $800,000 over two years; NIST disputes it. <em>Proves:</em> dropping NIST re-scores is defensible. Don't attack that half of the policy.</div></div>
         <div class="src"><div class="cite">The NVD shell game<span>Brian Martin, jericho.blog · May 7, 2026</span></div><div class="said">NVD's status labels changed on April 15, and "Not Scheduled" counts fell by about 77,000 with no clear explanation. The widely cited "29,000 moved" figure comes from CSA, not NIST. <em>Proves:</em> the numbers can't be compared across April 2026 without care.</div></div>
       </div>
     </details>
@@ -337,16 +337,16 @@ footer{font-size:.85rem;color:var(--muted);border-top:1px solid var(--rule);padd
 
 <section id="cost" aria-labelledby="cost-h">
   <div class="sechead"><span class="eyebrow">Part 4</span><h2 id="cost-h">What the fix costs</h2></div>
-  <p class="lede">Rough estimates. NIST publishes no per-CVE cost, so these use about $90 per CVE (CISA's former $3.8M a year divided by 42,000 CVEs) and NIST's demonstrated ceiling of about 5,000 CVEs a month.</p>
+  <p class="lede">Rough estimates. NIST publishes no per-CVE cost, so these assume 20 to 60 analyst-minutes per CVE at $120 an hour, against NIST's peak monthly output of about 5,000 CVEs (an OIG observation, not a stated ceiling). Volumes are measured from the NVD stock (see the scorecard, section 3).</p>
   <div class="scroll">
     <table>
       <thead><tr><th>Option</th><th>CVEs added</th><th>Share of capacity</th><th>Crude cost</th></tr></thead>
       <tbody>
-        <tr><td>Re-check rule, EPSS ≥ 0.10, at 2026 average volume</td><td class="num">~250 / month</td><td class="num">~5%</td><td class="num">~$270K / yr</td></tr>
-        <tr><td>Same, at October 2026 volume</td><td class="num">~470 / month</td><td class="num">~9%</td><td class="num">~$510K / yr</td></tr>
+        <tr><td>Re-check rule, EPSS ≥ 0.10: one-time load (measured Nov 7)</td><td class="num">303 once</td><td class="num">~6% of one month</td><td class="num">$12K–$36K once</td></tr>
+        <tr><td>Same, monthly flow (four measured months)</td><td class="num">11–28 / month</td><td class="num">0.2–0.6%</td><td class="num">~$5K–$40K / yr</td></tr>
         <tr><td>Quarterly performance metrics</td><td class="num">—</td><td class="num">—</td><td class="num">near zero</td></tr>
         <tr><td>Restore enrichment for every CVE</td><td class="num">all</td><td class="num">—</td><td class="num">"tens of millions" (unsourced)</td></tr>
-        <tr class="offset"><td><b>Offset:</b> Inspector General's estimate of funds NIST could redirect by cutting redundant re-scoring</td><td class="num">—</td><td class="num">—</td><td class="num">~$400K / yr</td></tr>
+        <tr class="offset"><td><b>For scale, not spare money:</b> OIG's value for the re-scoring NIST already stopped in April 2026 (~$800K over two years; NIST disputes it)</td><td class="num">—</td><td class="num">—</td><td class="num">~$400K / yr</td></tr>
       </tbody>
     </table>
   </div>
@@ -361,7 +361,7 @@ footer{font-size:.85rem;color:var(--muted);border-top:1px solid var(--rule);padd
       <li>EPSS v4 uses vendor data when NVD data is missing, but nobody has measured its accuracy on unenriched CVEs.</li>
       <li>Cost figures use a crude per-CVE proxy and a 2023 EPSS rate. Treat them as upper bounds.</li>
       <li>No source reports a breach caused by a missing NVD label. The case rests on lost coverage and time, not on a known incident.</li>
-      <li>Some sources sell alternatives (VulnCheck, Volerion) or advocate (CSA). GPT-6 Cyber figures are press-reported only. "V-etalon," NIST's reported AI tool, appears in one source.</li>
+      <li>Some sources sell alternatives (VulnCheck, Volerion) or advocate (CSA). GPT-6 Cyber figures are press-reported only. NIST says it is building an AI enrichment tool (blog, Aug 12, 2026), but nothing is released to measure, so the project cites the RFI's questions on human review and auditability (1(b), 3(b)) instead of the tool.</li>
     </ul>
   </div>
 </section>
@@ -396,10 +396,10 @@ footer{font-size:.85rem;color:var(--muted);border-top:1px solid var(--rule);padd
   <div class="talk">
     <h3>A three-minute talk track</h3>
     <ol>
-      <li><span class="t">0:00 · Hook</span>"For most software, the government's flaw database now adds product data only after CISA confirms an attack. The median wait for that confirmation has grown from 6 days to 14 since 2023."</li>
-      <li><span class="t">0:25 · Why now</span>"CVE volume roughly doubled this year, and RAND showed an AI agent can hack practice machines in under an hour for about $16. NIST can't label everything, so it triages."</li>
+      <li><span class="t">0:00 · Hook</span>"For most software, the government's flaw database now adds product data only after CISA confirms an attack. By our count the median wait for that confirmation went from 4 days in 2023 to 10 in 2025, and 9 so far this year."</li>
+      <li><span class="t">0:25 · Why now</span>"New CVEs more than tripled from January to October, and RAND showed an off-the-shelf AI agent, run by non-experts, can solve hacking challenges in under an hour each for under $20 in total. AI sped up a capacity problem that began in 2024. NIST can't label everything, so it triages."</li>
       <li><span class="t">0:55 · The real gap</span>"Severity scores mostly come from vendors now. What's missing is product data, the part that tells your scanner whether you're affected. Nobody else supplies it for free."</li>
-      <li><span class="t">1:30 · The tool</span>Open the scorecard. Walk through product-data coverage, the KEV trend, and the simulator. "A re-check rule adds about 250 to 470 CVEs a month, roughly what the Inspector General says NIST wastes on re-scoring."</li>
+      <li><span class="t">1:30 · The tool</span>Open the scorecard. Walk through product-data coverage, the KEV trend, and the simulator. "A re-check rule adds a one-time 303 CVEs, then 11 to 28 a month: under 1% of what NIST has processed in its busiest month."</li>
       <li><span class="t">2:20 · The ask</span>"NIST asked in August what metrics should measure the NVD. This is an answer: re-check stalled flaws when attack signals rise, and publish five numbers every quarter."</li>
     </ol>
   </div>
@@ -408,9 +408,10 @@ footer{font-size:.85rem;color:var(--muted);border-top:1px solid var(--rule);padd
   <div class="faq">
     <details><summary>Didn't NIST still enrich about half of new CVEs after April?</summary><div class="a"><p>Yes, according to Volerion for April to June. Another analysis says 8.4% for Q3. They define enrichment differently, and nobody publishes an official number. That disagreement is the argument for the scorecard. The live tool counts product data by tier, with its definition shown.</p></div></details>
     <details><summary>EPSS often rises only after attacks start. Why use it?</summary><div class="a"><p>Correct for new CVEs, so the project no longer uses it to screen them. For older, stalled CVEs, EPSS led KEV by about 201 days when it led at all. NIST's own CSWP 41 already combines EPSS, KEV, and a "likely exploited" score. The rule uses that measure for the backlog.</p></div></details>
-    <details><summary>Isn't this just a request for more money?</summary><div class="a"><p>No. The rule costs roughly $270K to $510K a year on a crude estimate. The Inspector General found about $400K a year NIST could redirect from redundant re-scoring. It is a rule change paid for by existing waste.</p></div></details>
+    <details><summary>Isn't this just a request for more money?</summary><div class="a"><p>No. The rule's load is measured: a one-time 303 CVEs, then 11 to 28 a month, under 1% of NIST's peak output, about $5K to $40K a year on a crude estimate. The Inspector General valued the re-scoring NIST already stopped at about $800,000 over two years (NIST disputes it); that is a scale comparison, not spare money. It is a rule change, not a new line.</p></div></details>
     <details><summary>Why not let the private market provide this data?</summary><div class="a"><p>Commercial services already cover more product data than NVD. Large organizations buy them. State and local governments lost MS-ISAC funding in 2025, and hospitals and small businesses often can't pay. A free baseline protects them. RAND's RR-1700 notes that markets underinvest in security.</p></div></details>
     <details><summary>Is AI the cause of all this?</summary><div class="a"><p>No. The backlog began in February 2024 when a contract lapsed. NIST cites a 263% rise in submissions without mentioning AI. AI makes an existing capacity problem worse and makes triage permanent.</p></div></details>
+    <details><summary>Won't AI make this obsolete?</summary><div class="a"><p>"AI may stop shipping bugs. It won't unship the old ones, and it's finding more of them every month. Whatever AI does to new code, someone has to track the old code, and measure whether that tracking works." Behind it: AI-written proofs cover specific properties under specific assumptions, and Anthropic says "formally verified" does not mean "bug-free"; zero-days in RAND's sample went undiscovered for 6.9 years on average; GitLab CVE-2026-110264 reaches back to version 7.0 (2014); and 30 of 285 KEV additions in 2026 were published four or more years earlier.</p></div></details>
     <details><summary>Is this only about government software?</summary><div class="a"><p>No. Government agencies run the system, so they can change it. Almost every scanner and compliance program reads NVD data, so the effects reach everyone. The software outside the federal tiers is exactly where the gap is.</p></div></details>
   </div>
 </section>

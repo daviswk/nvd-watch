@@ -158,6 +158,7 @@
         <p><b>Did defenders have CPE when they needed it?</b> We define "when they needed it" as before CISA confirmed exploitation, and score two things separately. <b>Readiness:</b> of the 23 CVEs added to KEV in this window that were already public (and not enriched before the April 2026 triage), 10 had CPE before the listing. The other 13 got it only afterward, 4 of them within two hours of NVD logging the listing; one had been public for 90 days. Whether NIST starts work at the listing or releases work it had prepared, NVD users did not see CPE for these until CISA acted. <span class="note">Of the 35 additions, 6 were listed on or before the day NVD published them, and 6 had CPE from before the triage; both groups are left out of readiness.</span> <b>The goal:</b> once listed, 34 of 35 had CPE within one business day, every first CPE record from NIST. NIST meets its goal once a CVE is listed. The gap is the wait before the listing.</p>
         <p class="note">Method: first "CPE Configuration" event in the NVD CVE Change History API, against KEV <code>dateAdded</code>. The clock starts at the later of listing and NVD publication. Weekdays only, no holiday calendar. Data: <a href="data/kev_enrichment.json">kev_enrichment.json</a>.</p>
         <p>KEV is also narrow: VulnCheck counted 884 CVEs exploited in the wild in 2025, while CISA added 245 to KEV (vendor figure).</p>
+        <p><b>Old flaws are still being exploited.</b> Of the 285 CVEs CISA added to KEV in 2026 through November 6, 2026, 30 (10.5%) had been published four or more years before the listing (2023: 9.6%; 2024: 11.3%; 2025: 14.3%). <span class="note">CVE age, not code age: see Definitions. Data: <a href="data/kev_lag.json">kev_lag.json</a>.</span></p>
       </div>
       <div>
         <h3>Worked example: PHP2Shell</h3>
@@ -285,6 +286,8 @@
       <dt>EPSS</dt><dd>FIRST's Exploit Prediction Scoring System: a daily probability (0 to 1) that a CVE is exploited in the next 30 days.</dd>
       <dt>LEV</dt><dd>Likely Exploited Vulnerabilities, NIST CSWP 41 (May 2025): a composite that takes the maximum of EPSS, KEV, and a historical likelihood estimate.</dd>
       <dt>SSVC</dt><dd>CISA's Stakeholder-Specific Vulnerability Categorization. Its exploitation field is none, proof-of-concept, or active.</dd>
+      <dt>Legacy share</dt><dd>Of the CVEs CISA added to KEV in a year (any publication year), the share whose NVD publication came four or more years (1,461 days) before the KEV <code>dateAdded</code>. This is CVE age, not code age: a CVE published this year can sit in code written a decade ago, so the share understates how old the exploited code is. Estimating installed-base lifetimes and code age from the affected-version ranges in CVE records is future work.</dd>
+      <dt>AI-assisted enrichment</dt><dd>NIST does not yet label which NVD records were enriched with AI help. If it does, this scorecard will report coverage and correction rates by source.</dd>
       <dt>Window</dt><dd>CVEs with an NVD publication date in the 30 days before the pull. Rejected records are excluded from every share.</dd>
     </dl>
   </div>

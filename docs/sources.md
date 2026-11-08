@@ -17,7 +17,9 @@ Full annotated list with more links: `docs/research/evidence-review.md`. Vendor 
 - RR-1700, A Framework for Exploring Cybersecurity Policy Options (2016): https://www.rand.org/content/dam/rand/pubs/research_reports/RR1700/RR1700/RAND_RR1700.pdf
 - Polley, To Disclose, or Not to Disclose (Pardee RAND dissertation, 2022): https://www.rand.org/content/dam/rand/pubs/rgs_dissertations/RGSDA1900/RGSDA1954-1/RAND_RGSDA1954-1.pdf
 - Jacobs, Romanosky et al., EPSS (2019): https://arxiv.org/pdf/1908.04856
-- Background: RR-A1888-2 (2023); RR-A4983-1 (2026); Sarma & Fisher, "Tipping the Cyber Balance" (Feb 2026)
+- Tierney et al., RR-A1888-2, Quantifying Vulnerability Lifespans for U.S. Marine Corps Joint Cyber Weapons (Nov 14, 2023): https://www.rand.org/pubs/research_reports/RRA1888-2.html — ICS minor updates every 178 days on average
+- Alhajjar, Romanosky, Kilian & Uchill, RR-A4983-1, A Structured Approach to Identifying and Characterizing AI Vulnerabilities (Jul 30, 2026): https://www.rand.org/pubs/research_reports/RRA4983-1.html — 31 classes of AI vulnerabilities
+- Background: Sarma & Fisher, "Tipping the Cyber Balance" (Feb 2026)
 
 ## Measurement and analysis
 - Barracuda, The KEV gap (Jul 24, 2026) (V): https://blog.barracuda.com/2026/07/24/KEV-gap-how-fast-do-exploited-bugs-get-flagged
@@ -51,6 +53,12 @@ These measure the CVE ecosystem; NVD Watch measures NIST. Link or cite, don't re
 ## Data quality and tool exposure
 - Anwar, Abusnaina, Chen, Li & Mohaisen, Cleaning the NVD: Comprehensive Quality Assessment, Improvements, and Analyses, IEEE TDSC 19(6):4255–4269 (2022), doi:10.1109/TDSC.2021.3125270: https://faculty.cc.gatech.edu/~frankli/papers/nvd_tdsc2022.pdf — peer-reviewed; NVD snapshot of May 21, 2018
 - "Ikesan", NIST NVD goes risk-based: which SCA tools still miss Deferred CVEs, Lilting Channel (May 12, 2026) (V, single analyst, untested): https://lilting.ch/en/articles/nist-nvd-risk-based-cve-enrichment
+
+## AI and code durability
+- Anthropic Frontier Red Team, LLMs are making formal software verification feasible at a much larger scale (Oct 22, 2026) (V; the project uses Claude): https://www.anthropic.com/research/formal-verification
+- Stenberg, ignore the slop (Oct 22, 2026): https://daniel.haxx.se/blog/2026/10/22/ignore-the-slop/
+- Tom's Hardware (Luke James), Torvalds on AI bug reports, May 18, 2026: https://www.tomshardware.com/software/linux/linus-torvalds-says-ai-bug-reports-have-made-the-linux-security-mailing-list-almost-entirely-unmanageable
+- GitLab CVE-2026-110264 (NVD), affects GitLab from 7.0; v7.0.0 tagged Jun 20, 2014: https://gitlab.com/gitlab-org/gitlab/-/tags/v7.0.0
 
 ## Cases
 - PHP2Shell: Recorded Future https://www.recordedfuture.com/blog/php2shell-vulnerability-exploitation ; The Register (Oct 27, 2026) https://www.theregister.com/cyber-crime/2026/10/27/cisa-confirms-php2shell-under-attack-as-researchers-clock-successful-exploits/5305681
