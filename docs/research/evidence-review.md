@@ -44,7 +44,7 @@ CPE, the product-applicability data that scanners use to match a CVE to installe
 
 - CISA's Vulnrichment program **stopped adding CPE on December 10, 2024** ([cisagov/vulnrichment](https://github.com/cisagov/vulnrichment)). That left NIST as the only federal source of CPE.
 - For 2024 CVEs, NVD's CPE coverage was **41.35%**, against **76.95%** from VulnCheck's commercial NVD++ ([CSA citing VulnCheck](https://labs.cloudsecurityalliance.org/research/csa-research-note-nist-nvd-enrichment-overhaul-20260429-csa/)).
-- CNA records do not supply CPE at all, so scanner product matching fails without it.
+- CNA records seldom supply CPE. The CVE Record Format has an optional `affected[].cpes` field, but in our Nov 7 pull only 1,430 of the 13,207 window CVEs without NVD CPE (10.8%) carry it in the CVE record (cvelistV5, Nov 8). NVD does not turn those values into CPE configurations, so scanners that read NVD CPE still miss these CVEs. Source: `scripts/research/automated_mapping.py` → `data/processed/automated_mapping.json`. *(Corrected Nov 8, 2026; this line originally said "CNA records do not supply CPE at all".)*
 
 The half of NIST's policy that drops re-scoring of CNA-scored CVEs is defensible, and the brief should not attack it. The half that leaves CPE unassigned outside the priority tiers is where defenders actually lose coverage.
 

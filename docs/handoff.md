@@ -4,6 +4,17 @@ Written Nov 7, 2026 at the end of the first Claude Code session (Claude Fable 5.
 
 **Updated Nov 8, 2026 (Claude Opus 5.5 session):** the weekly rebuild workflow was added and its first run (manual, Nov 8 05:21 UTC) passed end to end. The page now refreshes itself every Monday, so the live numbers move week to week. See §5 item 2 and the new gotchas in §6.
 
+**Updated Nov 8, 2026, overnight (Claude Opus 5.5, red-team round 6, branch `redteam-nov7`, not yet merged):**
+
+- **State.** The weekly rebuild has run once: manually, Nov 8. NVD pull at 05:21 UTC, KEV history at 05:23 UTC; bot commit `b80cd47`. Its first scheduled run is Monday, Nov 9, 12:47 UTC.
+- **New research.** Pre-triage readiness baseline, status-before-listing of the 13, trigger recall and volume, benefit estimate, request channel, automated mapping and scanner matching. Results are in `docs/red-team-nov7-response.md`. Scripts are in `scripts/research/`, outputs in `data/processed/`.
+- **Pipeline changes (run weekly once merged):**
+  - `kev_enrichment.py` also writes `data/history/kev_cumulative.json`.
+  - `stability.py` reports window overlap.
+  - The page shows the KEV goal as "x of y resolved, z pending" and cites OSV only while the orphan row shows.
+- **Known limitation, not yet fixed in `kev_enrichment.py`.** CVEs that NIST analysed before its change history logged details have no "CPE Configuration" event for their original CPE. The rule then dates their first CPE to a later re-analysis. It does not affect the current 10 of 23, which are all 2026 CVEs. See the response doc.
+- **Large inputs.** Downloaded to `data/raw/ext/` (git-ignored, ~1.4 GB): NVD yearly feeds, the CPE dictionary, EPSS files and cvelistV5.
+
 ## 1. Where the project stands
 
 **Live:** https://daviswk.github.io/nvd-watch/ (GitHub Pages, deployed on every push to `main` by `.github/workflows/pages.yml`, and every Monday 12:47 UTC by `.github/workflows/rebuild.yml`, which pulls fresh data, commits it as github-actions[bot] and deploys). Latest pull: Nov 8, 2026 (window Oct 9 – Nov 8). Repo: https://github.com/daviswk/nvd-watch, public. Check `git log` for the latest commit; the tree is kept clean between sessions.
