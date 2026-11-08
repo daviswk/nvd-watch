@@ -24,7 +24,7 @@ A public scorecard that measures whether the U.S. vulnerability warning system s
 | 2. Definitions | `docs/metric-definitions.md` | Each of the five metrics defined in one paragraph with the exact field logic |
 | 3. KEV lag | `data/processed/kev_lag.json` (`scripts/kev_lag.py`), **done** | Median CVE-published → KEV dateAdded by year, reproducing (or disagreeing with) Barracuda |
 | 3b. KEV enrichment timing | `data/processed/kev_enrichment.json` (`scripts/kev_enrichment.py`), **done** | Readiness before listing and the one-business-day goal, from NVD change history |
-| 4. Re-check estimate | `summary.json` (`floodline` block, via `fetch_floodline()`), **done** | Floodline day-30 crossing rate × our 30-day volume; rough, biased both ways (see `data-notes.md`) |
+| 4. Re-check estimate | `data/processed/recheck_measured.json` (`scripts/research/recheck_volume.py`), **done** | Measured from the whole NVD stock: 76,217 CVEs without CPE; 303 once at EPSS ≥ 0.10 ($12K–$36K), then 11–28 a month (~$30K a year at the default 28). The earlier Floodline-based 16–46 a month is retired; Floodline now feeds only the section 2 maturation figures |
 | 5. Scorecard page | `site/index.html` | Four sections populated only from processed data + cited constants |
 | 6. Brief | `brief/brief.md` → PDF | ≤3 pages, numbers match the site |
 | 7. AI log | `docs/ai-collaboration-log.md` | Final pass: every entry has a verification note |

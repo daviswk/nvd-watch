@@ -9,10 +9,11 @@ Sections are appended in order, so later sections can revise earlier ones. When 
 - **Coverage:** 22.6% of non-rejected CVEs published Oct 8 – Nov 7 have CPE (3,863 of 17,070); 77.4% do not. Coverage matures: the Apr 15 – Jun 15 cohort is at 57.3% five months on, with 37.9% still Not Scheduled. See *Pull 1* and *Verification pulls*.
 - **"When defenders need it"** = **before** the KEV listing, compared by timestamp. Score **readiness** (CPE before listing) separately from **NIST's goal** (CPE within one business day of the later of listing and NVD publication). See *KEV cohort extended…* (last section), which replaces the day-based definition in *KEV CVEs: was CPE there…*.
 - **KEV result:** of the 35 CVEs added to KEV in the window (any publication year), 34 met the goal (1 pending), every first CPE record from NIST. Readiness: of 23 public before listing and not enriched pre-triage (35 − 6 listed on or before NVD publication − 6 with pre-triage CPE), 10 had CPE beforehand; several got it within minutes of NVD logging the listing. Claim the defender's view (no CPE visible until CISA listed them), not that NIST starts work at the listing. See *Fourth red-team round*.
-- **Re-check volume:** Floodline day-30 rate × our volume = 16–46 a month (simulator default 16), $8K–$66K a year (default $8K–$23K). **Rough, biased both ways, not a lower bound:** 7 of the 10 CVEs at EPSS ≥ 0.10 are in KEV, whose listing tends to raise EPSS (pushes it down); of the 3 outside KEV, 2 lack CPE; later crossings, the older stock and SSVC triggers are uncounted (push it up). The OIG's ~$400K a year is a scale comparison, not spare money. See the last section, which revises *Re-check volume from CVE Floodline*.
+- **Superseded by the next bullet (Nov 7); kept for the record, do not cite.** **Re-check volume:** Floodline day-30 rate × our volume = 16–46 a month (simulator default 16), $8K–$66K a year (default $8K–$23K). **Rough, biased both ways, not a lower bound:** 7 of the 10 CVEs at EPSS ≥ 0.10 are in KEV, whose listing tends to raise EPSS (pushes it down); of the 3 outside KEV, 2 lack CPE; later crossings, the older stock and SSVC triggers are uncounted (push it up). The OIG's ~$400K a year is a scale comparison, not spare money. See the last section, which revises *Re-check volume from CVE Floodline*.
 - **Re-check load, measured (Nov 7):** two parts. One-time: 303 stock CVEs (Not Scheduled, Awaiting or Received; no CPE; not KEV) already at EPSS ≥ 0.10. Monthly: ~11–28 re-queues at 0.10, mostly CVEs over 90 days old. The stock is 76,217 CVEs. Day-90 cohort (Jun 15 – Jul 14): 0.442% ever ≥ 0.10 vs 0.263% by day 30, but only 7 of 8,376 need a re-queue. The 16–46 total is in range, but its composition was wrong (new CVEs, mostly with CPE). Source: `docs/research/notes/open_items_recheck_volume.md`, `scripts/research/recheck_volume.py`. On the page since Nov 7 (`data/processed/recheck_measured.json`; simulator default 28, the highest month).
 - **Orphaned CVEs (Nov 7):** of 13,207 CVEs without CPE, 72.1% (9,528) are in no package advisory OSV aggregates; 8.8% are in a language-package advisory and 19.0% only in distro advisories (including all 901 Linux kernel CVEs). Not Scheduled: 85.2% orphaned. Orphans are WordPress components and small projects as much as enterprise vendors (Oracle, IBM, HPE, Juniper); not "mostly appliances". One young window; see *Orphaned CVEs*. On the page as a row under the section 1 status table, plus a paragraph; `build_site.py` shows both only while `osv_orphans.json` covers the same window as `summary.json`, so a new pull drops them until the script is re-run.
 - **Legacy share (Nov 7):** 30 of 285 KEV additions in 2026 (10.5%) were published 4+ years before listing; 9.6 / 11.3 / 14.3% in 2023–25, no trend (`kev_lag.json`, on the page in section 2). CVE age, not code age. The re-check stock is not "legacy" (most of it is from 2026). A CPE-revision proxy (20 of 34 KEV CVEs revised after first CPE) is too blunt to show. See *Legacy share and a CPE-revision proxy*.
+- **CVSS shares (Nov 7):** use the non-rejected denominator: 94.5% of new CVEs carry some CVSS, 77.8% from the CNA that published the record, most of the rest from CISA-ADP (Vulnrichment), 2.8% from NIST. "CNAs score 94.5%" was wrong on the page until Nov 7. See *CVSS shares*.
 - **EPSS model:** v5 (`v2026.06.15`) since Jun 15, 2026, not v4.
 - **Vendor split:** Microsoft 92.4% with CPE; Linux, Mozilla and Red Hat 0%, in three different statuses. The cause is not observable from outside. See *CPE coverage by vendor*.
 - **Retired figures:** 250–470 re-queues a month, $270K–$510K a year, $7K–$58K a year, 21.7% non-KEV coverage, "lower bound".
@@ -30,8 +31,8 @@ Sections are appended in order, so later sections can revise earlier ones. When 
 | CVEs published in window | 17,729 | 659 are Rejected |
 | Share with NVD CPE (all) | 21.8% | `has_cpe` = `configurations` present |
 | Share with NVD CPE (excluding Rejected) | 22.6% | 3,863 of 17,070 |
-| Share with NIST-sourced CVSS | 2.7% | source `nvd@nist.gov` |
-| Share with any CVSS | 91.0% | CNA, CISA-ADP, or NIST |
+| Share with NIST-sourced CVSS | 2.7% | source `nvd@nist.gov`; Rejected in the denominator. **Use 2.8% of non-rejected** |
+| Share with any CVSS | 91.0% | CNA, CISA-ADP, or NIST; **Rejected in the denominator. Use 94.5% of non-rejected** (see *CVSS shares*, last section) |
 | Share with a CWE | 90.5% | |
 | In CISA KEV | 18 | 17 of 18 have CPE |
 | CPE share, not in KEV | 22.6% | 3,846 of 17,052, Rejected excluded (an earlier draft of this table showed 21.7%, with Rejected in the denominator; `summary.json` was already right) |
@@ -273,3 +274,19 @@ No trend; the page lists the years without a trend verb. **CVE age, not code age
 **Not "legacy backlog."** The re-check stock (76,217 CVEs; 303 at EPSS ≥ 0.10) is not relabeled: about 45,000 of the 76,217 were published after Apr 15, 2026 (`open_items_recheck_volume.md`). 29,017 were published before Mar 1, 2026.
 
 **CPE-revision proxy (not on the page; too blunt).** For the 34 KEV CVEs in `kev_enrichment.json` that have CPE, the NVD change history shows a later "CPE Configuration" event after the first one for **20**. Of those, 5 only *added* configurations (new affected products, e.g. downstream vendors), 15 include a Changed or Removed action, one of them a routine "CPE Deprecation Remap". Most later events are "Modified Analysis" after the CVE record itself changed. A revision is not an error, so this does not measure enrichment quality; it would need a diff-level review of what changed and why. Small n, KEV only (16 of the 20 were first enriched in 2026). Scratch script; input `kev_enrichment.json`, NVD CVE Change History API.
+
+## CVSS shares: non-rejected denominator, and who scores — Nov 7, 2026
+
+Pull 1's headline table gave 91.0% (any CVSS) and 2.7% (NIST) with the 659 Rejected records in the denominator; the page uses the non-rejected 17,070: **94.5% any, 2.8% NIST**. Rejected records carry no scores, so non-rejected is the right base; use it in the brief.
+
+The page also said "CNAs already score 94.5%", which was wrong. "Any CVSS" counts every scoring source. Split by source (raw file, same window):
+
+| Non-rejected CVEs (17,070) | CVEs | Share |
+|---|---|---|
+| Any CVSS | 16,133 | 94.5% |
+| From the CNA that published the record (metric `source` = record `sourceIdentifier`) | 13,273 | 77.8% |
+| From CISA-ADP (Vulnrichment, source `134c704f-…`) | 14,987 | 87.8% |
+| CISA-ADP is the only score | 2,719 | 15.9% |
+| From NIST (`nvd@nist.gov`) | 483 | 2.8% |
+
+The settled point stands (severity scores are not the gap), but the supplier is CNAs *and* CISA, not CNAs alone. `fetch_sample.py` now writes `has_cna_cvss` and `pct_with_cna_cvss_live`; the Nov 7 `summary.json` was backfilled from the same raw file with the same function (any and NIST shares re-derived identically) rather than re-running `--from-raw`, which would re-fetch KEV, EPSS and Floodline and move other figures.

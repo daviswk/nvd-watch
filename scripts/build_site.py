@@ -303,6 +303,7 @@ def main():
         "pct_cpe_live_num": f"{summary['pct_with_cpe_live']:.1f}",
         "pct_nist_cvss_live": fmt_pct(summary["pct_with_nist_cvss_live"]),
         "pct_any_cvss_live": fmt_pct(summary["pct_with_any_cvss_live"]),
+        "pct_cna_cvss_live": fmt_pct(summary["pct_with_cna_cvss_live"]),   # added Nov 7; older summaries lack it
         "pct_cna_live": fmt_pct(summary["pct_cna_names_product_live"]),
         "pct_cna_no_cpe_live": fmt_pct(summary["pct_cna_product_but_no_cpe_live"]),
         "kev_n": fmt_int(summary["in_kev"]),

@@ -11,6 +11,7 @@ Why these flags:
   has_cpe        -> product data exists (the gap this project measures)
   has_nist_cvss  -> NIST itself scored it (source "nvd@nist.gov")
   has_any_cvss   -> anyone scored it (CNA, CISA-ADP, or NIST)
+  has_cna_cvss   -> the CNA that assigned the CVE scored it (metric source == the record's sourceIdentifier)
   has_cwe        -> a weakness type was assigned
   in_kev         -> CISA has confirmed exploitation
 
@@ -195,6 +196,7 @@ def flags_for(vuln):
         "has_cpe": bool(cve.get("configurations")),
         "has_nist_cvss": any(m.get("source") == NIST_SOURCE for m in all_scores),
         "has_any_cvss": bool(all_scores),
+        "has_cna_cvss": any(m.get("source") == cve.get("sourceIdentifier") for m in all_scores),
         "has_cwe": bool(cve.get("weaknesses")),
         "cna_names_product": cna_names_product(cve),
         "nvd_kev_date": cve.get("cisaExploitAdd"),
@@ -256,6 +258,7 @@ def summarize(df):
         "pct_with_nist_cvss_live": pct(live, "has_nist_cvss"),
         "pct_with_any_cvss": pct(df, "has_any_cvss"),
         "pct_with_any_cvss_live": pct(live, "has_any_cvss"),
+        "pct_with_cna_cvss_live": pct(live, "has_cna_cvss"),   # the rest of "any" is mostly CISA-ADP (Vulnrichment)
         "pct_with_cwe": pct(df, "has_cwe"),
         "pct_cna_names_product_live": pct(live, "cna_names_product"),
         "pct_cna_product_but_no_cpe_live": round(100 * (live["cna_names_product"] & ~live["has_cpe"]).mean(), 1) if n_live else None,

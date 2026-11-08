@@ -35,6 +35,8 @@
 **Context (one line each)**
 - The gap is standardized identifiers, not product information: CNAs name a product for 94.0% [volatile] of new CVEs, but 71.3% [volatile] have that and no CPE.
 - Who bears it: state and local governments, hospitals, small businesses — those that can't buy commercial product data.
+- Severity scores are not the gap: 94.5% [volatile] of new CVEs carry one (77.8% from the CNA, most of the rest from CISA's Vulnrichment); NIST scored 2.8%. Use the non-rejected base, never 91%.
+- Federal demand already exists: FedRAMP's 2026 rules (mandatory Dec 7, 2026) require cloud providers to evaluate every detected vulnerability for whether it is "likely exploitable" (VER-EVA-ELX) and internet-reachable (VER-EVA-EIR). That evaluation starts with detection, and scanners detect by product data. FedRAMP's "LEV" is its own contextual term (Likely Exploit*able*), **not** NIST CSWP 41's Likely Exploit*ed* Vulnerabilities; FedRAMP cites no EPSS, NVD or CPE, so "needs CPE" is our inference.
 - Limits: counts are CVEs, not risk (#22); some threats never get a matchable CVE (one sentence: Aug 2026 Siemens S7 advisory listed no CVE IDs).
 
 **Won't AI make this obsolete?** (durability; one paragraph, here or before the recommendations)
@@ -65,7 +67,7 @@
 
 **What would change the recommendation (#5):** if high-EPSS Not Scheduled CVEs get CPE within a few weeks without a rule, the ask shrinks to the metrics. If NIST stopped meeting its KEV goal, KEV compliance would come first.
 
-**RAND (#10), one sentence:** RAND has not studied the NVD directly; this applies RAND frameworks (incentives, accountability, continuous measurement), and EPSS's lineage includes RAND-affiliated authors.
+**RAND (#10), one sentence:** RAND has not studied the NVD directly; this applies RAND frameworks (incentives, accountability, continuous measurement), and EPSS's lineage includes RAND-affiliated authors. Optional clause, as an analogy only: Polley's Pardee RAND dissertation on the Vulnerabilities Equities Process (2022; Romanosky on the committee) found that without public data the debate was "largely rooted in uninformed opinion", the same reason to publish tier counts. It studies zero-day retention, not NVD triage, so it supports transparency, not the rule.
 
 ## Footnote / site only
 - Future work (one sentence): estimating installed-base lifetimes and code age from the affected-version ranges in CVE records. The site's legacy share counts CVE age, not code age.
