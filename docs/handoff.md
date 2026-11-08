@@ -84,6 +84,7 @@ Things to leave alone: the detector findings on `.impeccable/decision/*.html` (s
 
 - **Pull before you work.** The Monday bot commit lands on `main`; a local session that hasn't pulled will hit a rejected push. `git pull --ff-only origin main` first.
 - **Push declined for email privacy (Nov 8).** GitHub refused a push because the commit email was Will's private Gmail; Will turned off "Block command line pushes that expose my email" (Settings → Emails). If it comes back, use `8902489+daviswk@users.noreply.github.com` as this repo's `user.email`.
+- **Local builds need a fresh fetch after a Monday run.** The bot commits `summary.json` but not the git-ignored `cves_sample.csv`, so after `git pull` the local CSV is a week old and `build_site.py` stops on its CPE cross-check. Run `fetch_sample.py --days 30` and `kev_enrichment.py` first (this commits a new pull; that's fine).
 - **Shifting window, shifting small-n figures.** A few hours' move of the 30-day window drops whole KEV listing days (Nov 8: 35 → 30). Before reporting a change in a KEV figure, check which CVEs left or entered and why.
 
 ## 7. How this session verified things (keep doing this)

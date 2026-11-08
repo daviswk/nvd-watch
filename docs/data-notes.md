@@ -4,11 +4,12 @@ Running notes on each pull: what the numbers say, how they were checked, and wha
 
 Sections are appended in order, so later sections can revise earlier ones. When that happens the earlier passage is marked **Superseded** in place, with a pointer, and this list is updated. **Read this list first; it is the current state.**
 
-## Current conclusions (as of Nov 7, 2026)
+## Current conclusions (as of Nov 8, 2026)
 
-- **Coverage:** 22.6% of non-rejected CVEs published Oct 8 – Nov 7 have CPE (3,863 of 17,070); 77.4% do not. Coverage matures: the Apr 15 – Jun 15 cohort is at 57.3% five months on, with 37.9% still Not Scheduled. See *Pull 1* and *Verification pulls*.
+- **Weekly pulls (from Nov 8):** `.github/workflows/rebuild.yml` re-pulls a rolling 30-day window every Monday and rebuilds the page, so the live figures move weekly. Cite a figure with its pull date and take every figure in one document from the same `data/history/YYYY-MM-DD/` folder. The Nov 7 figures below are the analysed pull; Nov 8 values are given beside them where they differ. See *Pull 2 — Nov 8, 2026*.
+- **Coverage:** 22.6% of non-rejected CVEs published Oct 8 – Nov 7 have CPE (3,863 of 17,070); 77.4% do not. Nov 8 pull (Oct 9 – Nov 8): 22.3% (3,795 of 17,035). Coverage matures: the Apr 15 – Jun 15 cohort is at 57.3% five months on, with 37.9% still Not Scheduled. See *Pull 1* and *Verification pulls*.
 - **"When defenders need it"** = **before** the KEV listing, compared by timestamp. Score **readiness** (CPE before listing) separately from **NIST's goal** (CPE within one business day of the later of listing and NVD publication). See *KEV cohort extended…* (last section), which replaces the day-based definition in *KEV CVEs: was CPE there…*.
-- **KEV result:** of the 35 CVEs added to KEV in the window (any publication year), 34 met the goal (1 pending), every first CPE record from NIST. Readiness: of 23 public before listing and not enriched pre-triage (35 − 6 listed on or before NVD publication − 6 with pre-triage CPE), 10 had CPE beforehand; several got it within minutes of NVD logging the listing. Claim the defender's view (no CPE visible until CISA listed them), not that NIST starts work at the listing. See *Fourth red-team round*.
+- **KEV result:** of the 35 CVEs added to KEV in the window (any publication year), 34 met the goal (1 pending), every first CPE record from NIST. Readiness: of 23 public before listing and not enriched pre-triage (35 − 6 listed on or before NVD publication − 6 with pre-triage CPE), 10 had CPE beforehand; several got it within minutes of NVD logging the listing. Claim the defender's view (no CPE visible until CISA listed them), not that NIST starts work at the listing. See *Fourth red-team round*. Nov 8 pull: 30 CVEs, 29 met the goal (1 pending), readiness still 10 of 23 (30 − 6 − 1); the 5 that left were all listed Oct 8. Two pulls: too few to call either figure stable (`scripts/stability.py`).
 - **Superseded by the next bullet (Nov 7); kept for the record, do not cite.** **Re-check volume:** Floodline day-30 rate × our volume = 16–46 a month (simulator default 16), $8K–$66K a year (default $8K–$23K). **Rough, biased both ways, not a lower bound:** 7 of the 10 CVEs at EPSS ≥ 0.10 are in KEV, whose listing tends to raise EPSS (pushes it down); of the 3 outside KEV, 2 lack CPE; later crossings, the older stock and SSVC triggers are uncounted (push it up). The OIG's ~$400K a year is a scale comparison, not spare money. See the last section, which revises *Re-check volume from CVE Floodline*.
 - **Re-check load, measured (Nov 7):** two parts. One-time: 303 stock CVEs (Not Scheduled, Awaiting or Received; no CPE; not KEV) already at EPSS ≥ 0.10. Monthly: ~11–28 re-queues at 0.10, mostly CVEs over 90 days old. The stock is 76,217 CVEs. Day-90 cohort (Jun 15 – Jul 14): 0.442% ever ≥ 0.10 vs 0.263% by day 30, but only 7 of 8,376 need a re-queue. The 16–46 total is in range, but its composition was wrong (new CVEs, mostly with CPE). Source: `docs/research/notes/open_items_recheck_volume.md`, `scripts/research/recheck_volume.py`. On the page since Nov 7 (`data/processed/recheck_measured.json`; simulator default 28, the highest month).
 - **Orphaned CVEs (Nov 7):** of 13,207 CVEs without CPE, 72.1% (9,528) are in no package advisory OSV aggregates; 8.8% are in a language-package advisory and 19.0% only in distro advisories (including all 901 Linux kernel CVEs). Not Scheduled: 85.2% orphaned. Orphans are WordPress components and small projects as much as enterprise vendors (Oracle, IBM, HPE, Juniper); not "mostly appliances". One young window; see *Orphaned CVEs*. On the page as a row under the section 1 status table, plus a paragraph; `build_site.py` shows both only while `osv_orphans.json` covers the same window as `summary.json`, so a new pull drops them until the script is re-run.
@@ -290,3 +291,33 @@ The page also said "CNAs already score 94.5%", which was wrong. "Any CVSS" count
 | From NIST (`nvd@nist.gov`) | 483 | 2.8% |
 
 The settled point stands (severity scores are not the gap), but the supplier is CNAs *and* CISA, not CNAs alone. `fetch_sample.py` now writes `has_cna_cvss` and `pct_with_cna_cvss_live`; the Nov 7 `summary.json` was backfilled from the same raw file with the same function (any and NIST shares re-derived identically) rather than re-running `--from-raw`, which would re-fetch KEV, EPSS and Floodline and move other figures.
+
+## Pull 2 — Nov 8, 2026 (first weekly rebuild)
+
+**How:** first run of `.github/workflows/rebuild.yml`, started by hand (run 42450443302, Nov 8 05:21 UTC; all steps passed). The runner ran `fetch_sample.py --days 30`, `kev_enrichment.py`, `kev_lag.py`, `build_site.py`, committed the outputs as github-actions[bot] (`b80cd47`) and deployed Pages. The live page was checked byte-for-byte against the committed `site/index.html`.
+**Window:** CVEs published 2026-10-09 05:21 UTC to 2026-11-08 05:21 UTC, about 10 hours later than Pull 1, so the two windows share almost all their CVEs. This is a check that the pipeline runs unattended, not a new sample.
+
+| Measure | Pull 1 (Nov 7) | Pull 2 (Nov 8) |
+|---|---|---|
+| CVEs in window (non-rejected) | 17,729 (17,070) | 17,691 (17,035) |
+| With CPE, non-rejected | 22.6% (3,863) | 22.3% (3,795) |
+| CPE share, not in KEV | 22.6% | 22.2% |
+| NIST-sourced CVSS, non-rejected | 2.8% | 2.6% |
+| Any CVSS / CNA CVSS, non-rejected | 94.5% / 77.8% | 94.5% / 77.8% |
+| Received (status) | 1,346 | 1,423 |
+| Enriched (Analyzed) | 3,170 | 3,103 |
+| Median time to enrichment (crude) | 7.2 days | 7.6 days |
+| No CPE, not KEV, EPSS ≥ 0.10 | 2 | 2 |
+| Published in window and in KEV | 18 (17 with CPE) | 18 (17 with CPE) |
+| KEV listings in window: goal met | 34 of 35 (1 pending) | 29 of 30 (1 pending) |
+| KEV listings in window: readiness | 10 of 23 | 10 of 23 |
+
+**Why coverage fell slightly.** Moving the window drops the oldest ~10 hours (CVEs most likely to be enriched by now) and adds the newest (none enriched yet). Enriched fell by 67 and Received rose by 77. Expect the same small downward edge effect whenever the window moves by less than a week.
+
+**Why the KEV cohort fell from 35 to 30.** The window now starts Oct 9, so every listing dated Oct 8 left the cohort: CVE-2015-3306, CVE-2015-5477, CVE-2016-3081, CVE-2021-3199, CVE-2023-22894. All five are old CVEs that had CPE before NIST's April 2026 triage, so they were outside the readiness denominator; readiness is unchanged (24 public before listing − 1 with pre-triage CPE = 23; 10 with CPE before listing). No CVE entered. With n this small, one listing day can move the goal count; check which CVEs moved before reporting a change.
+
+**Other effects.**
+- The section 1 orphan row is gone, as designed: `osv_orphans.json` still covers Oct 8 – Nov 7. `site/data/osv_orphans.json` stays published, so the sources link works. Re-run `scripts/research/osv_orphans.py` only if the brief needs a current orphan count.
+- `kev_lag.json` came out identical (same KEV catalog). Floodline's file was unchanged (generated Nov 7).
+- `recheck_measured.json` stays dated Nov 7 by design (one-time measurement).
+- **The local `data/processed/cves_sample.csv` is now stale.** The runner's CSV is not committed (git-ignored), so the local CSV is still the Nov 7 pull while `summary.json` is Nov 8. `build_site.py` cross-checks the two and will stop. Run `fetch_sample.py --days 30` (or wait and pull after the next rebuild, then re-fetch) before building locally.
