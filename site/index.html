@@ -20,7 +20,7 @@
     <div>
       <p class="product">NVD Watch <span>· Weekly scorecard of the U.S. vulnerability warning system</span></p>
       <h1>Most new vulnerabilities reach defenders without scanner-matchable product data</h1>
-      <p class="meta">Week ending November 8, 2026 · CVEs published October 9, 2026 to November 8, 2026 · Data pulled 2026-11-08 05:23 UTC</p>
+      <p class="meta">Week ending November 9, 2026 · CVEs published October 10, 2026 to November 9, 2026 · Data pulled 2026-11-09 12:53 UTC</p>
     </div>
     <div class="actions">
       <button class="btn primary" id="copy-citation" type="button" aria-describedby="cite">
@@ -61,27 +61,27 @@
       <p>Since April 15, 2026, NIST fully enriches only CVEs that are in CISA's Known Exploited Vulnerabilities catalog, in federal software, or in software deemed critical under Executive Order 14028. Everything else waits, most of it under the status "Not Scheduled."</p>
       <p>Enrichment is what attaches a CPE record to a CVE. Without it, vulnerability scanners cannot tell an organization that it is affected. State and local governments, hospitals, and small businesses depend on this free data because they cannot buy a commercial substitute.</p>
       <p>NIST asked the public what metrics should track the NVD's success (RFI question 7(e), August 2026). This page is a working answer, rebuilt weekly from the NVD's own API.</p>
-      <p class="source">Computed from NVD API 2.0, the CISA KEV feed, and the FIRST EPSS API. 17,691 records, 656 Rejected excluded. Method and data: <a href="data/summary.json">summary.json</a>.</p>
+      <p class="source">Computed from NVD API 2.0, the CISA KEV feed, and the FIRST EPSS API. 17,571 records, 652 Rejected excluded. Method and data: <a href="data/summary.json">summary.json</a>.</p>
       <p class="source">This measures NIST, not the CVE flood. For CVE volume see <a href="https://cve.icu">CVE.ICU</a>, for how exploitability matures after disclosure see <a href="https://cvefloodline.org">CVE Floodline</a>, and for CNA record quality see <a href="https://cnascorecard.org">CNA Scorecard</a>, all by RogoLabs.</p>
     </div>
     <div>
       <h2 id="h-found">What we found</h2>
       <div class="finding" id="m-cpe">
-        <p class="figure">22.3%</p>
+        <p class="figure">22.1%</p>
         <p class="what">of new CVEs carry scanner-matchable product data (CPE)
-          <small>3,795 of 17,035 CVEs published October 9, 2026 to November 8, 2026. CPE exists only on records NIST has enriched.</small>
+          <small>3,745 of 16,919 CVEs published October 10, 2026 to November 9, 2026. CPE exists only on records NIST has enriched.</small>
         </p>
       </div>
       <ul class="findings">
         <li><b>Once CISA confirms an attack, NIST moves fast. Before that, it mostly waits.</b>
           <table class="data kev-pair">
-            <caption class="sr-only">CVEs CISA added to KEV, October 9, 2026 to November 8, 2026</caption>
+            <caption class="sr-only">CVEs CISA added to KEV, October 10, 2026 to November 9, 2026</caption>
             <tbody>
               <tr><th scope="row">Had CPE before the KEV listing (readiness)</th><td class="num"><b>10 of 23</b></td></tr>
               <tr><th scope="row">Had CPE within one business day after it (NIST's goal)</th><td class="num"><b>29 of 29 resolved, 1 pending</b></td></tr>
             </tbody>
           </table>
-          The groups differ: readiness counts only CVEs that were already public, and not enriched before the April triage, when CISA listed them. CVE-2026-19868 (listed November 6, 2026) has no CPE yet. Among CVEs not in KEV, 22.2% have CPE. By our count, the median lag from CVE publication to a KEV listing was 4 days in 2023, 7 in 2024, 10 in 2025, and 9 so far in 2026.</li>
+          The groups differ: readiness counts only CVEs that were already public, and not enriched before the April triage, when CISA listed them. CVE-2026-19868 (listed November 6, 2026) has no CPE yet. Among CVEs not in KEV, 22.1% have CPE. By our count, the median lag from CVE publication to a KEV listing was 4 days in 2023, 7 in 2024, 10 in 2025, and 9 so far in 2026.</li>
         <li><b>The fix is small next to NIST's capacity.</b> A published rule to re-check CVEs without CPE when their EPSS score reaches 5% would re-queue 443 set-aside CVEs once, then 11 to 36 a month (our count, November 7, 2026): at most 0.7% of the roughly 5,000 CVEs a month NIST has processed at its peak. For scale: that is a fraction of the routine re-scoring NIST stopped in April 2026, which the Commerce Inspector General valued at about $400,000 a year.</li>
       </ul>
       <h2 id="h-rec" style="margin-top:30px">What we recommend</h2>
@@ -99,20 +99,20 @@
 <section class="section" id="gap" aria-labelledby="h-gap">
   <div class="wrap">
     <h2 id="h-gap"><span class="n">1</span>The gap</h2>
-    <p class="lede">Product data, not severity scores, is what the NVD no longer supplies for most CVEs. 94.5% of new CVEs already carry a severity score: the CNA that published the record scored 77.8%, CISA's Vulnrichment program supplies most of the rest, and NIST itself scored 2.6%. But CPE, the standardized identifier scanners match on, exists on 22.3%.</p>
+    <p class="lede">Product data, not severity scores, is what the NVD no longer supplies for most CVEs. 94.2% of new CVEs already carry a severity score: the CNA that published the record scored 77.6%, CISA's Vulnrichment program supplies most of the rest, and NIST itself scored 2.5%. But CPE, the standardized identifier scanners match on, exists on 22.1%.</p>
     <div class="two">
       <div>
         <table class="data stack" id="t-status">
-          <caption>New CVEs by NVD status, October 9, 2026 to November 8, 2026</caption>
+          <caption>New CVEs by NVD status, October 10, 2026 to November 9, 2026</caption>
           <thead><tr><th scope="col">Status</th><th scope="col" class="num">CVEs</th><th scope="col" class="num">Share</th><th scope="col" class="num">With CPE</th><th scope="col" class="num">CNA names a product</th></tr></thead>
           <tbody>
-<tr><th scope="row">Not Scheduled <span class="api">API: Deferred</span></th><td class="num" data-label="CVEs">6,962</td><td class="num" data-label="Share">40.9%</td><td class="num" data-label="With CPE">0.0%</td><td class="num" data-label="CNA names a product">87.5%</td></tr>
-<tr><th scope="row">Awaiting Enrichment <span class="api">API: Awaiting Analysis</span></th><td class="num" data-label="CVEs">4,149</td><td class="num" data-label="Share">24.4%</td><td class="num" data-label="With CPE">0.0%</td><td class="num" data-label="CNA names a product">97.2%</td></tr>
-<tr><th scope="row">Enriched <span class="api">API: Analyzed</span></th><td class="num" data-label="CVEs">3,103</td><td class="num" data-label="Share">18.2%</td><td class="num" data-label="With CPE">100.0%</td><td class="num" data-label="CNA names a product">100.0%</td></tr>
-<tr><th scope="row">Received <span class="api">API: Received</span></th><td class="num" data-label="CVEs">1,423</td><td class="num" data-label="Share">8.4%</td><td class="num" data-label="With CPE">0.0%</td><td class="num" data-label="CNA names a product">97.1%</td></tr>
-<tr><th scope="row">Undergoing Enrichment <span class="api">API: Undergoing Analysis</span></th><td class="num" data-label="CVEs">708</td><td class="num" data-label="Share">4.2%</td><td class="num" data-label="With CPE">0.3%</td><td class="num" data-label="CNA names a product">100.0%</td></tr>
+<tr><th scope="row">Not Scheduled <span class="api">API: Deferred</span></th><td class="num" data-label="CVEs">6,739</td><td class="num" data-label="Share">39.8%</td><td class="num" data-label="With CPE">0.0%</td><td class="num" data-label="CNA names a product">87.7%</td></tr>
+<tr><th scope="row">Awaiting Enrichment <span class="api">API: Awaiting Analysis</span></th><td class="num" data-label="CVEs">4,003</td><td class="num" data-label="Share">23.7%</td><td class="num" data-label="With CPE">0.0%</td><td class="num" data-label="CNA names a product">97.2%</td></tr>
+<tr><th scope="row">Enriched <span class="api">API: Analyzed</span></th><td class="num" data-label="CVEs">3,053</td><td class="num" data-label="Share">18.0%</td><td class="num" data-label="With CPE">100.0%</td><td class="num" data-label="CNA names a product">100.0%</td></tr>
+<tr><th scope="row">Received <span class="api">API: Received</span></th><td class="num" data-label="CVEs">1,574</td><td class="num" data-label="Share">9.3%</td><td class="num" data-label="With CPE">0.0%</td><td class="num" data-label="CNA names a product">94.5%</td></tr>
+<tr><th scope="row">Undergoing Enrichment <span class="api">API: Undergoing Analysis</span></th><td class="num" data-label="CVEs">860</td><td class="num" data-label="Share">5.1%</td><td class="num" data-label="With CPE">0.2%</td><td class="num" data-label="CNA names a product">100.0%</td></tr>
 <tr><th scope="row">Modified After Enrichment <span class="api">API: Modified</span></th><td class="num" data-label="CVEs">690</td><td class="num" data-label="Share">4.1%</td><td class="num" data-label="With CPE">100.0%</td><td class="num" data-label="CNA names a product">100.0%</td></tr>
-            <tr class="total"><th scope="row">All, excluding Rejected</th><td class="num" data-label="CVEs">17,035</td><td class="num" data-label="Share">100%</td><td class="num" data-label="With CPE">22.3%</td><td class="num" data-label="CNA names a product">94.0%</td></tr>
+            <tr class="total"><th scope="row">All, excluding Rejected</th><td class="num" data-label="CVEs">16,919</td><td class="num" data-label="Share">100%</td><td class="num" data-label="With CPE">22.1%</td><td class="num" data-label="CNA names a product">93.9%</td></tr>
 
           </tbody>
           <tfoot><tr><td colspan="5">Status labels are NIST's display names; the API value is shown beneath each. "CNA names a product" means the CNA's own record gives a real vendor and product name in free text, which is not a CPE identifier. "No open package advisory": no advisory in any package ecosystem that OSV aggregates (GitHub, PyPI, npm, Go, Debian, Ubuntu, Red Hat and others) lists the CVE, so neither CPE nor a package name lets a scanner match it.</td></tr></tfoot>
@@ -120,10 +120,10 @@
       </div>
       <div>
         <h3>What the status table says</h3>
-        <p><b>40.9% of new CVEs are Not Scheduled</b> (6,962 this window): NIST does not plan to enrich them. Another 24.4% are Awaiting Enrichment. None of these has CPE.</p>
-        <p><b>The gap is standardized identifiers, not product information.</b> CNAs name a real vendor and product for 94.0% of new CVEs. 71.7% of CVEs have that free-text product data and no CPE, so scanners that match on CPE still miss them.</p>
+        <p><b>39.8% of new CVEs are Not Scheduled</b> (6,739 this window): NIST does not plan to enrich them. Another 23.7% are Awaiting Enrichment. None of these has CPE.</p>
+        <p><b>The gap is standardized identifiers, not product information.</b> CNAs name a real vendor and product for 93.9% of new CVEs. 71.8% of CVEs have that free-text product data and no CPE, so scanners that match on CPE still miss them.</p>
         
-        <p><b>Time to enrichment, when it happens:</b> for the 3,103 CVEs enriched in this window, the median was 7.6 days after publication and the 90th percentile 16 days. <span class="note">Crude measure: last-modified minus published, counted only for CVEs already enriched, so slow cases are under-counted.</span></p>
+        <p><b>Time to enrichment, when it happens:</b> for the 3,053 CVEs enriched in this window, the median was 7.7 days after publication and the 90th percentile 16 days. <span class="note">Crude measure: last-modified minus published, counted only for CVEs already enriched, so slow cases are under-counted.</span></p>
         <h3>How this differs from the figures in circulation</h3>
         <p>Published coverage estimates range from about 50% (Volerion, April to June 2026) to 8.4% (Cyber Strategy Institute, Q3 2026) because each uses a different definition and window. Ours counts the share of non-rejected CVEs published in the last 30 days whose NVD record has a CPE configuration, and the definition does not change.</p>
         <p>Coverage also rises as CVEs age: of the CVEs published April 15 to June 15, 2026, 57% had CPE by November 7. A 30-day window shows what defenders have while a vulnerability is new, which is when they need it.</p>
@@ -154,7 +154,7 @@
           </svg>
           <figcaption class="note">KEV listings by year added, CVEs published 2022 or later; calendar days from NVD publication to KEV <code>dateAdded</code>. 2026 is through November 6. Computed by <code>scripts/kev_lag.py</code>. Barracuda's July 2026 analysis of the same population reports a steeper rise, 6 to 14 days (vendor analysis).</figcaption>
         </figure>
-        <p><b>In this window:</b> 18 CVEs published October 9, 2026 to November 8, 2026 are in KEV; the median lag from NVD publication to listing was 2 days (n = 18). Short windows catch only the fastest listings, so this understates the lag.</p>
+        <p><b>In this window:</b> 18 CVEs published October 10, 2026 to November 9, 2026 are in KEV; the median lag from NVD publication to listing was 2 days (n = 18). Short windows catch only the fastest listings, so this understates the lag.</p>
         <p><b>Did defenders have CPE when they needed it?</b> We define "when they needed it" as before CISA confirmed exploitation, and score two things separately. <b>Readiness:</b> of the 23 CVEs added to KEV in this window that were already public (and not enriched before the April 2026 triage), 10 had CPE before the listing. The other 13 got it only afterward, 4 of them within two hours of NVD logging the listing; one had been public for 90 days. Whether NIST starts work at the listing or releases work it had prepared, NVD users did not see CPE for these until CISA acted. <span class="note">Of the 30 additions, 6 were listed on or before the day NVD published them, and 1 had CPE from before the triage; both groups are left out of readiness.</span> <b>The goal:</b> once listed, 29 of the 29 with CPE so far had it within one business day (1 still pending), every first CPE record from NIST. NIST meets its goal once a CVE is listed. The gap is the wait before the listing.</p>
         <p class="note">Method: first "CPE Configuration" event in the NVD CVE Change History API, against KEV <code>dateAdded</code>. The clock starts at the later of listing and NVD publication. Weekdays only, no holiday calendar. Data: <a href="data/kev_enrichment.json">kev_enrichment.json</a>.</p>
         <p>KEV is also narrow: VulnCheck counted 884 CVEs exploited in the wild in 2025, while CISA added 245 to KEV (vendor figure).</p>
@@ -171,9 +171,9 @@
         <p>PHP is federally used software, so NIST enriched it without waiting for KEV: the priority rules worked here. What the case shows is the KEV signal itself, nine days after the first attempt. For software outside NIST's priorities, that listing is when CPE work begins.</p>
         <p class="note">Sources: NVD change history; CISA KEV; Recorded Future; BleepingComputer and The Register, October 27, 2026. Dates are the published reporting dates, not first-occurrence estimates.</p>
         <h3>Where EPSS fits</h3>
-        <p>EPSS, FIRST's daily exploitation-probability score, led KEV in only 19% of cases, but by about 201 days when it did (Barracuda). It is not an intake screen for brand-new CVEs: in this window only 2 CVEs without CPE and outside KEV scored 0.10 or higher (7 at 0.05; 285 at 0.01), and 914 had no score yet. It is a re-check trigger for the stock of CVEs that were set aside.</p>
+        <p>EPSS, FIRST's daily exploitation-probability score, led KEV in only 19% of cases, but by about 201 days when it did (Barracuda). It is not an intake screen for brand-new CVEs: in this window only 2 CVEs without CPE and outside KEV scored 0.10 or higher (7 at 0.05; 284 at 0.01), and 978 had no score yet. It is a re-check trigger for the stock of CVEs that were set aside.</p>
         <p><b>The kind of CVE the rule would catch:</b> CVE-2026-59774, published October 14, 2026, lets an unauthenticated attacker read server files through Gitea's Org-mode renderer and, in some configurations, chain that into running commands on the server (CNA description). Gitea is self-hosted code-hosting software. NIST does not publish which tier it assigned, but the record is Not Scheduled, with no CPE, although the CNA names the product and affected versions in free text. On November 7 its EPSS score was 0.28. It is not in KEV; we have not checked other exploitation sources. Under the rule it would be re-queued now; today nothing brings it back.</p>
-        <p>The score matures after disclosure. CVE Floodline (RogoLabs) re-scores each day's CVEs against the dated EPSS archive: of 28,618 CVEs old enough to have a day-30 score, 1 had crossed 10% on their disclosure day, 6 by day 7, and 27 by day 30 (data as of November 7, 2026). A low day-one score is provisional, not safe, which is why the trigger has to keep re-checking.</p>
+        <p>The score matures after disclosure. CVE Floodline (RogoLabs) re-scores each day's CVEs against the dated EPSS archive: of 28,720 CVEs old enough to have a day-30 score, 1 had crossed 10% on their disclosure day, 6 by day 7, and 26 by day 30 (data as of November 8, 2026). A low day-one score is provisional, not safe, which is why the trigger has to keep re-checking.</p>
       </div>
     </div>
   </div>
@@ -186,7 +186,7 @@
     <div class="two">
       <div>
         <h3>The rule</h3>
-        <p>Move any CVE without CPE (Not Scheduled, Awaiting Enrichment, or still Received) into the KEV queue, under NIST's existing one-business-day goal, when the maximum of its EPSS score, its KEV status, and its LEV estimate (NIST's own composite, CSWP 41) crosses a published threshold, when CISA's SSVC decision marks exploitation as proof-of-concept or active, or when credible third-party exploitation evidence arrives. Publish the threshold. Publish every re-queue and its time to enrichment. Moving a CVE from Not Scheduled to the back of the Awaiting queue would not be enough: 24.4% of new CVEs already wait there with no CPE.</p>
+        <p>Move any CVE without CPE (Not Scheduled, Awaiting Enrichment, or still Received) into the KEV queue, under NIST's existing one-business-day goal, when the maximum of its EPSS score, its KEV status, and its LEV estimate (NIST's own composite, CSWP 41) crosses a published threshold, when CISA's SSVC decision marks exploitation as proof-of-concept or active, or when credible third-party exploitation evidence arrives. Publish the threshold. Publish every re-queue and its time to enrichment. Moving a CVE from Not Scheduled to the back of the Awaiting queue would not be enough: 23.7% of new CVEs already wait there with no CPE.</p>
         <p>NIST already designed the composite; FedRAMP's 2026 rules already use KEV. The rule adds nothing that does not exist, except the commitment to apply it and to say so.</p>
         <h3>What it would cost</h3>
         <p>No per-CVE enrichment cost has been published, so the estimate below is arithmetic on stated inputs. The volume input is measured, not assumed: we counted it from the whole NVD stock on November 7, 2026. Of the 76,217 CVEs without CPE in Not Scheduled, Awaiting Enrichment or Received, none in KEV, 443 already score EPSS 5% or higher: a one-time load. After that, 11 to 36 a month crossed 5% before they had CPE, in four 30-day windows from July 10, 2026 to November 6, 2026 (NVD change history included). 28 of the 86 that were still without CPE had been published more than 90 days before crossing. The default below is the highest month. The count leaves out the LEV, SSVC and third-party triggers, which would add to it, and covers five months under one EPSS model (v5, from June 15, 2026).</p>
@@ -275,7 +275,7 @@
 <section class="section defs" id="definitions" aria-labelledby="h-defs">
   <div class="wrap">
     <h2 id="h-defs">Definitions</h2>
-    <p>Frozen on 2026-11-08. Changes are recorded here, never made silently.</p>
+    <p>Frozen on 2026-11-09. Changes are recorded here, never made silently.</p>
     <dl>
       <dt>CVE</dt><dd>A published vulnerability record in the CVE List, run by the CVE Program and sponsored by CISA. Records are written by CVE Numbering Authorities (CNAs).</dd>
       <dt>CPE</dt><dd>Common Platform Enumeration, NIST's standardized product identifier. On the page, "with CPE" means the NVD record carries a <code>configurations</code> block. Scanners match on it.</dd>
@@ -318,7 +318,7 @@
     </ol>
     <div class="cite" id="cite">
       <h3>How to cite this page</h3>
-      <p id="citation-text">Davis, William K. "NVD Watch: weekly scorecard of the U.S. vulnerability warning system," week ending November 8, 2026. Share of new CVEs with CPE: 22.3% (17,035 CVEs published October 9, 2026 to November 8, 2026, Rejected excluded). Computed from NVD API 2.0, CISA KEV, and FIRST EPSS; data pulled 2026-11-08 05:23 UTC. Available at <a href="https://daviswk.github.io/nvd-watch/">https://daviswk.github.io/nvd-watch/</a>.</p>
+      <p id="citation-text">Davis, William K. "NVD Watch: weekly scorecard of the U.S. vulnerability warning system," week ending November 9, 2026. Share of new CVEs with CPE: 22.1% (16,919 CVEs published October 10, 2026 to November 9, 2026, Rejected excluded). Computed from NVD API 2.0, CISA KEV, and FIRST EPSS; data pulled 2026-11-09 12:53 UTC. Available at <a href="https://daviswk.github.io/nvd-watch/">https://daviswk.github.io/nvd-watch/</a>.</p>
     </div>
   </div>
 </section>
@@ -329,7 +329,7 @@
   <div class="wrap">
     <p>NVD Watch is Will Davis's AI-Augmented Policy Project for Intro to Tech Policy at the Pardee RAND Graduate School. It is independent of NIST, CISA, and GAO.</p>
     <p>Built with Claude Code. Every number on this page is produced by <code>scripts/fetch_sample.py</code> and rendered by <code>scripts/build_site.py</code>; the AI collaboration log records where the model was wrong and how claims were checked.</p>
-    <p>Rebuilt 2026-11-08. © 2026 William K. Davis.</p>
+    <p>Rebuilt 2026-11-09. © 2026 William K. Davis.</p>
   </div>
 </footer>
 

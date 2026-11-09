@@ -1,85 +1,85 @@
 {
-  "cves_in_window": 17691,
-  "rejected": 656,
-  "cves_live": 17035,
-  "pct_with_cpe": 21.5,
-  "with_cpe_live": 3795,
-  "pct_with_cpe_live": 22.3,
-  "pct_with_nist_cvss": 2.5,
-  "pct_with_nist_cvss_live": 2.6,
-  "pct_with_any_cvss": 91.0,
-  "pct_with_any_cvss_live": 94.5,
-  "pct_with_cna_cvss_live": 77.8,
+  "cves_in_window": 17571,
+  "rejected": 652,
+  "cves_live": 16919,
+  "pct_with_cpe": 21.3,
+  "with_cpe_live": 3745,
+  "pct_with_cpe_live": 22.1,
+  "pct_with_nist_cvss": 2.4,
+  "pct_with_nist_cvss_live": 2.5,
+  "pct_with_any_cvss": 90.7,
+  "pct_with_any_cvss_live": 94.2,
+  "pct_with_cna_cvss_live": 77.6,
   "pct_with_cwe": 90.5,
-  "pct_cna_names_product_live": 94.0,
-  "pct_cna_product_but_no_cpe_live": 71.7,
+  "pct_cna_names_product_live": 93.9,
+  "pct_cna_product_but_no_cpe_live": 71.8,
   "in_kev": 18,
   "in_kev_with_cpe": 17,
   "pct_cpe_if_in_kev": 94.4,
-  "pct_cpe_if_not_in_kev": 22.2,
+  "pct_cpe_if_not_in_kev": 22.1,
   "epss_ge_0_10_without_cpe": 2,
   "epss_ge_0_50_without_cpe": 0,
   "epss_without_cpe_not_kev": {
-    "ge_0.01": 285,
+    "ge_0.01": 284,
     "ge_0.05": 7,
     "ge_0.10": 2,
     "ge_0.50": 0
   },
-  "epss_missing_or_zero": 914,
+  "epss_missing_or_zero": 978,
   "time_to_enrichment": {
-    "n": 3103,
-    "median_days": 7.6,
+    "n": 3053,
+    "median_days": 7.7,
     "p90_days": 16.0,
     "caveat": "lastModified minus published for Enriched CVEs only; right-censored by the window and inflated by later edits."
   },
   "status_counts": {
-    "Deferred": 6962,
-    "Awaiting Analysis": 4149,
-    "Analyzed": 3103,
-    "Received": 1423,
-    "Undergoing Analysis": 708,
+    "Deferred": 6739,
+    "Awaiting Analysis": 4003,
+    "Analyzed": 3053,
+    "Received": 1574,
+    "Undergoing Analysis": 860,
     "Modified": 690,
-    "Rejected": 656
+    "Rejected": 652
   },
   "statuses": [
     {
       "api_status": "Deferred",
       "label": "Not Scheduled",
-      "count": 6962,
-      "pct_of_live": 40.9,
+      "count": 6739,
+      "pct_of_live": 39.8,
       "pct_with_cpe": 0.0,
-      "pct_cna_names_product": 87.5
+      "pct_cna_names_product": 87.7
     },
     {
       "api_status": "Awaiting Analysis",
       "label": "Awaiting Enrichment",
-      "count": 4149,
-      "pct_of_live": 24.4,
+      "count": 4003,
+      "pct_of_live": 23.7,
       "pct_with_cpe": 0.0,
       "pct_cna_names_product": 97.2
     },
     {
       "api_status": "Analyzed",
       "label": "Enriched",
-      "count": 3103,
-      "pct_of_live": 18.2,
+      "count": 3053,
+      "pct_of_live": 18.0,
       "pct_with_cpe": 100.0,
       "pct_cna_names_product": 100.0
     },
     {
       "api_status": "Received",
       "label": "Received",
-      "count": 1423,
-      "pct_of_live": 8.4,
+      "count": 1574,
+      "pct_of_live": 9.3,
       "pct_with_cpe": 0.0,
-      "pct_cna_names_product": 97.1
+      "pct_cna_names_product": 94.5
     },
     {
       "api_status": "Undergoing Analysis",
       "label": "Undergoing Enrichment",
-      "count": 708,
-      "pct_of_live": 4.2,
-      "pct_with_cpe": 0.3,
+      "count": 860,
+      "pct_of_live": 5.1,
+      "pct_with_cpe": 0.2,
       "pct_cna_names_product": 100.0
     },
     {
@@ -93,27 +93,27 @@
   ],
   "floodline": {
     "source": "CVE Floodline, RogoLabs (cvefloodline.org), Apache-2.0; data from the FIRST EPSS archive, CISA KEV, and cvelistV5",
-    "generated": "2026-11-07T17:05:30Z",
+    "generated": "2026-11-08T17:19:44Z",
     "window": [
-      "2026-08-07",
-      "2026-11-04"
+      "2026-08-08",
+      "2026-11-05"
     ],
     "epss_model_version": "v2026.06.15",
     "cohorts_with_30d_score": 63,
-    "cves_with_30d_score": 28618,
+    "cves_with_30d_score": 28720,
     "cross10_day0": 1,
     "cross10_day7": 6,
-    "cross10_day30": 27,
+    "cross10_day30": 26,
     "cross50_day30": 8,
-    "share_cross10_day30_pct": 0.094,
+    "share_cross10_day30_pct": 0.091,
     "share_cross50_day30_pct": 0.028,
-    "mean_net_cves_per_day": 482.7,
+    "mean_net_cves_per_day": 485.3,
     "kev_in_window": 70,
     "note": "Crossings count EPSS strictly above the threshold on the dated file at day+30; a point-in-time count that includes CVEs already with CPE and excludes the older unenriched stock, so it is rough and biased both ways, not a lower bound (see docs/research/notes/open_items_recheck_volume.md)."
   },
   "window_utc": [
-    "2026-10-09T05:21:34.666003+00:00",
-    "2026-11-08T05:21:34.666003+00:00"
+    "2026-10-10T12:52:11.080065+00:00",
+    "2026-11-09T12:52:11.080065+00:00"
   ],
-  "pulled_at_utc": "2026-11-08T05:23:28.007259+00:00"
+  "pulled_at_utc": "2026-11-09T12:53:30.587121+00:00"
 }

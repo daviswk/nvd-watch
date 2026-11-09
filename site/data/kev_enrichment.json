@@ -1,8 +1,8 @@
 {
-  "rule": "First NVD change-history event adding a 'CPE Configuration' vs the history event recording the KEV listing (timestamps, UTC; falls back to KEV dateAdded). Metric 3 clock starts at the later of KEV dateAdded and NVD publication; weekdays only, no holiday calendar. first_cpe_source is the change's sourceIdentifier (nvd@nist.gov = NIST).",
+  "rule": "First NVD change-history event adding a 'CPE Configuration' vs the history event recording the KEV listing (timestamps, UTC; falls back to KEV dateAdded). Metric 4 clock starts at the later of KEV dateAdded and NVD publication; weekdays only, no holiday calendar. first_cpe_source is the change's sourceIdentifier (nvd@nist.gov = NIST).",
   "window": [
-    "2026-10-09",
-    "2026-11-08"
+    "2026-10-10",
+    "2026-11-09"
   ],
   "triage_public_before_kev": 12,
   "triage_cpe_before_kev": 3,
@@ -523,5 +523,5 @@
       "business_days_kev_to_cpe": 0
     }
   ],
-  "pulled_at_utc": "2026-11-08T05:23:42+00:00"
+  "pulled_at_utc": "2026-11-09T12:54:27+00:00"
 }
