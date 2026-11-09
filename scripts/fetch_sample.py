@@ -246,6 +246,10 @@ def summarize(df):
 
     no_cpe_not_kev = live[~live["has_cpe"] & ~live["in_kev"]]
     epss_tiers = {f"ge_{t:.2f}": int((no_cpe_not_kev["epss"] >= t).sum()) for t in (0.01, 0.05, 0.10, 0.50)}
+    # No score yet (missing, or exactly 0), in the same group as the tiers. Until Nov 9, 2026 this was counted over
+    # every record as epss_missing_or_zero; Rejected records never get a score, so that count was about six times
+    # too high for "no score yet" (Nov 7 pull: 787, of which 659 Rejected and 128 in this group).
+    epss_tiers["unscored"] = int((no_cpe_not_kev["epss"] == 0).sum())
 
     return {
         "cves_in_window": n,
@@ -269,7 +273,6 @@ def summarize(df):
         "epss_ge_0_10_without_cpe": int(((df["epss"] >= 0.10) & ~df["has_cpe"]).sum()),
         "epss_ge_0_50_without_cpe": int(((df["epss"] >= 0.50) & ~df["has_cpe"]).sum()),
         "epss_without_cpe_not_kev": epss_tiers,
-        "epss_missing_or_zero": int((df["epss"] == 0).sum()),
         "time_to_enrichment": tte,
         "status_counts": df["vuln_status"].value_counts().to_dict(),
         "statuses": statuses,

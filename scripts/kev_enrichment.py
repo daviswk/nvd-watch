@@ -74,25 +74,37 @@ def business_days_after(start, end):
     return 0 if end <= start else int(np.busday_count(start, end))
 
 
-def row_for(cve_id, kev_day, headers, in_sample):
-    pub_day, status = nvd_record(cve_id, headers)
-    cpe_time, cpe_source, kev_time, n = history(cve_id, headers)
+def judge(cve_id, kev_day, pub_day, status, cpe_time, cpe_source, kev_time, n_events, in_sample, today):
+    """One row from the facts about one CVE: the readiness and goal rules, with no network call.
+    scripts/check_kev_cases.py tests the rules through this function. `today` is the pull date (UTC)."""
     row = {"cve_id": cve_id, "in_sample": in_sample, "published": pub_day, "nvd_status": status,
            "kev_date_added": kev_day, "kev_event": kev_time, "first_cpe": cpe_time[:10] if cpe_time else None,
-           "first_cpe_time": cpe_time, "first_cpe_source": cpe_source, "history_events": n}
+           "first_cpe_time": cpe_time, "first_cpe_source": cpe_source, "history_events": n_events}
     # Public before listing = there was time for CPE to arrive ahead of KEV.
     row["public_before_kev"] = bool(pub_day and pub_day < kev_day)
+    clock = max(kev_day, pub_day or kev_day)   # NIST can't enrich before NVD publishes
     if cpe_time:
         # Compare by timestamp when NVD logged the KEV listing; fall back to the KEV date.
         row["cpe_before_kev"] = cpe_time < kev_time if kev_time else cpe_time[:10] < kev_day
         row["cpe_before_triage"] = cpe_time[:10] < TRIAGE_START
-        clock = max(kev_day, pub_day or kev_day)   # NIST can't enrich before NVD publishes
         row["business_days_kev_to_cpe"] = business_days_after(clock, row["first_cpe"])
+    else:
+        # No CPE yet. Above 1, the goal is already missed, whatever happens next.
+        row["business_days_without_cpe"] = business_days_after(clock, today)
+    return row
+
+
+def row_for(cve_id, kev_day, headers, in_sample, today=None):
+    pub_day, status = nvd_record(cve_id, headers)
+    cpe_time, cpe_source, kev_time, n = history(cve_id, headers)
+    today = today or datetime.now(timezone.utc).date().isoformat()
+    row = judge(cve_id, kev_day, pub_day, status, cpe_time, cpe_source, kev_time, n, in_sample, today)
     print({k: row[k] for k in ("cve_id", "published", "kev_date_added", "first_cpe", "nvd_status")})
     return row
 
 
 def hours_after_kev(r):
+    """Hours from NVD's KEV event to the first CPE; None when either is missing (NVD logged no KEV event)."""
     if not (r["first_cpe_time"] and r["kev_event"]):
         return None
     t = lambda s: datetime.fromisoformat(s[:19])
@@ -105,17 +117,21 @@ def stats(rows):
     # Pre-KEV readiness under the triage: public before listing, not enriched before Apr 15, 2026.
     post = [r for r in window if not r.get("cpe_before_triage")]
     after = [r for r in post if r["first_cpe"] and not r["cpe_before_kev"]]
+    hours = [hours_after_kev(r) for r in after]
     return {
         "triage_public_before_kev": len(post),
         "triage_cpe_before_kev": sum(bool(r.get("cpe_before_kev")) for r in post),
         "triage_cpe_only_after_kev": len(after),
-        "triage_cpe_within_2h_of_kev": sum(0 <= hours_after_kev(r) <= 2 for r in after),
+        "triage_cpe_within_2h_of_kev": sum(h is not None and 0 <= h <= 2 for h in hours),
         "max_days_public_without_cpe_until_kev": max(
             ((date.fromisoformat(r["kev_date_added"]) - date.fromisoformat(r["published"])).days for r in after),
             default=None),
         "kev_cves": len(rows),
         "with_cpe_now": len(done),
         "within_one_business_day": sum(r["business_days_kev_to_cpe"] <= 1 for r in done),
+        # No CPE and more than one business day gone: a miss, not "pending". Rows from pulls before
+        # Nov 10, 2026 do not carry the field and count as pending.
+        "overdue_without_cpe": sum(r.get("business_days_without_cpe", 0) > 1 for r in rows if not r["first_cpe"]),
         "first_cpe_by_nist": sum(r["first_cpe_source"] == "nvd@nist.gov" for r in done),
         "public_before_kev": len(window),
         "cpe_before_kev_given_public": sum(bool(r.get("cpe_before_kev")) for r in window),
@@ -123,6 +139,12 @@ def stats(rows):
         "still_without_cpe": [r["cve_id"] for r in rows if not r["first_cpe"]],
         "status_counts": dict(pd.Series([r["nvd_status"] for r in rows]).value_counts()),
     }
+
+
+def all_pulls(hist, pulled_at):
+    """Every pull so far: one data/history/ folder each, plus this run (build_site.py writes its folder later).
+    Not taken from the rows: the latest row wins, so a pull whose CVEs were all seen again owns no row."""
+    return sorted({f.parent.name for f in hist.glob("*/kev_enrichment.json")} | {pulled_at[:10]})
 
 
 def update_cumulative(rows, pulled_at):
@@ -142,7 +164,7 @@ def update_cumulative(rows, pulled_at):
         "about": ("Union of every KEV row from every kev_enrichment.py run (sample and listed cohorts), keyed by "
                   "CVE ID, latest row wins. Readiness rules as in kev_enrichment.json."),
         "updated_utc": pulled_at,
-        "pulls": sorted({r["pull"] for r in cum.values()}),
+        "pulls": all_pulls(hist, pulled_at),
         "union": stats(list(cum.values())),
         "rows": cum,
     }
@@ -162,21 +184,24 @@ def main():
     sample = df[df.in_kev]
     kev = fetch_kev()
     listed_ids = sorted(c for c, d in kev.items() if d and start <= d <= end)
+    today = datetime.now(timezone.utc).date().isoformat()
 
     rows = {}
     for _, r in sample.iterrows():
-        rows[r.cve_id] = row_for(r.cve_id, r.kev_date_added, headers, in_sample=True)
+        rows[r.cve_id] = row_for(r.cve_id, r.kev_date_added, headers, in_sample=True, today=today)
     for c in listed_ids:
         if c not in rows:
-            rows[c] = row_for(c, kev[c], headers, in_sample=False)
+            rows[c] = row_for(c, kev[c], headers, in_sample=False, today=today)
 
     sample_rows = [r for r in rows.values() if r["in_sample"]]
     listed_rows = [r for r in rows.values() if start <= r["kev_date_added"] <= end]
     s = stats(sample_rows)
     out = {
-        "rule": ("First NVD change-history event adding a 'CPE Configuration' vs the history event recording the "
+        "rule": ("First NVD change-history event adding a 'CPE Configuration' (or an 'Initial Analysis' event with no "
+                 "details, for CVEs analysed before the history recorded them) vs the history event recording the "
                  "KEV listing (timestamps, UTC; falls back to KEV dateAdded). Metric 4 clock starts at the later of "
-                 "KEV dateAdded and NVD publication; weekdays only, no holiday calendar. first_cpe_source is the "
+                 "KEV dateAdded and NVD publication; weekdays only, no holiday calendar. A CVE with no CPE counts "
+                 "as overdue (a miss) once more than one business day has passed. first_cpe_source is the "
                  "change's sourceIdentifier (nvd@nist.gov = NIST)."),
         "window": [start, end],
         # Sample cohort at top level: the page's headline and metric 4 read these.

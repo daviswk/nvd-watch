@@ -4,20 +4,37 @@ Written Nov 7, 2026 at the end of the first Claude Code session (Claude Fable 5.
 
 **Updated Nov 8, 2026 (Claude Opus 5.5 session):** the weekly rebuild workflow was added and its first run (manual, Nov 8 05:21 UTC) passed end to end. The page now refreshes itself every Monday, so the live numbers move week to week. See §5 item 2 and the new gotchas in §6.
 
-**Updated Nov 8, 2026, overnight (Claude Opus 5.5, red-team round 6, branch `redteam-nov7`, not yet merged):**
+**Updated Nov 9, 2026 (Claude Fable 5 session: audit, architecture review, code review, fixes):**
 
-- **State.** The weekly rebuild has run once: manually, Nov 8. NVD pull at 05:21 UTC, KEV history at 05:23 UTC; bot commit `b80cd47`. Its first scheduled run is Monday, Nov 9, 12:47 UTC.
+- **State.** The weekly rebuild ran on schedule for the first time: Monday, Nov 9, pull at 12:52 UTC, bot commit `8f8a81c`. Three pulls so far (Nov 7, 8, 9). The live page matched the bot's build byte for byte.
+- **Audit result.** The process is correct and the numbers line up: a rebuild from committed data reproduces the committed page; the Nov 7 pull recounts exactly from the raw NVD file; `recheck_volume.py`, `recheck_flow_corrected.py` and `automated_mapping.py` re-run to the same figures. Details in `docs/data-notes.md`, *Pull 3*.
+- **Fixed in code (takes effect at the next pull unless noted).**
+  - "No score yet" counted Rejected records (Nov 7: 787 shown, 128 real). `fetch_sample.py` now counts it in the same group as the EPSS tiers (`epss_without_cpe_not_kev.unscored`). Until a pull carries that key, the page says what the old count covers.
+  - `kev_enrichment.stats()` no longer fails when a CVE has CPE but NVD logged no KEV event.
+  - A listed CVE with no CPE counts as a miss once more than one business day has passed (`business_days_without_cpe`, `overdue_without_cpe`); it used to stay pending for ever, under "NIST meets its goal".
+  - The readiness sentence accounts for a pending CVE that was public before listing; "every first CPE record from NIST" is generated from the data.
+  - `build_site.py` stops if `kev_enrichment.json` and `summary.json` have different windows (the KEV count alone was 18 in all three pulls).
+  - "Frozen on" is a fixed date (`DEFINITIONS_FROZEN` in `build_site.py`) with a change note under Definitions, not the pull date. In effect now.
+  - The section 2 method note names the "Initial Analysis" rule and the overdue rule. In effect now.
+  - `kev_cumulative.json` lists every pull (it listed 2 of 3).
+- **New check.** `scripts/check_kev_cases.py`: a fixture test, no network, of the KEV rules and of every KEV sentence the page prints. Run it with `check_cost_model.py` before pushing a change to `kev_enrichment.py` or `build_site.py`.
+- **Not changed: page wording behind the Nov 8 decisions.** It is Will's to decide; the list is in `CLAUDE.md`, *Known open items*, first bullet (the section 3 rule text, the Congress rows, PHP2Shell, metric 1's figure).
+- **Architecture review (candidates only, none chosen yet):** test at the JSON seam (one offline `check_data` command in the weekly job), one pull identity across the hand-offs (the window check above is its first step), one module for KEV counts and sentences (`kev_tokens` is its first step), a script that writes `recheck_measured.json`, and `kev_lag.py` on the shared NVD access with retry.
+
+**Updated Nov 8, 2026, overnight (Claude Opus 5.5, red-team round 6, branch `redteam-nov7`, merged to `main` on Nov 8):**
+
+- **State (Nov 8).** The weekly rebuild had run once: manually, Nov 8. NVD pull at 05:21 UTC, KEV history at 05:23 UTC; bot commit `b80cd47`.
 - **New research.** Pre-triage readiness baseline, status-before-listing of the 13, trigger recall and volume, benefit estimate, request channel, automated mapping and scanner matching. Results are in `docs/red-team-nov7-response.md`. Scripts are in `scripts/research/`, outputs in `data/processed/`.
-- **Pipeline changes (run weekly once merged):**
+- **Pipeline changes (run weekly):**
   - `kev_enrichment.py` also writes `data/history/kev_cumulative.json`.
   - `stability.py` reports window overlap.
   - The page shows the KEV goal as "x of y resolved, z pending" and cites OSV only while the orphan row shows.
-- **Known limitation, not yet fixed in `kev_enrichment.py`.** CVEs that NIST analysed before its change history logged details have no "CPE Configuration" event for their original CPE. The rule then dates their first CPE to a later re-analysis. It does not affect the current 10 of 23, which are all 2026 CVEs. See the response doc.
+- **Limitation, fixed Nov 8 (`is_cpe_event` in `kev_enrichment.py`).** CVEs that NIST analysed before its change history logged details have no "CPE Configuration" event for their original CPE. The old rule dated their first CPE to a later re-analysis; the rule now also reads an "Initial Analysis" event with no details. It did not affect the 10 of 23, which are all 2026 CVEs. See the response doc.
 - **Large inputs.** Downloaded to `data/raw/ext/` (git-ignored, ~1.4 GB): NVD yearly feeds, the CPE dictionary, EPSS files and cvelistV5.
 
 ## 1. Where the project stands
 
-**Live:** https://daviswk.github.io/nvd-watch/ (GitHub Pages, deployed on every push to `main` by `.github/workflows/pages.yml`, and every Monday 12:47 UTC by `.github/workflows/rebuild.yml`, which pulls fresh data, commits it as github-actions[bot] and deploys). Latest pull: Nov 8, 2026 (window Oct 9 – Nov 8). Repo: https://github.com/daviswk/nvd-watch, public. Check `git log` for the latest commit; the tree is kept clean between sessions.
+**Live:** https://daviswk.github.io/nvd-watch/ (GitHub Pages, deployed on every push to `main` by `.github/workflows/pages.yml`, and every Monday 12:47 UTC by `.github/workflows/rebuild.yml`, which pulls fresh data, commits it as github-actions[bot] and deploys). Latest pull: Nov 9, 2026 (window Oct 10 – Nov 9). Repo: https://github.com/daviswk/nvd-watch, public. Check `git log` for the latest commit; the tree is kept clean between sessions.
 
 **The three graded deliverables**
 
@@ -35,6 +52,8 @@ Written Nov 7, 2026 at the end of the first Claude Code session (Claude Fable 5.
 ./.venv/Scripts/python.exe scripts/fetch_sample.py --from-raw    # reprocess data/raw/nvd_sample.json without hitting the NVD API
 ./.venv/Scripts/python.exe scripts/kev_enrichment.py            # NVD change history for every CVE added to KEV in the window (~70 calls); required by the build
 ./.venv/Scripts/python.exe scripts/build_site.py                 # renders site/index.html from site/template.html + summary.json
+./.venv/Scripts/python.exe scripts/check_kev_cases.py            # KEV rules and sentences on a fixture, no network
+./.venv/Scripts/python.exe scripts/check_cost_model.py           # Python and browser cost strings agree (needs Node)
 ./.venv/Scripts/python.exe -m http.server 8765 --directory site  # local preview (or preview_start name "site" via .claude/launch.json)
 ```
 
@@ -61,6 +80,7 @@ Beyond the settled decisions in `CLAUDE.md`:
 | `scripts/fetch_sample.py` | Pipeline: NVD + KEV + EPSS + Floodline → `data/processed/summary.json` and `cves_sample.csv`. Retries with backoff. |
 | `scripts/build_site.py` | Render step. Draws the KEV-lag chart from `kev_lag.json`, renders the simulator defaults through `cost_model.py` (so the page is right with JS off), the stacked-table `data-label`s, the citation permalink from `SITE_URL`. |
 | `scripts/cost_model.py`, `site/cost.js`, `scripts/check_cost_model.py` | The re-check cost rule: Python owns constants and wording; `cost.js` repeats the arithmetic in the browser; the check runs both (Node) and compares. |
+| `scripts/kev_enrichment.py`, `scripts/check_kev_cases.py` | KEV timing: `row_for()` fetches, `judge()` applies the readiness and goal rules, `stats()` counts. `build_site.kev_tokens()` turns the counts into every KEV sentence on the page. The check runs all three on a fixture with the cases a Monday can bring (pending, overdue, late, no KEV event). |
 | `site/template.html`, `styles.css`, `app.js` | The page. `app.js` is progressive enhancement only (simulator wiring, copy citation). |
 | `data/processed/summary.json` | The one source of every number on the page. Committed. The CSV and raw file are git-ignored. |
 | `docs/data-notes.md` | What each pull showed, caveats, the Floodline derivation, the status mapping. Append a section per pull. **When a new section changes an earlier conclusion, mark the earlier passage Superseded in place, with a pointer, and update the Current conclusions list at the top in the same edit.** |
@@ -73,8 +93,8 @@ Beyond the settled decisions in `CLAUDE.md`:
 
 ## 5. What to do next, in order
 
-1. **Write the brief** from `docs/brief-outline.md`. Three pages. Every number must match `site/index.html` **as of a named pull date** (the page now changes weekly: write "as of Nov N" and take every figure from that pull's `summary.json` and `kev_enrichment.json` in `data/history/YYYY-MM-DD/`, not from memory or from older sections of `data-notes.md`). Cost box uses the measured figures (303 once, 11–28 a month; `recheck_measured.json`). Export PDF; link it from the band button in `site/template.html`; rebuild; push.
-2. ~~Weekly rebuild action~~: done. First run Nov 8 (manual): all steps passed; bot commit `b80cd47`; live page identical to the committed build. Window moved Oct 8 – Nov 7 → Oct 9 – Nov 8: coverage 22.6% → 22.3% (3,795 of 17,035); KEV cohort 35 → 30 (the 5 dropped were all listed Oct 8, old CVEs with pre-triage CPE); readiness unchanged at 10 of 23; KEV goal 29 of 30 (1 pending). The section 1 orphan row dropped off as designed. Not run weekly: `osv_orphans.py`, `recheck_volume.py`, `check_cost_model.py`. After each Monday run, `git pull` before working locally, and run `scripts/stability.py`.
+1. **Write the brief** from `docs/brief-outline.md`. Three pages. Every number must match `site/index.html` **as of a named pull date** (the page now changes weekly: write "as of Nov N" and take every figure from that pull's `summary.json` and `kev_enrichment.json` in `data/history/YYYY-MM-DD/`, not from memory or from older sections of `data-notes.md`). Cost box uses the measured figures at EPSS ≥ 0.05, with 0.10 beside it (443 once and 11–36 a month; 303 once and 11–28 a month; `recheck_measured.json`). Export PDF; link it from the band button in `site/template.html`; rebuild; push.
+2. ~~Weekly rebuild action~~: done. First run Nov 8 (manual): all steps passed; bot commit `b80cd47`; live page identical to the committed build. Window moved Oct 8 – Nov 7 → Oct 9 – Nov 8: coverage 22.6% → 22.3% (3,795 of 17,035); KEV cohort 35 → 30 (the 5 dropped were all listed Oct 8, old CVEs with pre-triage CPE); readiness unchanged at 10 of 23; KEV goal 29 of 30 (1 pending). The section 1 orphan row dropped off as designed. First scheduled run Nov 9 (12:52 UTC): window Oct 10 – Nov 9, coverage 22.1% (3,745 of 16,919), the same 30 KEV listings, readiness 10 of 23, goal 29 of 30 (1 pending). Not run weekly: `osv_orphans.py`, `recheck_volume.py`, `check_cost_model.py`, `check_kev_cases.py`. After each Monday run, `git pull` before working locally, and run `scripts/stability.py`.
 3. ~~Multi-year KEV lag~~: done. `scripts/kev_lag.py` → `kev_lag.json`; the section 2 chart shows our 4 → 7 → 10 → 9, with Barracuda cited for comparison.
 4. ~~Backlog-based re-check estimate~~: done (`recheck_measured.json`, on the page). Still unmeasured: whether EPSS (v5, not v4) ranks unenriched CVEs worse; keep it flagged.
 5. **Final AI log pass:** every row has a verification note; add a closing "models used" line naming Claude Fable 5.1 (Nov 7) and Claude Opus (later sessions).
@@ -93,7 +113,8 @@ Things to leave alone: the detector findings on `.impeccable/decision/*.html` (s
 - **Windows line endings:** git warns "LF will be replaced by CRLF" on every commit. Harmless; ignore it or set `git config core.autocrlf false` if it bothers you.
 - **PHP2Shell has no CVE ID on the page on purpose.** A draft wrongly attached CVE-2026-104935 (that's the Ivanti CVE from the mockups). Only add an ID after verifying it in the NVD.
 
-- **Pull before you work.** The Monday bot commit lands on `main`; a local session that hasn't pulled will hit a rejected push. `git pull --ff-only origin main` first.
+- **Pull before you work.** The Monday bot commit lands on `main`; a local session that hasn't pulled will hit a rejected push. `git pull --ff-only origin main` first. If a local commit is still unpushed, `--ff-only` refuses; use `git pull --rebase origin main` (Nov 9: one docs commit, replayed cleanly on the bot commit).
+- **The `site` preview entry can start on the wrong port.** If 8765 is taken, the app assigns another port, but the entry's `http.server` argument still says 8765, so nothing answers. Use `site-alt` (8767) or `site-check` (8769).
 - **Push declined for email privacy (Nov 8).** GitHub refused a push because the commit email was Will's private Gmail; Will turned off "Block command line pushes that expose my email" (Settings → Emails). If it comes back, use `8902489+daviswk@users.noreply.github.com` as this repo's `user.email`.
 - **Local builds work after a Monday run (since Nov 8).** The bot commits `summary.json` but not the git-ignored `cves_sample.csv`, so after `git pull` the local CSV is a week old. `build_site.py` now notices (CVE count or publication dates don't match `summary.json`), prints a warning, skips the CPE cross-check and takes the in-window KEV lag from `kev_enrichment.json`; the page is built entirely from committed data. Run `fetch_sample.py --days 30` and `kev_enrichment.py` only when you want a new pull.
 - **Shifting window, shifting small-n figures.** A few hours' move of the 30-day window drops whole KEV listing days (Nov 8: 35 → 30). Before reporting a change in a KEV figure, check which CVEs left or entered and why.

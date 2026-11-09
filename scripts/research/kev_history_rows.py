@@ -5,8 +5,10 @@ the moment NVD recorded the KEV listing? This is the per-CVE input for the red-t
 2026 (docs/red-team-nov7.md): M1 (pre-triage baseline), M3 (trigger recall), S3 (1 vs 7 days public).
 
 Method: exactly `row_for()` in scripts/kev_enrichment.py (NVD CVE API for publication date and status,
-NVD CVE Change History API for the first "CPE Configuration" Added/Changed event and the KEV event),
-so the rules match the page's readiness figure. Rows are cached; a re-run fetches only missing CVEs.
+NVD CVE Change History API for the first CPE event and the KEV event), so the rules match the page's
+readiness figure. The first CPE event is `is_cpe_event`: a "CPE Configuration" Added/Changed detail or,
+since Nov 8, 2026, an "Initial Analysis" event with no details. Rows cached before that date used the
+first form only. Rows are cached; a re-run fetches only missing CVEs.
 
 Inputs:  CISA KEV JSON (live), NVD API (reads NVD_API_KEY from .env)
 Outputs: data/raw/kev_history_rows.json  {cve_id: row}  (git-ignored; ~2 NVD calls per CVE)

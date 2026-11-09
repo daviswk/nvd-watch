@@ -19,10 +19,11 @@ import cost_model as cm  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 
-# (cves, minutes, rate, one_time): the page default, zero, the one-time load as a monthly figure,
-# the $1M+ branch, ratio just over 1, a non-default rate, and an off-grid volume.
+# (cves, minutes, rate, one_time): the page default (EPSS 0.05: 36 a month, 443 once), the 0.10 figures beside
+# it, zero, the one-time load as a monthly figure, the $1M+ branch, ratio just over 1, a non-default rate,
+# and an off-grid volume.
 CASES = [
-    (28, 45, 120, 303), (0, 45, 120, 0), (303, 20, 120, 303), (5000, 60, 120, 303),
+    (36, 45, 120, 443), (28, 45, 120, 303), (0, 45, 120, 0), (303, 20, 120, 303), (5000, 60, 120, 303),
     (500, 60, 120, 0), (445, 45, 120, 0), (28, 60, 95, 303), (1234, 20, 250, 3384), (11, 45, 120, 443),
 ]
 

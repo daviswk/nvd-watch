@@ -14,9 +14,10 @@ v4 to 2026-06-14, v5 from 2026-06-15; FIRST data page / archive headers).
 It also writes the M1 (readiness by period) and S3 (1 vs 7 days public) tables, because they use the
 same rows. Readiness rows come from kev_history_rows.py (kev_enrichment.py's rules). One correction:
 CVEs NIST analysed before its change history logged details have an "Initial Analysis" event with no
-details; their original CPE never appears as a "CPE Configuration" event, so kev_enrichment.py's rule
-dates their first CPE to a later re-analysis. Such CVEs are counted here as having CPE before listing
-("legacy analysis") and reported separately.
+details; their original CPE never appears as a "CPE Configuration" event, so the rule the cached rows
+were built with dated their first CPE to a later re-analysis. Such CVEs are counted here as having CPE
+before listing ("legacy analysis") and reported separately. kev_enrichment.py has had the same rule
+since Nov 8, 2026 (`is_cpe_event`), so rows fetched after that date no longer need the correction.
 
 Inputs:  data/raw/kev_history_rows.json (run kev_history_rows.py first); NVD change history API; FIRST
          EPSS API. Caches: data/raw/kev_history_events.json, data/raw/epss_api_cache.json

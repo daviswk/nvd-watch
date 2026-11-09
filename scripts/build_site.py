@@ -31,6 +31,10 @@ ROOT = Path(__file__).resolve().parent.parent
 PROCESSED = ROOT / "data" / "processed"
 SITE = ROOT / "site"
 STALE_AFTER_DAYS = 10
+# The date a definition on the page last changed, not the pull date (until Nov 9, 2026 the page printed the
+# pull date, so the "freeze" moved every week). When a definition changes, move this date and add the change
+# to the "Changes" paragraph under Definitions in site/template.html.
+DEFINITIONS_FROZEN = "2026-11-09"
 
 
 def fmt_int(n):
@@ -133,6 +137,66 @@ def kev_lag_in_window(k):
     added = pd.to_datetime(k["kev_date_added"])
     lag = (added - pub).dt.days
     return float(lag.median()), int(len(lag))
+
+
+def kev_tokens(ke):
+    """Every count and sentence the page prints about KEV listings, from kev_enrichment.json.
+
+    Generated here, not typed into the template, so a weekly rebuild cannot leave a claim about NIST's speed
+    false. scripts/check_kev_cases.py tests the wording case by case. "listed" = every CVE added to KEV in
+    the window, whatever its publication date."""
+    kl = ke["listed_in_window"]
+    no_cpe = [r for r in ke["rows"] if not r["first_cpe"]]
+    pending_note = (
+        "" if not no_cpe else
+        " " + "; ".join(f"{r['cve_id']} (listed {fmt_date(r['kev_date_added'])})" for r in no_cpe)
+        + (" has" if len(no_cpe) == 1 else " have") + " no CPE yet."
+    )
+
+    # The goal (metric 4). A listed CVE with no CPE is pending, neither a hit nor a miss, until more than one
+    # business day has passed; then it is a miss (overdue_without_cpe; files from before Nov 10, 2026 lack it).
+    overdue = kl.get("overdue_without_cpe", 0)
+    missed = kl["with_cpe_now"] - kl["within_one_business_day"] + overdue
+    resolved = kl["with_cpe_now"] + overdue
+    pending = kl["kev_cves"] - resolved
+    met, total = fmt_int(kl["within_one_business_day"]), fmt_int(kl["kev_cves"])
+    goal = f"{met} of {fmt_int(resolved)} resolved, {fmt_int(pending)} pending" if pending else f"{met} of {total}"
+    if overdue:
+        goal_sentence = (f"{met} of {total} had CPE within one business day; {fmt_int(overdue)} still had none "
+                         "after more than one business day"
+                         + (f" ({fmt_int(pending)} more still pending)" if pending else ""))
+    elif pending:
+        goal_sentence = (f"{met} of the {fmt_int(kl['with_cpe_now'])} with CPE so far had it within one business day "
+                         f"({fmt_int(pending)} still pending)")
+    else:
+        goal_sentence = f"{goal} had CPE within one business day"
+    by_nist = kl["first_cpe_by_nist"]
+
+    # Readiness (metric 1): public before listing and not enriched before the triage. Each of these CVEs had
+    # CPE before the listing, got it only afterward, or has none yet.
+    after = kl["triage_cpe_only_after_kev"]
+    not_yet = kl["triage_public_before_kev"] - kl["triage_cpe_before_kev"] - after
+    return {
+        "ke_headline": ("Once CISA confirms an attack, NIST moves fast. Before that, it mostly waits." if not missed else
+                        "Even after CISA confirms an attack, NIST sometimes misses its own goal."),
+        "ke_verdict": ("NIST meets its goal once a CVE is listed. The gap is the wait before the listing." if not missed else
+                       f"{fmt_int(missed)} took longer than one business day."),
+        "ke_l_goal": goal,
+        "ke_l_goal_sentence": goal_sentence,
+        "ke_l_nist_clause": (", every first CPE record from NIST" if by_nist == kl["with_cpe_now"] else
+                             f"; NIST added the first CPE record for {fmt_int(by_nist)} of the {fmt_int(kl['with_cpe_now'])}"),
+        "ke_pending_note": pending_note,
+        "ke_l_n": total,
+        "ke_l_pub": fmt_int(kl["triage_public_before_kev"]),
+        "ke_l_sameday": fmt_int(kl["kev_cves"] - kl["public_before_kev"]),
+        "ke_l_pretriage": fmt_int(kl["public_before_kev"] - kl["triage_public_before_kev"]),
+        "ke_l_ready": fmt_int(kl["triage_cpe_before_kev"]),
+        "ke_l_after_phrase": f"{'Another' if not_yet else 'The other'} {fmt_int(after)}",
+        "ke_l_not_yet": (f" The remaining {fmt_int(not_yet)} {'has' if not_yet == 1 else 'have'} no CPE yet."
+                         if not_yet else ""),
+        "ke_l_2h": fmt_int(kl["triage_cpe_within_2h_of_kev"]),
+        "ke_l_maxwait": fmt_int(kl["max_days_public_without_cpe_until_kev"]),
+    }
 
 
 def load_csv_if_current(summary):
@@ -302,35 +366,23 @@ def main():
     ke = json.loads(ke_path.read_text())
     if ke["kev_cves"] != summary["in_kev"]:
         sys.exit(f"kev_enrichment.json covers {ke['kev_cves']} KEV CVEs, summary.json has {summary['in_kev']}; re-run kev_enrichment.py")
+    # The count alone cannot tell two pulls apart (it was 18 in each of the first three), so compare the window too.
+    if ke.get("window") != [window_start[:10], window_end[:10]]:
+        sys.exit(f"kev_enrichment.json is for {ke.get('window')}, summary.json for {window_start[:10]} to "
+                 f"{window_end[:10]}; re-run kev_enrichment.py")
     # KEV lag for CVEs published in the window: from the CSV when it is current, else from kev_enrichment.json's
     # sample rows (same CVEs, same publication and KEV dates; committed by the weekly workflow).
     kev_rows = (df[df["in_kev"]] if df is not None
                 else pd.DataFrame([r for r in ke["rows"] if r["in_sample"]], columns=["published", "kev_date_added"]))
     kev_lag_median, kev_lag_n = kev_lag_in_window(kev_rows)
-    pending = [r for r in ke["rows"] if not r["first_cpe"]]
-    kev_pending_note = (
-        "" if not pending else
-        " " + ("; ".join(f"{r['cve_id']} (listed {fmt_date(r['kev_date_added'])})" for r in pending))
-        + (" has" if len(pending) == 1 else " have") + " no CPE yet."
-    )
-    # Claims about NIST's speed are generated from the data so a weekly rebuild can't leave them false.
-    # "listed" = every CVE added to KEV in the window, whatever its publication date.
-    kl = ke["listed_in_window"]
-    met_all = kl["within_one_business_day"] == kl["with_cpe_now"]
-    ke_headline = ("Once CISA confirms an attack, NIST moves fast. Before that, it mostly waits." if met_all else
-                   "Even after CISA confirms an attack, NIST sometimes misses its own goal.")
-    ke_verdict = ("NIST meets its goal once a CVE is listed. The gap is the wait before the listing." if met_all else
-                  f"{kl['with_cpe_now'] - kl['within_one_business_day']} took longer than one business day.")
 
-    # While a listed CVE has no CPE yet, it is neither a hit nor a miss: say "x of y resolved, z pending".
-    ke_pending_n = kl["kev_cves"] - kl["with_cpe_now"]
-    if ke_pending_n:
-        ke_l_goal = f"{fmt_int(kl['within_one_business_day'])} of {fmt_int(kl['with_cpe_now'])} resolved, {fmt_int(ke_pending_n)} pending"
-        ke_l_goal_sentence = (f"{fmt_int(kl['within_one_business_day'])} of the {fmt_int(kl['with_cpe_now'])} with CPE so far "
-                              f"had it within one business day ({fmt_int(ke_pending_n)} still pending)")
+    # "No score yet" belongs to the same group as the EPSS tiers. Summaries pulled before Nov 10, 2026 only have
+    # a count over every record (Rejected ones never get a score), so the sentence says what that count covers.
+    if "unscored" in tiers:
+        epss_unscored_clause = f"{fmt_int(tiers['unscored'])} had no score yet"
     else:
-        ke_l_goal = f"{fmt_int(kl['within_one_business_day'])} of {fmt_int(kl['kev_cves'])}"
-        ke_l_goal_sentence = f"{ke_l_goal} had CPE within one business day"
+        epss_unscored_clause = (f"{fmt_int(summary['epss_missing_or_zero'])} of the {fmt_int(summary['cves_in_window'])} "
+                                "records in the window, Rejected ones included, had no score yet")
 
     stale_notice = ""
     if age_days > STALE_AFTER_DAYS:
@@ -366,7 +418,8 @@ def main():
         "epss_ge_010": fmt_int(tiers["ge_0.10"]),
         "epss_ge_005": fmt_int(tiers["ge_0.05"]),
         "epss_ge_001": fmt_int(tiers["ge_0.01"]),
-        "epss_missing": fmt_int(summary["epss_missing_or_zero"]),
+        "epss_unscored_clause": epss_unscored_clause,
+        "definitions_frozen": fmt_date(DEFINITIONS_FROZEN),
         "tte_median": "n/a" if tte["median_days"] is None else f"{tte['median_days']:g}",
         "tte_p90": "n/a" if tte["p90_days"] is None else f"{tte['p90_days']:g}",
         "tte_n": fmt_int(tte["n"]),
@@ -420,20 +473,8 @@ def main():
         "cm_minutes_radios": "\n".join(
             f'                <label><input type="radio" name="minutes" value="{m}"'
             f'{" checked" if m == cm.DEFAULT_MINUTES else ""}><span>{m}</span></label>' for m in cm.MINUTES),
-        "ke_l_n": fmt_int(kl["kev_cves"]),
-        "ke_l_goal": ke_l_goal,
-        "ke_l_goal_sentence": ke_l_goal_sentence,
         "osv_source_li": osv_source_li,
-        "ke_l_pub": fmt_int(kl["triage_public_before_kev"]),
-        "ke_l_sameday": fmt_int(kl["kev_cves"] - kl["public_before_kev"]),
-        "ke_l_pretriage": fmt_int(kl["public_before_kev"] - kl["triage_public_before_kev"]),
-        "ke_l_ready": fmt_int(kl["triage_cpe_before_kev"]),
-        "ke_l_after": fmt_int(kl["triage_cpe_only_after_kev"]),
-        "ke_l_2h": fmt_int(kl["triage_cpe_within_2h_of_kev"]),
-        "ke_l_maxwait": fmt_int(kl["max_days_public_without_cpe_until_kev"]),
-        "ke_pending_note": kev_pending_note,
-        "ke_headline": ke_headline,
-        "ke_verdict": ke_verdict,
+        **kev_tokens(ke),   # readiness (metric 1) and the KEV goal (metric 4): counts and sentences
         "kev_lag_svg": kev_lag_svg,
         "kev_lag_sentence": kev_lag_sentence,
         "legacy_sentence": legacy_sentence,
