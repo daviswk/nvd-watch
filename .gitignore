@@ -9,3 +9,5 @@ data/raw/
 data/processed/cves_sample.csv
 data/processed/fetch_log.txt
 .claude/settings.local.json
+# Will's personal study pages (primer, drills, explainers): local only, not part of the repo
+docs/learning/

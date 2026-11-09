@@ -4,7 +4,7 @@ A public scorecard for the U.S. vulnerability warning system (NIST NVD + CISA KE
 
 ## Start here
 1. Read `CLAUDE.md` (Claude Code reads it automatically every session).
-2. Open `docs/learning/primer.html` in a browser for the full who/what/why.
+2. Read `docs/handoff.md` for the current state, and see the live page: https://daviswk.github.io/nvd-watch/
 3. Run the first data pull:
    ```bash
    python3 -m venv .venv && source .venv/bin/activate
@@ -27,7 +27,6 @@ docs/brief-outline.md      3-page brief skeleton
 docs/ai-collaboration-log.md
 docs/sources.md
 docs/research/             evidence review + raw research notes
-docs/learning/             primer, reading drills, video list
 design/mockups/            earlier scorecard mockups (reference only)
 scripts/fetch_sample.py    NVD + KEV + EPSS sample pull
 scripts/build_site.py      renders site/index.html from data/processed/summary.json

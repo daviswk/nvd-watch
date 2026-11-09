@@ -82,7 +82,7 @@ Open product facts (undecided, do not fabricate):
 - Sources with links: `docs/sources.md`. Primary sources preferred: NIST, Commerce OIG (OIG-26-020-I, May 26, 2026), Federal Register, FIRST, CISA.
 - Plan, brief skeleton, and AI log: `docs/project-plan.md`, `docs/brief-outline.md`, `docs/ai-collaboration-log.md`.
 - Starter pipeline: `scripts/fetch_sample.py` (untested against live endpoints as of 2026-11-07). Outputs land in `data/raw/` (git-ignored) and `data/processed/`.
-- Learning materials and talk track: `docs/learning/primer.html`.
+- Learning materials and talk track: Will's personal study pages, kept local in `docs/learning/` (git-ignored; not project docs, not for the site).
 
 Absences future work must not fabricate: no processed data yet (`data/processed/` holds only `.gitkeep`), no testimonials, no endorsements, no logo, no measured per-CVE cost, no verified figures for "V-etalon", GPT-6 Cyber, or Ivanti "6–12 days".
 

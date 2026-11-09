@@ -112,5 +112,5 @@ RogoLabs (Jerry Gamblin, https://rogolabs.net) publishes free, open-source CVE t
 - `docs/sources.md` — key sources with links
 - `docs/source-verification.md` — verdict per claim (Nov 7, 2026), what each source actually says
 - `docs/research/` — evidence review report + raw research notes
-- `docs/learning/` — primer and drill pages (open in a browser), video list. `ste-explainer-2026-11-09.html` is the current plain-language (ASD-STE100) explainer; `primer.html` predates the Nov 8 decisions
+- `docs/learning/` — Will's personal study pages (primer, drills, STE explainers, video list). **Local only and git-ignored since Nov 9, 2026:** write explainers there, never commit them, and never point the site or the public docs at them. The four pages committed before that date remain in the repo's history
 - `design/mockups/` — earlier scorecard mockups (reference only)

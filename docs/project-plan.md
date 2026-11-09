@@ -34,4 +34,4 @@ A public scorecard that measures whether the U.S. vulnerability warning system s
 AI accelerates a capacity problem that already existed; it did not cause it (settled Nov 7). The brief uses AI only as why-now, the cost of waiting, pressure on the pipeline, and the future test. **Add a new AI source only if it changes a metric or a recommendation**, for example published accuracy of AI-assisted enrichment, or a credible estimate of the share of new CVEs that are AI-found. Another report that AI finds many bugs does not qualify.
 
 ## Presentation
-Use `docs/learning/primer.html` (three-minute talk track and likely audience questions are inside). It predates the Nov 8 decisions (0.05 threshold, three-part NIST ask, our 4 → 10 → 9 lag count); take current figures and wording from `docs/learning/ste-explainer-2026-11-09.html`.
+Will's talk track and study pages are personal notes, kept local in `docs/learning/` (git-ignored since Nov 9, 2026; not part of the repo). Take figures and wording for the presentation from `docs/brief-outline.md` and the live page.
