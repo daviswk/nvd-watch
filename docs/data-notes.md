@@ -349,7 +349,7 @@ The settled point stands (severity scores are not the gap), but the supplier is 
 
 **Floodline.** File generated Nov 8: 26 of 28,720 CVEs with a day-30 score had crossed EPSS 10% (0.091%).
 
-### Audit, Nov 9 (Claude Fable 5): does the process hold and do the numbers line up?
+### Audit, Nov 9 (Claude Fable 5.2): does the process hold and do the numbers line up?
 
 Yes. What was recomputed, each by code written apart from the pipeline:
 

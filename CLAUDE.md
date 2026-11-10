@@ -58,7 +58,7 @@ Reporting rules (not metrics): a change log of NVD status-category definitions (
 - NVD API 2.0: `https://services.nvd.nist.gov/rest/json/cves/2.0` (pub date windows ≤120 days; request an API key; NIST's own metrics carry `source: "nvd@nist.gov"`).
 - CISA KEV JSON: `https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json`
 - FIRST EPSS API: `https://api.first.org/data/v1/epss` (batch `cve=` lists).
-- Starter script: `scripts/fetch_sample.py` (untested against live endpoints — run it first and fix as needed).
+- Pipeline entry: `scripts/fetch_sample.py` (runs against all three live endpoints; weekly in CI since Nov 8, 2026).
 
 ## Rules for working on this project
 - **Never invent data.** Anything illustrative is labeled "illustrative" on the page. Every number on the site traces to a query or a cited source.

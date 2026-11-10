@@ -1,5 +1,5 @@
 """
-fetch_sample.py — first data pull for NVD Watch.
+fetch_sample.py — the data pull for NVD Watch (first step of the weekly rebuild).
 
 What it does, in order:
   1. Downloads every CVE published in the last N days from the NVD API 2.0.
@@ -19,8 +19,8 @@ Usage:
   export NVD_API_KEY=...            # optional; without it NVD allows ~5 requests / 30 s
   python scripts/fetch_sample.py --days 30
 
-Status: written Nov 7, 2026 and checked on sample data only. Run it, then fix
-whatever the live APIs disagree with (field names, date format, rate limits).
+Status: runs against the live APIs (first pull Nov 7, 2026; weekly in CI since Nov 8).
+Run scripts/kev_enrichment.py and scripts/kev_lag.py after it, then scripts/build_site.py.
 """
 
 import argparse

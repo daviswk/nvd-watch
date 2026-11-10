@@ -4,9 +4,10 @@ Written Nov 7, 2026 at the end of the first Claude Code session (Claude Fable 5.
 
 **Updated Nov 8, 2026 (Claude Opus 5.5 session):** the weekly rebuild workflow was added and its first run (manual, Nov 8 05:21 UTC) passed end to end. The page now refreshes itself every Monday, so the live numbers move week to week. See §5 item 2 and the new gotchas in §6.
 
-**Updated Nov 9, 2026 (Claude Fable 5 session: audit, architecture review, code review, fixes):**
+**Updated Nov 9, 2026 (Claude Fable 5.2 session: audit, architecture review, code review, fixes):**
 
 - **State.** The weekly rebuild ran on schedule for the first time: Monday, Nov 9, pull at 12:52 UTC, bot commit `8f8a81c`. Three pulls so far (Nov 7, 8, 9). The live page matched the bot's build byte for byte.
+- **Shipped.** The fixes below are on `main` (`c84f839`, then `e704579` for `docs/learning/`), pushed Nov 9 20:35 UTC. The Pages deploy succeeded and the live page equals the pushed build. The tree is clean and level with `origin/main`.
 - **Audit result.** The process is correct and the numbers line up: a rebuild from committed data reproduces the committed page; the Nov 7 pull recounts exactly from the raw NVD file; `recheck_volume.py`, `recheck_flow_corrected.py` and `automated_mapping.py` re-run to the same figures. Details in `docs/data-notes.md`, *Pull 3*.
 - **Fixed in code (takes effect at the next pull unless noted).**
   - "No score yet" counted Rejected records (Nov 7: 787 shown, 128 real). `fetch_sample.py` now counts it in the same group as the EPSS tiers (`epss_without_cpe_not_kev.unscored`). Until a pull carries that key, the page says what the old count covers.
@@ -40,9 +41,9 @@ Written Nov 7, 2026 at the end of the first Claude Code session (Claude Fable 5.
 
 | Deliverable | State | What remains |
 |---|---|---|
-| Artifact (scorecard page) | Built, reviewed (Impeccable finish review: ship), live | Nothing required. Done: weekly rebuild (`.github/workflows/rebuild.yml`, first run Nov 8), multi-year KEV lag (`scripts/kev_lag.py`), backlog-based re-check volume (`recheck_measured.json`), orphan count (`osv_orphans.json`), legacy share |
+| Artifact (scorecard page) | Built, reviewed (Impeccable finish review: ship), live; audited Nov 9 (numbers reproduce) | Will's call: bring the page wording up to the Nov 8 decisions (§5 item 1). Done: weekly rebuild (`.github/workflows/rebuild.yml`, first run Nov 8), multi-year KEV lag (`scripts/kev_lag.py`), backlog-based re-check volume (`recheck_measured.json`), orphan count (`osv_orphans.json`), legacy share |
 | Policy brief (≤3 pages) | Outline only: `docs/brief-outline.md` | Write it. Numbers must match the page. Export to PDF, put it in `site/` or `docs/`, and point the band's "Policy brief" button at it (currently links to the outline on GitHub) |
-| AI collaboration log | `docs/ai-collaboration-log.md`, current through deploy | Keep adding a row per session. Final pass: every entry has a verification note |
+| AI collaboration log | `docs/ai-collaboration-log.md`, current through the Nov 9 session | Keep adding a row per session. Final pass: every entry has a verification note |
 
 ## 2. How to run everything
 
@@ -93,11 +94,19 @@ Beyond the settled decisions in `CLAUDE.md`:
 
 ## 5. What to do next, in order
 
+Open since Nov 9 (items 1–3 here come before the older list, which keeps its numbers below):
+
+1. **Will decides the page wording that is behind his Nov 8 decisions.** The list is the first bullet of *Known open items* in `CLAUDE.md`. The one that matters most: section 3's rule text still triggers on LEV, SSVC and third-party reports beside "well under one percent of existing capacity", while `trigger_table.json` puts SSVC PoC at 46.1% of NIST's peak month. Draft wording for him; do not change it unasked.
+2. **After the Monday, Nov 16 pull:** `git pull`, run `scripts/stability.py`, then check three things on the page. The EPSS sentence should read "N had no score yet" (the new count). CVE-2026-19868 should show as met (CPE on Nov 9) or as a miss (later, or none); if it is a miss, the headline and verdict change by design. `kev_cumulative.json` should list four pulls. Add a *Pull 4* section to `docs/data-notes.md`.
+3. **Optional: pick from the architecture review.** Six candidates, none chosen (listed at the top of this file). The first, one offline `check_data` command in the weekly job, would automate the Nov 9 audit.
+
+The older list:
+
 1. **Write the brief** from `docs/brief-outline.md`. Three pages. Every number must match `site/index.html` **as of a named pull date** (the page now changes weekly: write "as of Nov N" and take every figure from that pull's `summary.json` and `kev_enrichment.json` in `data/history/YYYY-MM-DD/`, not from memory or from older sections of `data-notes.md`). Cost box uses the measured figures at EPSS ≥ 0.05, with 0.10 beside it (443 once and 11–36 a month; 303 once and 11–28 a month; `recheck_measured.json`). Export PDF; link it from the band button in `site/template.html`; rebuild; push.
 2. ~~Weekly rebuild action~~: done. First run Nov 8 (manual): all steps passed; bot commit `b80cd47`; live page identical to the committed build. Window moved Oct 8 – Nov 7 → Oct 9 – Nov 8: coverage 22.6% → 22.3% (3,795 of 17,035); KEV cohort 35 → 30 (the 5 dropped were all listed Oct 8, old CVEs with pre-triage CPE); readiness unchanged at 10 of 23; KEV goal 29 of 30 (1 pending). The section 1 orphan row dropped off as designed. First scheduled run Nov 9 (12:52 UTC): window Oct 10 – Nov 9, coverage 22.1% (3,745 of 16,919), the same 30 KEV listings, readiness 10 of 23, goal 29 of 30 (1 pending). Not run weekly: `osv_orphans.py`, `recheck_volume.py`, `check_cost_model.py`, `check_kev_cases.py`. After each Monday run, `git pull` before working locally, and run `scripts/stability.py`.
 3. ~~Multi-year KEV lag~~: done. `scripts/kev_lag.py` → `kev_lag.json`; the section 2 chart shows our 4 → 7 → 10 → 9, with Barracuda cited for comparison.
 4. ~~Backlog-based re-check estimate~~: done (`recheck_measured.json`, on the page). Still unmeasured: whether EPSS (v5, not v4) ranks unenriched CVEs worse; keep it flagged.
-5. **Final AI log pass:** every row has a verification note; add a closing "models used" line naming Claude Fable 5.1 (Nov 7) and Claude Opus (later sessions).
+5. **Final AI log pass:** every row has a verification note; check the "Models and tools" list at the top of the log (Claude Fable 5.1 on Nov 7, Claude Opus 5.5 on Nov 7–8, Claude Fable 5.2 on Nov 9; add any later model).
 
 Things to leave alone: the detector findings on `.impeccable/decision/*.html` (spent decision fixtures; ignore-file needs Will's say-so, or delete them); two dead CSS rules (`.copied`, print `.bars .fill`) noted by the documenter.
 
@@ -123,6 +132,7 @@ Things to leave alone: the detector findings on `.impeccable/decision/*.html` (s
 ## 7. How this session verified things (keep doing this)
 
 - Every page number traces to `summary.json`; `build_site.py` cross-checks the counted CPE total against the CSV and exits on disagreement.
+- The Nov 9 audit loop, worth repeating before the brief is submitted: rebuild from committed data and diff `site/index.html` against the committed copy (it must be identical); recount a pull from `data/raw/nvd_sample.json` with code that does not import the pipeline; recount the KEV statistics from the rows in each `data/history/` folder. Then run `check_kev_cases.py` and `check_cost_model.py`.
 - Spot-check data with a separate script before trusting a summary (status shares, KEV rows, EPSS coverage, weekly volume).
 - Screenshots at 1440 and 390 via Playwright, plus print and dark emulation; exercise the simulator and copy button by script; check `document.documentElement.scrollWidth <= innerWidth` at 390.
 - Run `impeccable detect --json site/index.html site/styles.css site/app.js` after UI edits; triage advisories, suppress only with a stated reason.

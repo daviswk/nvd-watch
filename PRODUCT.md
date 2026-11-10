@@ -81,10 +81,10 @@ Open product facts (undecided, do not fabricate):
 - Research: `docs/research/evidence-review.md` and `docs/research/notes/` (gap evidence, EPSS prioritization, AI volume, stakeholders and governance).
 - Sources with links: `docs/sources.md`. Primary sources preferred: NIST, Commerce OIG (OIG-26-020-I, May 26, 2026), Federal Register, FIRST, CISA.
 - Plan, brief skeleton, and AI log: `docs/project-plan.md`, `docs/brief-outline.md`, `docs/ai-collaboration-log.md`.
-- Starter pipeline: `scripts/fetch_sample.py` (untested against live endpoints as of 2026-11-07). Outputs land in `data/raw/` (git-ignored) and `data/processed/`.
+- Pipeline: `scripts/fetch_sample.py`, `kev_enrichment.py`, `kev_lag.py`, then `build_site.py` (live since Nov 7, 2026; weekly in CI since Nov 8). Outputs land in `data/raw/` (git-ignored) and `data/processed/`; each pull is kept in `data/history/`.
 - Learning materials and talk track: Will's personal study pages, kept local in `docs/learning/` (git-ignored; not project docs, not for the site).
 
-Absences future work must not fabricate: no processed data yet (`data/processed/` holds only `.gitkeep`), no testimonials, no endorsements, no logo, no measured per-CVE cost, no verified figures for "V-etalon", GPT-6 Cyber, or Ivanti "6–12 days".
+Absences future work must not fabricate: no figure that is not in `data/processed/` or a cited source, no testimonials, no endorsements, no logo, no measured per-CVE cost, no verified figures for "V-etalon", GPT-6 Cyber, or Ivanti "6–12 days".
 
 ## Product Principles
 
